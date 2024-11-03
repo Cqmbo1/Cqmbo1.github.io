@@ -4,20 +4,19 @@ title: Home
 ---
 
 <style>
-  /* Set a background image for the entire page */
+  /* Gradient background for the page */
   body {
-    background-image: url('https://example.com/your-image.jpg'); /* Replace with your image URL */
-    background-size: cover;
-    background-position: center;
-    color: white; /* Text color to contrast with the background */
+    background: linear-gradient(to bottom, #add8e6, #ffffff); /* Light blue to white gradient */
+    color: #333; /* Text color for readability */
     font-family: Arial, sans-serif;
     text-align: center;
     padding-top: 50px;
+    margin: 0;
   }
-  
-  /* Style for buttons */
+
+  /* Button styling */
   .button {
-    background-color: #4CAF50; /* Button background color */
+    background-color: #4CAF50; /* Button color */
     border: none;
     color: white;
     padding: 15px 32px;
@@ -31,13 +30,15 @@ title: Home
   }
 
   .button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #45a049;
   }
 </style>
 
+<div id="main-text" style ="z-index: 10000">
 # Welcome to My Site!
 
-This is a simple GitHub Pages site with custom buttons and a background image.
+This page has a light blue to white gradient background.
+</div>
 
 <!-- Buttons with links -->
 <a href="https://github.com/Cqmbo1" class="button">GitHub</a>
