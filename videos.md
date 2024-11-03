@@ -42,7 +42,5 @@ permalink: /videos/
 <a href="https://cqmbo1.github.io/bloxd-others" class="button">Bloxd & Others</a>
 
 <div id="main-text" style ="z-index: 10000">
-# Welcome to My Site!
-
-This page has a light blue to white gradient background.
+Newest Videos Posted!
 </div>

@@ -41,7 +41,15 @@ permalink: /about/
 <a href="https://cqmbo1.github.io/bloxd-others" class="button">Bloxd & Others</a>
 
 <div id="main-text" style ="z-index: 10000">
-# Welcome to My Site!
 
-This page has a light blue to white gradient background.
+<strong>About Me: Cqmbo__</strong>
+<h3>
+I'm a youtuber, I make minecraft and .io vids. I made a Minecraft Education Hack Client called "EDU Client".
+</h3>
+
+<p>
+Subscribe to me & if you have any questions, comment on any of my videos.
+<br>
+https://www.youtube.com/channel/UCpumE9BB8uejsbQIk_VXtgQ
+</p>
 </div>

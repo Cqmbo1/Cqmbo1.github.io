@@ -41,9 +41,11 @@ title: Home
 <a href="https://cqmbo1.github.io/bloxd-others" class="button">Bloxd & Others</a>
 
 <div id="main-text" style ="z-index: 10000">
-# Welcome to My Site!
-
-This page has a light blue to white gradient background.
+Welcome, if you haven't already, please subscribe to my channel and look around for 
+<br>
+🤑FREE HACKS & SCRIPTS I HAVE🤑
+<br> 
+(INCLUDING ONES FOR VOXIOM.IO, KIRKA.IO AND COOKIE CLICKER)
 </div>
 
 <!-- Buttons with links -->
