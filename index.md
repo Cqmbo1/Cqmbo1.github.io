@@ -34,6 +34,12 @@ title: Home
   }
 </style>
 
+<a href="https://cqmbo1.github.io/" class="button">Welcome</a>
+<a href="https://cqmbo1.github.io/" class="button">About Me</a>
+<a href="https://cqmbo1.github.io/" class="button">Videos</a>
+<a href="https://cqmbo1.github.io/" class="button">Edu Client</a>
+<a href="https://cqmbo1.github.io/" class="button">Bloxd & Others</a>
+
 <div id="main-text" style ="z-index: 10000">
 # Welcome to My Site!
 
