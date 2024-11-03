@@ -16,7 +16,7 @@ title: Home
 
   /* Button styling */
   .button {
-    background-color: #4CAF50; /* Button color */
+    background-color: #6ADEE4; /* Button color */
     border: none;
     color: white;
     padding: 15px 32px;
@@ -30,7 +30,7 @@ title: Home
   }
 
   .button:hover {
-    background-color: #45a049;
+    background-color: #0DC6D0;
   }
 </style>
 
