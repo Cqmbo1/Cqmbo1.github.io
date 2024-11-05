@@ -75,28 +75,28 @@ permalink: /bloxd-others/
     max-width: 16%; /* Limit to small size */
   }
 
-  /* Grid container for video buttons */
+  /* Container to hold buttons and define their relative positions */
   .video-buttons-container {
-    position: relative; /* Container for absolute positioning */
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 columns */
-    gap: 10px;
-    margin: 0 auto; /* Center the grid */
+    position: relative;
+    height: 500px; /* Adjust as necessary */
+    width: 100%;
+    max-width: 80%;
+    margin: 0 auto; /* Center container */
   }
 
-  /* Grid placements */
-  .vbtn1 { grid-column: 3; }
-  .vbtn2 { grid-column: 2; }
-  .vbtn3 { grid-column: 3; }
-  .vbtn4 { grid-column: 4; }
-  .vbtn8 { grid-column: 1; }
-  .vbtn5 { grid-column: 2; }
-  .vbtn6 { grid-column: 3; }
-  .vbtn7 { grid-column: 4; }
-  .vbtn9 { grid-column: 5; }
-  .vbtn10 { grid-column: 2; }
-  .vbtn11 { grid-column: 3; }
-  .vbtn12 { grid-column: 3; }
+  /* Position each button */
+  .vbtn1 { top: 0; left: 40%; }     /* Centered in the top row */
+  .vbtn2 { top: 20%; left: 30%; }
+  .vbtn3 { top: 20%; left: 45%; }
+  .vbtn4 { top: 20%; left: 60%; }
+  .vbtn8 { top: 40%; left: 20%; }
+  .vbtn5 { top: 40%; left: 35%; }
+  .vbtn6 { top: 40%; left: 50%; }
+  .vbtn7 { top: 40%; left: 65%; }
+  .vbtn9 { top: 40%; left: 80%; }
+  .vbtn10 { top: 60%; left: 33%; }
+  .vbtn11 { top: 60%; left: 50%; }
+  .vbtn12 { top: 80%; left: 40%; }
 </style>
 
   <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
