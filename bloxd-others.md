@@ -49,11 +49,11 @@ Here, you'll be able to see special videos of mine, as well as to watch special 
 /* Container to center the buttons */ 
 .video-buttons-container { display: grid; 
 grid-template-areas: 
-      ". vbtn1 ." 
-          "vbtn2 vbtn3 vbtn4"
-“vbtn8 vbtn5 vbtn6 vbtn7 vbtn9”
-	 “vbtn10 vbtn11”
-     ". vbtn12 ."; 
+          ". vbtn1 ." 
+      "vbtn2 vbtn3 vbtn4"
+"vbtn8 vbtn5 vbtn6 vbtn7 vbtn9"
+	      "vbtn10 vbtn11"
+         ". vbtn12 ."; 
 gap: 10px; justify-content: center; align-items: center; margin-top: 50px; }
 
   /* Position each button in a diamond pattern */ 
@@ -79,12 +79,12 @@ gap: 10px; justify-content: center; align-items: center; margin-top: 50px; }
 
 .medium button {
   border: 2px solid lightblue;
-  width: 15%;
+  width: 20%;
 }
 
 .small button {
  border: 2px solid lightblue;
- width: 10%;
+ width: 16%;
 }
 </style>
 
