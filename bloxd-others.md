@@ -35,40 +35,19 @@ permalink: /bloxd-others/
   }
 
   /* Size classes for buttons */
-  .large {border: 2px solid lightblue; width: 33%;}
+  .large {border: 5px solid lightblue; width: 33%;}
 
-.medium {border: 2px solid lightblue;width: 20%;}
+.medium {border: 5px solid lightblue;width: 20%;}
 
-.small {border: 2px solid lightblue;width: 16%;}
+.small {border: 5px solid lightblue;width: 16%;}
 
   /* Container to center the buttons in a diamond-like layout */
   .video-buttons-container {
-    display: grid;
-    grid-template-areas:
-      ". fbtn1 ."
-      "fbtn2 fbtn3 fbtn4"
-      "fbtn8 fbtn5 fbtn6 fbtn7 fbtn9"
-      "fbtn10 fbtn11 ."
-      ". fbtn12 .";
     gap: 10px;
     justify-content: center;
     align-items: center;
     margin-top: 50px;
   }
-
-  /* Position each button in a diamond pattern */
-  .fbtn1 { grid-area: fbtn1; }
-  .fbtn2 { grid-area: fbtn2; }
-  .fbtn3 { grid-area: fbtn3; }
-  .fbtn4 { grid-area: fbtn4; }
-  .fbtn5 { grid-area: fbtn5; }
-  .fbtn6 { grid-area: fbtn6; }
-  .fbtn7 { grid-area: fbtn7; }
-  .fbtn8 { grid-area: fbtn8; }
-  .fbtn9 { grid-area: fbtn9; }
-  .fbtn10 { grid-area: fbtn10; }
-  .fbtn11 { grid-area: fbtn11; }
-  .fbtn12 { grid-area: fbtn12; }
 
 </style>
 
@@ -83,16 +62,16 @@ permalink: /bloxd-others/
 </div>
 
 <div class="video-buttons-container">
-  <a href="h" class="button fbtn1 medium">Voxiom.io Hacking</a> 
-  <a href="h" class="button fbtn2 small">Bedwars Part 1</a>
-  <a href="h" class="button fbtn3 small">Bedwars Part 2</a>
-  <a href="h" class="button fbtn4 small">Bedwars Part 3</a>
-  <a href="h" class="button fbtn5 small">Bedwars Part 4</a>
-  <a href="h" class="button fbtn6 small">Bedwars Part 5</a>
-  <a href="h" class="button fbtn7 small">Bedwars Part 6</a>
-  <a href="h" class="button fbtn8 medium">Bloxd.io PvP</a>
-  <a href="h" class="button fbtn9 medium">Hacking in Miniblox</a>
-  <a href="h" class="button fbtn10 small">Kirka.io Hacking</a>
-  <a href="h" class="button fbtn11 small">Surf Curse Music</a>
-  <a href="h" class="button fbtn12 large">FREE HACKS & Scripts for web pages & games (No ADS)</a>
+  <a href="h" class="button fbtn1 medium" style="left:40%">Voxiom.io Hacking</a> 
+  <a href="h" class="button fbtn2 small" style="left:23%">Bedwars Part 1</a>
+  <a href="h" class="button fbtn3 small" style="left:42%">Bedwars Part 2</a>
+  <a href="h" class="button fbtn4 small" style="left:61%">Bedwars Part 3</a>
+  <a href="h" class="button fbtn5 small" style="left:23%">Bedwars Part 4</a>
+  <a href="h" class="button fbtn6 small" style="left:42%">Bedwars Part 5</a>
+  <a href="h" class="button fbtn7 small" style="left:61%">Bedwars Part 6</a>
+  <a href="h" class="button fbtn8 medium" style="left:0%">Bloxd.io PvP</a>
+  <a href="h" class="button fbtn9 medium" style="left:80%">Hacking in Miniblox</a>
+  <a href="h" class="button fbtn10 small" style="left:33%">Kirka.io Hacking</a>
+  <a href="h" class="button fbtn11 small" style="left:50%">Surf Curse Music</a>
+  <a href="h" class="button fbtn12 large" style="left:33%">FREE HACKS & Scripts for web pages & games (No ADS)</a>
 </div>
