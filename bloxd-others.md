@@ -15,19 +15,19 @@ permalink: /bloxd-others/
     margin: 0;
   }
 
-  /* Style each button */
+  /* Button styling */
   .hbutton {
-    background-color: #6ADEE4;
+    background-color: #6ADEE4; /* Button color */
     border: none;
     color: white;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
+    display: inline-block;
     font-size: 16px;
+    margin: 10px 5px;
     cursor: pointer;
     border-radius: 5px;
-    display: inline-block;
-    transition: background-color 0.3s;
   }
 
   .hbutton:hover {
