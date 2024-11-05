@@ -79,17 +79,17 @@ gap: 10px; justify-content: center; align-items: center; margin-top: 50px; }
 
 .medium button {
   border: 2px solid lightblue;
-  width: 20%;
+  width: 15%;
 }
 
 .small button {
  border: 2px solid lightblue;
- width: 16%;
+ width: 10%;
 }
 </style>
 
-<div class=”video-buttons-container”>
-<a href="h” class="button vbtn1 medium button">Voxiom.io Hacking</a> 
+<div class="video-buttons-container">
+<a href="h" class="button vbtn1 medium button">Voxiom.io Hacking</a> 
 <a href="h" class="button vbtn2 small button">Bedwars Part 1</a>
 <a href="h" class="button vbtn3 small button">Bedwars Part 2</a>
 <a href="h" class="button vbtn4 small button">Bedwars Part 3</a>
