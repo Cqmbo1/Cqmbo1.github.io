@@ -98,15 +98,11 @@ permalink: /bloxd-others/
   .vbtn12 { grid-column: 3; }
 </style>
 
-
-<!-- Buttons with size classes for consistent width and height -->
-<div class="video-buttons-container">
   <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
   <a href="https://cqmbo1.github.io/about" class="hbutton">About Me</a>
   <a href="https://cqmbo1.github.io/videos" class="hbutton">Videos</a>
   <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
   <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton" >FREE HACKS & Others</a>
-</div>
 
 <!-- Repeating the button structure within your specific layout -->
 <div class="video-buttons-container">
