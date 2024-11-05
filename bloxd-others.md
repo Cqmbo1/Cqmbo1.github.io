@@ -1,9 +1,3 @@
----
-layout: default
-title: Bloxd & Others
-permalink: /bloxd-others/
----
-
 <style>
   /* Gradient background for the page */
   body {
@@ -20,24 +14,40 @@ permalink: /bloxd-others/
     background-color: #6ADEE4; /* Button color */
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 15px; /* Equal padding for all buttons */
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, width 0.3s;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   .button:hover {
     background-color: #0DC6D0;
   }
 
-  /* Size classes for buttons */
-  .large { border: 5px solid lightblue; width: 33%; }
-  .medium { border: 5px solid lightblue; width: 20%; }
-  .small { border: 5px solid lightblue; width: 16%; }
+  /* Responsive width based on size classes */
+  .large {
+    border: 5px solid lightblue;
+    width: 100%; /* Expand within its container */
+    max-width: 33%; /* Limit to large size */
+  }
+
+  .medium {
+    border: 5px solid lightblue;
+    width: 100%; /* Expand within its container */
+    max-width: 20%; /* Limit to medium size */
+  }
+
+  .small {
+    border: 5px solid lightblue;
+    width: 100%; /* Expand within its container */
+    max-width: 16%; /* Limit to small size */
+  }
 
   /* Container to position buttons absolutely within a fixed space */
   .video-buttons-container {
@@ -46,21 +56,20 @@ permalink: /bloxd-others/
     width: 100%;
     margin-top: 50px;
   }
-
 </style>
 
-<a href="https://cqmbo1.github.io/" class="button">Welcome</a>
-<a href="https://cqmbo1.github.io/about" class="button">About Me</a>
-<a href="https://cqmbo1.github.io/videos" class="button">Videos</a>
-<a href="https://cqmbo1.github.io/educlient" class="button">Edu Client</a>
-<a href="https://cqmbo1.github.io/bloxd-others" class="button">FREE HACKS & Others</a>
-
-<div id="main-text" style="z-index: 10000; margin-top: 20px;">
-  Here, you'll be able to see special videos of mine, as well as watch special hacking videos and obtain FREE hacks 🤑.
+<!-- Buttons with size classes for consistent width and height -->
+<div class="video-buttons-container">
+  <a href="https://cqmbo1.github.io/" class="button large">Welcome</a>
+  <a href="https://cqmbo1.github.io/about" class="button large">About Me</a>
+  <a href="https://cqmbo1.github.io/videos" class="button medium">Videos</a>
+  <a href="https://cqmbo1.github.io/educlient" class="button medium">Edu Client</a>
+  <a href="https://cqmbo1.github.io/bloxd-others" class="button small">FREE HACKS & Others</a>
 </div>
 
+<!-- Repeating the button structure within your specific layout -->
 <div class="video-buttons-container">
-  <a href="h" class="button fbtn1 medium" style="top: 0%; left: 40%;">Voxiom.io Hacking</a> 
+  <a href="h" class="button fbtn1 medium" style="top: 0%; left: 40%;">Voxiom.io Hacking</a>
   <a href="h" class="button fbtn2 small" style="top: 20%; left: 35%;">Bedwars Part 1</a>
   <a href="h" class="button fbtn3 small" style="top: 20%; left: 50%;">Bedwars Part 2</a>
   <a href="h" class="button fbtn4 small" style="top: 20%; left: 30%;">Bedwars Part 3</a>
