@@ -15,6 +15,20 @@ permalink: /bloxd-others/
     margin: 0;
   }
 
+  .hbutton {
+    background-color: #6ADEE4; /* Button color */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+
   /* Button styling */
   .button {
     background-color: #6ADEE4; /* Button color */
@@ -66,11 +80,11 @@ permalink: /bloxd-others/
 
 <!-- Buttons with size classes for consistent width and height -->
 <div class="video-buttons-container">
-  <a href="https://cqmbo1.github.io/" class="button large">Welcome</a>
-  <a href="https://cqmbo1.github.io/about" class="button large">About Me</a>
-  <a href="https://cqmbo1.github.io/videos" class="button medium">Videos</a>
-  <a href="https://cqmbo1.github.io/educlient" class="button medium">Edu Client</a>
-  <a href="https://cqmbo1.github.io/bloxd-others" class="button small">FREE HACKS & Others</a>
+  <a href="https://cqmbo1.github.io/" class="hbutton large">Welcome</a>
+  <a href="https://cqmbo1.github.io/about" class="hbutton large">About Me</a>
+  <a href="https://cqmbo1.github.io/videos" class="hbutton medium">Videos</a>
+  <a href="https://cqmbo1.github.io/educlient" class="hbutton medium">Edu Client</a>
+  <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton small">FREE HACKS & Others</a>
 </div>
 
 <!-- Repeating the button structure within your specific layout -->
