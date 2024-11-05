@@ -17,7 +17,7 @@ permalink: /bloxd-others/
 
   /* Style each button */
   .hbutton {
-    background-color: #4CAF50;
+    background-color: #6ADEE4;
     border: none;
     color: white;
     padding: 15px 32px;
@@ -31,7 +31,7 @@ permalink: /bloxd-others/
   }
 
   .hbutton:hover {
-    background-color: #45a049;
+    background-color: #0DC6D0;
   }
 
   /* Button styling */
