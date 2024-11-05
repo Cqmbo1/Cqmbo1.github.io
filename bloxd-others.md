@@ -49,6 +49,7 @@ permalink: /bloxd-others/
     border-radius: 5px;
     overflow: hidden;
     white-space: nowrap;
+    position: absolute; /* Absolute positioning for button placement */
   }
 
   .button:hover {
@@ -76,6 +77,7 @@ permalink: /bloxd-others/
 
   /* Grid container for video buttons */
   .video-buttons-container {
+    position: relative; /* Container for absolute positioning */
     display: grid;
     grid-template-columns: repeat(5, 1fr); /* 5 columns */
     gap: 10px;
