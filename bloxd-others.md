@@ -74,14 +74,30 @@ permalink: /bloxd-others/
     max-width: 16%; /* Limit to small size */
   }
 
-  /* Container to position buttons absolutely within a fixed space */
+  /* Grid container for video buttons */
   .video-buttons-container {
-    position: relative; /* Container for absolute positioning */
-    height: 400px; /* Adjust height as needed for layout */
-    width: 100%;
-    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columns */
+    gap: 10px;
+    max-width: 80%;
+    margin: 0 auto; /* Center the grid */
   }
+
+  /* Grid placements */
+  .vbtn1 { grid-column: 3; }
+  .vbtn2 { grid-column: 2; }
+  .vbtn3 { grid-column: 3; }
+  .vbtn4 { grid-column: 4; }
+  .vbtn8 { grid-column: 1; }
+  .vbtn5 { grid-column: 2; }
+  .vbtn6 { grid-column: 3; }
+  .vbtn7 { grid-column: 4; }
+  .vbtn9 { grid-column: 5; }
+  .vbtn10 { grid-column: 2; }
+  .vbtn11 { grid-column: 3; }
+  .vbtn12 { grid-column: 3; }
 </style>
+
 
 <!-- Buttons with size classes for consistent width and height -->
 <div class="video-buttons-container">
