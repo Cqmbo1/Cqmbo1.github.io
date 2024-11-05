@@ -23,11 +23,11 @@ permalink: /bloxd-others/
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
+    display: inline-block;
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
-    position: absolute; /* Absolute positioning for button placement */
   }
 
   .button:hover {
