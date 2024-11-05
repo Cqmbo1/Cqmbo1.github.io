@@ -79,7 +79,6 @@ permalink: /bloxd-others/
     display: grid;
     grid-template-columns: repeat(5, 1fr); /* 5 columns */
     gap: 10px;
-    max-width: 80%;
     margin: 0 auto; /* Center the grid */
   }
 
