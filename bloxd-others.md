@@ -34,31 +34,45 @@ permalink: /bloxd-others/
     background-color: #0DC6D0;
   }
 
-  /* Container to center the buttons in a diamond-like layout */
-  .video-buttons-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+/* Container to center the buttons */ 
+.video-buttons-container { display: grid; 
+grid-template-areas: 
+          ". fbtn1 ." 
+      "fbtn2 fbtn3 fbtn4"
+"fbtn8 fbtn5 fbtn6 fbtn7 fbtn9"
+	      "fbtn10 fbtn11"
+         ". fbtn12 ."; 
+gap: 10px; justify-content: center; align-items: center; margin-top: 50px; }
+
+  /* Position each button in a diamond pattern */ 
+.fbtn1 { grid-area: fbtn1; } 
+.fbtn2 { grid-area: fbtn2; } 
+.fbtn3 { grid-area: fbtn3; } 
+.fbtn4 { grid-area: fbtn4; } 
+.fbtn5 { grid-area: fbtn5; } 
+.fbtn6 { grid-area: fbtn6; } 
+.fbtn7 { grid-area: fbtn7; } 
+.fbtn8 { grid-area: fbtn8; } 
+.fbtn9 { grid-area: fbtn9; } 
+.fbtn10 { grid-area: fbtn10; }
+.fbtn11 { grid-area: fbtn11; } 
+.fbtn12 { grid-area: fbtn12; } 
 
   /* Responsive button size classes */
   .large {
-    grid-column: span 3;
-  }
+  border: 2px solid lightblue;
+  width: 33%;
+}
 
-  .medium {
-    grid-column: span 2;
-  }
+.medium {
+  border: 2px solid lightblue;
+  width: 20%;
+}
 
-  .small {
-    grid-column: span 1;
-  }
+.small {
+ border: 2px solid lightblue;
+ width: 16%;
+}
 
 </style>
 
