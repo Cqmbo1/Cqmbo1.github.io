@@ -1,3 +1,9 @@
+---
+layout: default
+title: Bloxd & Others
+permalink: /bloxd-others/
+---
+
 <style>
   /* Gradient background for the page */
   body {
@@ -82,3 +88,4 @@
   <a href="h" class="button fbtn11 small" style="top: 60%; left: 50%;">Surf Curse Music</a>
   <a href="h" class="button fbtn12 large" style="top: 80%; left: 33%;">FREE HACKS & Scripts for web pages & games (No ADS)</a>
 </div>
+
