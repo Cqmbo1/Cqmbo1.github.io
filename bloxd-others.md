@@ -60,7 +60,7 @@ permalink: /bloxd-others/
   .large {
     border: 5px solid lightblue;
     width: 100%; /* Expand within its container */
-    max-width: 33%; /* Limit to large size */
+    max-width: 38%; /* Limit to large size */
     font-size: 15px;
   }
 
@@ -97,7 +97,7 @@ permalink: /bloxd-others/
   .fbtn9 { top: 40%; left: 80%; }
   .fbtn10 { top: 60%; left: 33%; }
   .fbtn11 { top: 60%; left: 50%; }
-  .fbtn12 { top: 80%; left: 33%; }
+  .fbtn12 { top: 80%; left: 30%; }
 </style>
 
   <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
