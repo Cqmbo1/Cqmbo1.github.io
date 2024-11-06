@@ -119,6 +119,6 @@ permalink: /bloxd-others/
   <a href="h" class="button fbtn9 medium" style="top: 40%; left: 80%;">Hacking in Miniblox</a>
   <a href="h" class="button fbtn10 small" style="top: 60%; left: 33%;">Kirka.io Hacking</a>
   <a href="h" class="button fbtn11 small" style="top: 60%; left: 50%;">Surf Curse Music</a>
-  <a href="h" class="button fbtn12 large" style="top: 80%; left: 33%;">FREE HACKS & Scripts for websites & games (No ADS)</a>
+  <a href="h" class="button fbtn12 large" style="top: 80%; left: 30%;">FREE HACKS & Scripts for websites & games (No ADS)</a>
 </div>
 
