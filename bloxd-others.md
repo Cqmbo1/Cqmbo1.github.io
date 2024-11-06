@@ -61,7 +61,7 @@ permalink: /bloxd-others/
     border: 5px solid lightblue;
     width: 100%; /* Expand within its container */
     max-width: 38%; /* Limit to large size */
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .medium {
