@@ -80,7 +80,7 @@ permalink: /bloxd-others/
     position: relative;
     height: 500px; /* Adjust as necessary */
     width: 100%;
-    max-width: 80%;
+    max-width: 100%;
     margin: 0 auto; /* Center container */
   }
 
