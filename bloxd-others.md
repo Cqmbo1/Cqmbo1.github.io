@@ -20,7 +20,7 @@ permalink: /bloxd-others/
     background-color: #6ADEE4; /* Button color */
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 15px 15px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
