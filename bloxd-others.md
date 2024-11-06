@@ -47,6 +47,8 @@ permalink: /bloxd-others/
     margin: 10px 5px;
     cursor: pointer;
     border-radius: 5px;
+    overflow: auto;
+    white-space: nowrap;
     position: absolute; /* Absolute positioning for button placement */
   }
 
