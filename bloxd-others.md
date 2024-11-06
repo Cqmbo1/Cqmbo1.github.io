@@ -85,18 +85,18 @@ permalink: /bloxd-others/
   }
 
   /* Position each button */
-  .vbtn1 { top: 0; left: 40%; }     /* Centered in the top row */
-  .vbtn2 { top: 20%; left: 30%; }
-  .vbtn3 { top: 20%; left: 45%; }
-  .vbtn4 { top: 20%; left: 60%; }
-  .vbtn8 { top: 40%; left: 20%; }
-  .vbtn5 { top: 40%; left: 35%; }
-  .vbtn6 { top: 40%; left: 50%; }
-  .vbtn7 { top: 40%; left: 65%; }
-  .vbtn9 { top: 40%; left: 80%; }
-  .vbtn10 { top: 60%; left: 33%; }
-  .vbtn11 { top: 60%; left: 50%; }
-  .vbtn12 { top: 80%; left: 40%; }
+  .fbtn1 { top: 0; left: 40%; }     /* Centered in the top row */
+  .fbtn2 { top: 20%; left: 30%; }
+  .fbtn3 { top: 20%; left: 45%; }
+  .fbtn4 { top: 20%; left: 60%; }
+  .fbtn8 { top: 40%; left: 20%; }
+  .fbtn5 { top: 40%; left: 35%; }
+  .fbtn6 { top: 40%; left: 50%; }
+  .fbtn7 { top: 40%; left: 65%; }
+  .fbtn9 { top: 40%; left: 80%; }
+  .fbtn10 { top: 60%; left: 33%; }
+  .fbtn11 { top: 60%; left: 50%; }
+  .fbtn12 { top: 80%; left: 40%; }
 </style>
 
   <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
