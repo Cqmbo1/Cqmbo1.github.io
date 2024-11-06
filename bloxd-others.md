@@ -85,7 +85,7 @@ permalink: /bloxd-others/
   }
 
   /* Position each button */
-  .fbtn1 { top: 0; left: 40%; }     /* Centered in the top row */
+  .fbtn1 { top: 0%; left: 40%; }     /* Centered in the top row */
   .fbtn2 { top: 20%; left: 23%; }
   .fbtn3 { top: 20%; left: 42%; }
   .fbtn4 { top: 20%; left: 61%; }
