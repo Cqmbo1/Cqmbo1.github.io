@@ -39,14 +39,14 @@ permalink: /bloxd-others/
     background-color: #6ADEE4; /* Button color */
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 15px; /* Equal padding for all buttons */
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 5px 5px;
     cursor: pointer;
     border-radius: 5px;
+    transition: background-color 0.3s, width 0.3s;
     overflow: hidden;
     white-space: nowrap;
     position: absolute; /* Absolute positioning for button placement */
