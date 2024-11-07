@@ -59,20 +59,20 @@ permalink: /educlient/
   /* Responsive width based on size classes */
   .large {
     border: 5px solid lightblue;
-    width: 100%; /* Expand within its container */
+    width: 38%; /* Expand within its container */
     max-width: 38%; /* Limit to large size */
     font-size: 14px;
   }
 
   .medium {
     border: 5px solid lightblue;
-    width: 100%; /* Expand within its container */
+    width: 20%; /* Expand within its container */
     max-width: 20%; /* Limit to medium size */
   }
 
   .small {
     border: 5px solid lightblue;
-    width: 100%; /* Expand within its container */
+    width: 16%; /* Expand within its container */
     max-width: 16%; /* Limit to small size */
   }
 
