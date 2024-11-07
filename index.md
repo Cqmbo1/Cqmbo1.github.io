@@ -44,12 +44,12 @@ title: Home
 <a href="https://cqmbo1.github.io/educlient" class="button">Edu Client</a>
 <a href="https://cqmbo1.github.io/bloxd-others" class="button">FREE HACKS & Others</a>
 
-<div id="main-text" style ="z-index: 10000">
-Welcome, if you haven't already, please subscribe to my channel and look around for 
-<br>
-🤑FREE HACKS & SCRIPTS I HAVE🤑
-<br> 
-(INCLUDING ONES FOR VOXIOM.IO, KIRKA.IO AND COOKIE CLICKER)
+<div id="main-text" style="z-index: 10000">
+  Welcome, if you haven't already, please subscribe to my channel and look around for 
+  <br>
+  🤑FREE HACKS & SCRIPTS I HAVE🤑
+  <br> 
+  (INCLUDING ONES FOR VOXIOM.IO, KIRKA.IO AND COOKIE CLICKER)
 </div>
 
 <!-- Buttons with links -->
