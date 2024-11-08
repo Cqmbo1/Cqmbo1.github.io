@@ -123,5 +123,5 @@ Choose the version of EDU Client you want for Minecraft Education Edition (all v
   <a href="h" class="button ebtn9 small" style="top: 80%; left: 0%;">How To Obtain and Download</a>
   <a href="h" class="button ebtn10 small" style="top: 80%; left: 28%;">5.0.2</a>
   <a href="h" class="button ebtn11 small" style="top: 80%; left: 56%;">5.0.3</a>
-  <a href="h" class="button ebtn12 small" style="top: 80%; left: 84%;">ID Dictionaryy</a>
+  <a href="h" class="button ebtn12 small" style="top: 80%; left: 84%;">ID Dictionary</a>
 </div>
