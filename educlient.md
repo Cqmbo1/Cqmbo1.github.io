@@ -86,18 +86,18 @@ permalink: /educlient/
   }
 
   /* Position each button */
-  .ebtn1 { top: 0%; left: 40%; }     /* Centered in the top row */
-  .ebtn2 { top: 20%; left: 23%; }
-  .ebtn3 { top: 20%; left: 42%; }
-  .ebtn4 { top: 20%; left: 61%; }
+  .ebtn1 { top: 0%; left: 0%; }     /* Centered in the top row */
+  .ebtn2 { top: 0%; left: 28%; }
+  .ebtn3 { top: 0%; left: 56%; }
+  .ebtn4 { top: 0%; left: 84%; }
   .ebtn8 { top: 40%; left: 0%; }
-  .ebtn5 { top: 40%; left: 23%; }
-  .ebtn6 { top: 40%; left: 42%; }
-  .ebtn7 { top: 40%; left: 61%; }
-  .ebtn9 { top: 40%; left: 80%; }
-  .ebtn10 { top: 60%; left: 33%; }
-  .ebtn11 { top: 60%; left: 50%; }
-  .ebtn12 { top: 80%; left: 30%; }
+  .ebtn5 { top: 40%; left: 28%; }
+  .ebtn6 { top: 40%; left: 56%; }
+  .ebtn7 { top: 40%; left: 84%; }
+  .ebtn9 { top: 80%; left: 0%; }
+  .ebtn10 { top: 80%; left: 28%; }
+  .ebtn11 { top: 80%; left: 56%; }
+  .ebtn12 { top: 80%; left: 84%; }
 </style>
 
   <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
