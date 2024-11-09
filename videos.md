@@ -20,11 +20,11 @@ permalink: /videos/
   }
 
   /* Button styling */
-  .button {
+  .hbutton {
     background-color: #6ADEE4; /* Button color */
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 15px 15px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -34,8 +34,50 @@ permalink: /videos/
     border-radius: 5px;
   }
 
+  .hbutton:hover {
+    background-color: #0DC6D0;
+  }
+
+  /* Button styling */
+  .button {
+    background-color: #6ADEE4; /* Button color */
+    border: none;
+    color: white;
+    padding: 15px; /* Equal padding for all buttons */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, width 0.3s;
+    overflow: hidden;
+    white-space: nowrap;
+    position: absolute; /* Absolute positioning for button placement */
+  }
+
   .button:hover {
     background-color: #0DC6D0;
+  }
+
+  /* Responsive width based on size classes */
+  .large {
+    border: 5px solid lightblue;
+    width: 38%; /* Expand within its container */
+    max-width: 38%; /* Limit to large size */
+    font-size: 14px;
+  }
+
+  .medium {
+    border: 5px solid lightblue;
+    width: 20%; /* Expand within its container */
+    max-width: 20%; /* Limit to medium size */
+  }
+
+  .small {
+    border: 5px solid lightblue;
+    width: 16%; /* Expand within its container */
+    max-width: 16%; /* Limit to small size */
   }
 </style>
 
