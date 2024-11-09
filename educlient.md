@@ -116,16 +116,16 @@ Choose the version of EDU Client you want for Minecraft Education Edition (all v
 
 <!-- Repeating the button structure within your specific layout -->
 <div class="video-buttons-container">
-  <a href="h" class="button ebtn1 small" style="top: 0%; left: 0%;">1.0</a>
-  <a href="h" class="button ebtn2 small" style="top: 0%; left: 28%;">2.0</a>
-  <a href="h" class="button ebtn3 small" style="top: 0%; left: 56%;">3.0</a>
-  <a href="h" class="button ebtn4 small" style="top: 0%; left: 84%;">4.0</a>
-  <a href="h" class="button ebtn5 small" style="top: 40%; left: 0%;">4.0.2</a>
-  <a href="h" class="button ebtn6 small" style="top: 40%; left: 28%;">4.0.3</a>
-  <a href="h" class="button ebtn7 small" style="top: 40%; left: 56%;">5.0</a>
-  <a href="h" class="button ebtn8 small" style="top: 40%; left: 84%;">5.0.1</a>
-  <a href="h" class="button ebtn9 small" style="top: 80%; left: 0%;">How To Obtain and Download</a>
-  <a href="h" class="button ebtn10 small" style="top: 80%; left: 28%;">5.0.2</a>
-  <a href="h" class="button ebtn11 small" style="top: 80%; left: 56%;">5.0.3</a>
-  <a href="h" class="button ebtn12 small" style="top: 80%; left: 84%;">ID Dictionary</a>
+  <a href="https://cqmbo1.github.io/1-0" class="button ebtn1 small" style="top: 0%; left: 0%;">1.0</a>
+  <a href="https://cqmbo1.github.io/2-0" class="button ebtn2 small" style="top: 0%; left: 28%;">2.0</a>
+  <a href="https://cqmbo1.github.io/3-0" class="button ebtn3 small" style="top: 0%; left: 56%;">3.0</a>
+  <a href="https://cqmbo1.github.io/4-0" class="button ebtn4 small" style="top: 0%; left: 84%;">4.0</a>
+  <a href="https://cqmbo1.github.io/4-0-2" class="button ebtn5 small" style="top: 40%; left: 0%;">4.0.2</a>
+  <a href="https://cqmbo1.github.io/4-0-3" class="button ebtn6 small" style="top: 40%; left: 28%;">4.0.3</a>
+  <a href="https://cqmbo1.github.io/5-0" class="button ebtn7 small" style="top: 40%; left: 56%;">5.0</a>
+  <a href="https://cqmbo1.github.io/5-0-1" class="button ebtn8 small" style="top: 40%; left: 84%;">5.0.1</a>
+  <a href="https://cqmbo1.github.io/how-to" class="button ebtn9 small" style="top: 80%; left: 0%;">How To Obtain and Download</a>
+  <a href="https://cqmbo1.github.io/5-0-2" class="button ebtn10 small" style="top: 80%; left: 28%;">5.0.2</a>
+  <a href="https://cqmbo1.github.io/5-0-3" class="button ebtn11 small" style="top: 80%; left: 56%;">5.0.3</a>
+  <a href="https://cqmbo1.github.io/idd" class="button ebtn12 small" style="top: 80%; left: 84%;">ID Dictionary</a>
 </div>
