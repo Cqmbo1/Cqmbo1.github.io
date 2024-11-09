@@ -39,11 +39,11 @@ permalink: /videos/
   }
 </style>
 
-<a href="https://cqmbo1.github.io/" class="button">Welcome</a>
-<a href="https://cqmbo1.github.io/about" class="button">About Me</a>
-<a href="https://cqmbo1.github.io/videos" class="button">Videos</a>
-<a href="https://cqmbo1.github.io/educlient" class="button">Edu Client</a>
-<a href="https://cqmbo1.github.io/bloxd-others" class="button">FREE HACKS & Others</a>
+<a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
+<a href="https://cqmbo1.github.io/about" class="hbutton">About Me</a>
+<a href="https://cqmbo1.github.io/videos" class="hbutton">Videos</a>
+<a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
+<a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
 
 <div id="main-text" style ="z-index: 10000">
 Newest Videos Posted!
