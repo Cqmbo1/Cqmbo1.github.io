@@ -2,11 +2,10 @@
 layout: default
 title: Videos
 permalink: /v/
+custom_head: |
+  <link rel="icon" type="image/png" href="https://i.imgur.com/lCxl4hl.png"/>
 ---
 
-<head>
-<link rel="icon" type="image/png" href="https://i.imgur.com/lCxl4hl.png"/>
-</head>
 
 <style>
   /* Gradient background for the page */
