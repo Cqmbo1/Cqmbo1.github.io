@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Bloxd & Others
+title: FREE HACKS & Others
 permalink: /bloxd-others/
 ---
 
