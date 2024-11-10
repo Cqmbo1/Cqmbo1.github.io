@@ -5,7 +5,7 @@ permalink: /v/
 ---
 
 <head>
-<link rel="icon" href="/assets/cqmbo__32x32 - .ico" type="image/x-icon">
+<link rel="icon" type="image/png" href="https://i.imgur.com/lCxl4hl.png"/>
 </head>
 
 <style>
