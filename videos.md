@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Videos
-permalink: /videos/
+permalink: /vids/
 ---
 
 <head>
