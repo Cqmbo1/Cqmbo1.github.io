@@ -5,7 +5,7 @@ permalink: /v/
 ---
 
 <head>
-<link rel="shortcut icon" href="/assets/cqmbo__32x32 - .ico" type="image/x-icon">
+<link rel="icon" href="/assets/cqmbo__32x32 - .ico" type="image/x-icon">
 </head>
 
 <style>
