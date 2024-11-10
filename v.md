@@ -89,3 +89,11 @@ custom_head: |
 <div id="main-text" style ="z-index: 10000">
 Newest Videos Posted!
 </div>
+
+<script>
+  var favicon = document.createElement('link');
+  favicon.innerHTML = `
+  <link rel="icon" type="image/png" href="https://i.imgur.com/lCxl4hl.png"/>
+  `;
+  document.head.appendChild(favicon);
+  </script>
