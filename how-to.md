@@ -86,3 +86,14 @@ permalink: /how-to/
 <a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
 <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
 <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
+
+<script>
+  // Create a link element
+  var favicon = document.createElement('link');
+  favicon.rel = 'icon';                // Set rel attribute for favicon
+  favicon.type = 'image/png';           // Set type attribute
+  favicon.href = 'https://i.imgur.com/lCxl4hl.png'; // Set the URL for the favicon
+
+  // Append the link element to the head
+  document.head.appendChild(favicon);
+</script>

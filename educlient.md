@@ -4,9 +4,7 @@ title: Edu Client
 permalink: /educlient/
 ---
 
-<head>
-<link rel="icon" href="/assets/cqmbo__32x32.png" type="image/x-icon">
-</head>
+
 
 <style>
   /* Gradient background for the page */
@@ -129,3 +127,14 @@ Choose the version of EDU Client you want for Minecraft Education Edition (all v
   <a href="https://cqmbo1.github.io/5-0-3" class="button ebtn11 small" style="top: 80%; left: 56%;">5.0.3</a>
   <a href="https://cqmbo1.github.io/idd" class="button ebtn12 small" style="top: 80%; left: 84%;">ID Dictionary</a>
 </div>
+
+<script>
+  // Create a link element
+  var favicon = document.createElement('link');
+  favicon.rel = 'icon';                // Set rel attribute for favicon
+  favicon.type = 'image/png';           // Set type attribute
+  favicon.href = 'https://i.imgur.com/lCxl4hl.png'; // Set the URL for the favicon
+
+  // Append the link element to the head
+  document.head.appendChild(favicon);
+</script>

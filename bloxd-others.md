@@ -4,9 +4,7 @@ title: Bloxd & Others
 permalink: /bloxd-others/
 ---
 
-<head>
-<link rel="icon" href="/assets/cqmbo__32x32.png" type="image/x-icon">
-</head>
+
 
 <style>
   /* Gradient background for the page */
@@ -125,5 +123,16 @@ permalink: /bloxd-others/
     <a href="https://www.youtube.com/watch?v=9Z06RLEvoJQ&ab_channel=Cqmbo__" class="button fbtn11 small" style="top: 60%; left: 50%;">Surf Curse Music</a>
     <a href="https://github.com/Cqmbo1/Cqmbo__-s-Scripts/tree/main/Working%20Scripts/Main%20-%20Downloadable%20scripts%20for%20Tampermonkey%20(The%20scripts%20you%20should%20be%20downloading)." class="button fbtn12 large" style="top: 80%; left: 30%;">FREE HACKS & Scripts for web pages & games (No ADS)</a>
 </div>
+
+<script>
+  // Create a link element
+  var favicon = document.createElement('link');
+  favicon.rel = 'icon';                // Set rel attribute for favicon
+  favicon.type = 'image/png';           // Set type attribute
+  favicon.href = 'https://i.imgur.com/lCxl4hl.png'; // Set the URL for the favicon
+
+  // Append the link element to the head
+  document.head.appendChild(favicon);
+</script>
 
 

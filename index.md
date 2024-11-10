@@ -3,9 +3,7 @@ layout: default
 title: Home
 ---
 
-<head>
-<link rel="icon" href="/assets/cqmbo__32x32.png" type="image/x-icon">
-</head>
+
 
 <style>
   /* Gradient background for the page */
@@ -96,3 +94,14 @@ title: Home
 
 <!-- Buttons with links -->
 <a href="https://github.com/Cqmbo1" class="button">GitHub</a>
+
+<script>
+  // Create a link element
+  var favicon = document.createElement('link');
+  favicon.rel = 'icon';                // Set rel attribute for favicon
+  favicon.type = 'image/png';           // Set type attribute
+  favicon.href = 'https://i.imgur.com/lCxl4hl.png'; // Set the URL for the favicon
+
+  // Append the link element to the head
+  document.head.appendChild(favicon);
+</script>
