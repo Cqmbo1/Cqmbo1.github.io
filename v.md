@@ -91,9 +91,13 @@ Newest Videos Posted!
 </div>
 
 <script>
+  // Create a link element
   var favicon = document.createElement('link');
-  favicon.innerHTML = `
-  <link rel="icon" type="image/png" href="https://i.imgur.com/lCxl4hl.png"/>
-  `;
+  favicon.rel = 'icon';                // Set rel attribute for favicon
+  favicon.type = 'image/png';           // Set type attribute
+  favicon.href = 'https://i.imgur.com/lCxl4hl.png'; // Set the URL for the favicon
+
+  // Append the link element to the head
   document.head.appendChild(favicon);
-  </script>
+</script>
+
