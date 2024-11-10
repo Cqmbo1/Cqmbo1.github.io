@@ -100,5 +100,3 @@ Subscribe to me & if you have any questions, comment on any of my videos.
 https://www.youtube.com/channel/UCpumE9BB8uejsbQIk_VXtgQ
 </p>
 </div>
-
-<a href="https://cqmbo1.github.io/" class="button">Welcome, hey there</a>
