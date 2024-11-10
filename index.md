@@ -4,7 +4,7 @@ title: Home
 ---
 
 <head>
-<link rel="icon" href="https://yt3.ggpht.com/ofXbHpiwGc4bYnwwljjZJo53E7JRODr-SG32NPV1W6QiUnGUtVAYDwTP2NMz2pUPGnt99Juh5w=s88-c-k-c0x00ffffff-no-rj" type="image/png" sizes="32x32">
+<link rel="icon" href="/assets/cqmbo__32x32.png" type="image/x-icon">
 </head>
 
 <style>
@@ -82,7 +82,7 @@ title: Home
 
 <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
 <a href="https://cqmbo1.github.io/about" class="hbutton">About Me</a>
-<a href="https://cqmbo1.github.io/videos" class="hbutton">Videos</a>
+<a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
 <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
 <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
 
