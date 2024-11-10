@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 <head>
-<link rel="icon" href="/assets/cqmbo__32x32.png" type="image/x-icon">">
+<link rel="icon" href="/assets/cqmbo__32x32.png" type="image/x-icon">
 </head>
 
 <style>
