@@ -92,8 +92,6 @@ title: Home
   (INCLUDING ONES FOR VOXIOM.IO, KIRKA.IO AND COOKIE CLICKER)
 </div>
 
-<!-- Buttons with links -->
-<a href="https://github.com/Cqmbo1" class="button">GitHub</a>
 
 <script>
   // Create a link element
