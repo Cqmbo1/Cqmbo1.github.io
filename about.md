@@ -105,7 +105,7 @@ https://www.youtube.com/channel/UCpumE9BB8uejsbQIk_VXtgQ
   var favicon = document.createElement('link');
   favicon.rel = 'icon';                // Set rel attribute for favicon
   favicon.type = 'image/png';           // Set type attribute
-  favicon.href = 'https://i.imgur.com/lCxl4hl.png'; // Set the URL for the favicon
+  favicon.href = '/assets/cqmbo__32x32.png'; // Set the URL for the favicon
 
   // Append the link element to the head
   document.head.appendChild(favicon);
