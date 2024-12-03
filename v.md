@@ -85,18 +85,19 @@ permalink: /v/
 <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
 
 <div class="video-buttons-container">
-    <a href="https://www.youtube.com/watch?v=tWroaQshK2I&t=60s&ab_channel=Cqmbo__" class="button fbtn1 medium" style="top: 0%; left: 40%;">Voxiom.io Hacking</a> 
-    <a href="https://www.youtube.com/watch?v=Jn1FEdjbK5I" class="button fbtn2 small" style="top: 20%; left: 23%;">Bedwars Part 1</a>
-    <a href="https://www.youtube.com/watch?v=irbPBG8V6Cc" class="button fbtn3 small" style="top: 20%; left: 42%;">Bedwars Part 2</a>
-    <a href="https://youtu.be/fNBrKrac_-4" class="button fbtn4 small" style="top: 20%; left: 61%;">Bedwars Part 3</a>
-    <a href="https://www.youtube.com/watch?v=HhtsgdajEzE" class="button fbtn5 small" style="top: 40%; left: 23%;">Bedwars Part 4</a>
-    <a href="https://www.youtube.com/watch?v=3_mCvJ50yVs" class="button fbtn6 small" style="top: 40%; left: 42%;">Bedwars Part 5</a>
-    <a href="https://www.youtube.com/watch?v=djNsquMsbXM" class="button fbtn7 small" style="top: 40%; left: 61%;">Bedwars Part 6</a>
-    <a href="https://www.youtube.com/watch?v=O2S06ThtXTQ" class="button fbtn8 medium" style="top: 40%; left: 0%;">Bloxd.io PvP</a>
-    <a href="https://www.youtube.com/watch?v=VYgxebO5tC0&ab_channel=Cqmbo__" class="button fbtn9 medium" style="top: 40%; left: 80%;">Hacking in Miniblox</a>
-    <a href="https://www.youtube.com/watch?v=s8v2Uv_8zTk&t=53s&ab_channel=Cqmbo__" class="button fbtn10 small" style="top: 60%; left: 33%;">Kirka.io Hacking</a>
-    <a href="https://www.youtube.com/watch?v=9Z06RLEvoJQ&ab_channel=Cqmbo__" class="button fbtn11 small" style="top: 60%; left: 50%;">Surf Curse Music</a>
+    <a href="https://www.youtube.com/watch?v=tWroaQshK2I&t=60s&ab_channel=Cqmbo__" class="button fbtn1 medium" style="top: 20%; left: 40%;">Voxiom.io Hacking</a> 
+    <a href="https://www.youtube.com/watch?v=Jn1FEdjbK5I" class="button fbtn2 small" style="top: 40%; left: 23%;">Bedwars Part 1</a>
+    <a href="https://www.youtube.com/watch?v=irbPBG8V6Cc" class="button fbtn3 small" style="top: 40%; left: 42%;">Bedwars Part 2</a>
+    <a href="https://youtu.be/fNBrKrac_-4" class="button fbtn4 small" style="top: 40%; left: 61%;">Bedwars Part 3</a>
+    <a href="https://www.youtube.com/watch?v=HhtsgdajEzE" class="button fbtn5 small" style="top: 60%; left: 23%;">Bedwars Part 4</a>
+    <a href="https://www.youtube.com/watch?v=3_mCvJ50yVs" class="button fbtn6 small" style="top: 60%; left: 42%;">Bedwars Part 5</a>
+    <a href="https://www.youtube.com/watch?v=djNsquMsbXM" class="button fbtn7 small" style="top: 60%; left: 61%;">Bedwars Part 6</a>
+    <a href="https://www.youtube.com/watch?v=O2S06ThtXTQ" class="button fbtn8 medium" style="top: 60%; left: 0%;">Bloxd.io PvP</a>
+    <a href="https://www.youtube.com/watch?v=VYgxebO5tC0&ab_channel=Cqmbo__" class="button fbtn9 medium" style="top: 60%; left: 80%;">Hacking in Miniblox</a>
+    <a href="https://www.youtube.com/watch?v=s8v2Uv_8zTk&t=53s&ab_channel=Cqmbo__" class="button fbtn10 small" style="top: 80%; left: 33%;">Kirka.io Hacking</a>
+    <a href="https://www.youtube.com/watch?v=9Z06RLEvoJQ&ab_channel=Cqmbo__" class="button fbtn11 small" style="top: 80%; left: 50%;">Surf Curse Music</a>
 </div>
+
 
 <script>
   // Create a link element
