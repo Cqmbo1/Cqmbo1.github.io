@@ -146,7 +146,7 @@ permalink: /educlient/
     height: 500px; /* Adjust as necessary */
     width: 100%;
     max-width: 100%;
-    margin: 0 auto; /* Center container */
+    margin-top: 40px;
   }
 
   /* Position each button */
