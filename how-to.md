@@ -21,33 +21,54 @@ permalink: /how-to/
 
   /* Button styling */
   .hbutton {
-    background-color: #6ADEE4; /* Button color */
+    background-color: #8ED6F0; /* Brighter button color */
     border: none;
     color: white;
-    padding: 15px 15px;
+    padding: 10px; /* Reduced padding */
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 18px; /* Increased font size */
     margin: 10px 5px;
     cursor: pointer;
     border-radius: 5px;
+    position: relative; /* For shine effect */
+    overflow: hidden; /* To contain shine effect */
+    transition: background-color 0.3s, width 0.3s;
   }
 
   .hbutton:hover {
     background-color: #0DC6D0;
   }
 
+  .hbutton::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+    opacity: 0.5; /* Static shine effect */
+  }
+  
+  .hbutton:hover::after {
+    opacity: 1;
+    animation: shine 1s infinite;
+  }
+
   /* Button styling */
   .button {
-    background-color: #6ADEE4; /* Button color */
+    background-color: #8ED6F0; /* Brighter button color */
     border: none;
     color: white;
-    padding: 15px; /* Equal padding for all buttons */
+    padding: 10px; /* Reduced padding */
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 15px; /* Increased font size */
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s, width 0.3s;
@@ -58,6 +79,35 @@ permalink: /how-to/
 
   .button:hover {
     background-color: #0DC6D0;
+  }
+  
+   .button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+    opacity: 0.5; /* Static shine effect */
+  }
+  
+    @keyframes shine {
+    0% {
+      left: -200%;
+      top: 0;
+    }
+    100% {
+      left: 200%;
+      top: 0;
+    }
+  }
+  
+  .button:hover::after {
+    opacity: 1;
+    animation: shine 1.25s infinite;
   }
 
   /* Responsive width based on size classes */
@@ -72,6 +122,7 @@ permalink: /how-to/
     border: 5px solid lightblue;
     width: 20%; /* Expand within its container */
     max-width: 20%; /* Limit to medium size */
+    font-size: 14px;
   }
 
   .small {
