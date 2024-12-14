@@ -18,33 +18,65 @@ permalink: /v/
 
   /* Button styling */
   .hbutton {
-    background-color: #6ADEE4; /* Button color */
+    background-color: #8ED6F0; /* Brighter button color */
     border: none;
     color: white;
-    padding: 15px 15px;
+    padding: 10px; /* Reduced padding */
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 18px; /* Increased font size */
     margin: 10px 5px;
     cursor: pointer;
     border-radius: 5px;
+    position: relative; /* For shine effect */
+    overflow: hidden; /* To contain shine effect */
+    transition: background-color 0.3s, width 0.3s;
   }
 
   .hbutton:hover {
     background-color: #0DC6D0;
   }
 
+  .hbutton::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: rotate(30deg);
+    transition: all 0.5s ease;
+    opacity: 0;
+  }
+
+  .hbutton:hover::after {
+    opacity: 1;
+    animation: shine 1s forwards;
+  }
+
+  @keyframes shine {
+    0% {
+      left: -200%;
+      top: 0;
+    }
+    100% {
+      left: 200%;
+      top: 0;
+    }
+  }
+
   /* Button styling */
   .button {
-    background-color: #6ADEE4; /* Button color */
+    background-color: #8ED6F0; /* Brighter button color */
     border: none;
     color: white;
-    padding: 15px; /* Equal padding for all buttons */
+    padding: 10px; /* Reduced padding */
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 15px; /* Increased font size */
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s, width 0.3s;
@@ -56,6 +88,25 @@ permalink: /v/
   .button:hover {
     background-color: #0DC6D0;
   }
+  
+   .button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: rotate(30deg);
+    transition: all 0.5s ease;
+    opacity: 0;
+  }
+
+  .button:hover::after {
+    opacity: 1;
+    animation: shine 1s forwards;
+  }
+
 
   /* Responsive width based on size classes */
   .large {
@@ -69,6 +120,7 @@ permalink: /v/
     border: 5px solid lightblue;
     width: 20%; /* Expand within its container */
     max-width: 20%; /* Limit to medium size */
+    font-size: 14px;
   }
 
   .small {
@@ -77,7 +129,7 @@ permalink: /v/
     max-width: 16%; /* Limit to small size */
   }
 
-    /* Container to hold buttons and define their relative positions */
+  /* Container to hold buttons and define their relative positions */
   .video-buttons-container {
     position: relative;
     height: 500px; /* Adjust as necessary */
@@ -85,19 +137,20 @@ permalink: /v/
     max-width: 100%;
     margin: 0 auto; /* Center container */
   }
-/* Position each button */
-.vbtn1 { top: 10%; left: 40%; }     /* Centered in the top row */
-.vbtn2 { top: 30%; left: 23%; }
-.vbtn3 { top: 30%; left: 42%; }
-.vbtn4 { top: 30%; left: 61%; }
-.vbtn5 { top: 50%; left: 23%; }
-.vbtn6 { top: 50%; left: 42%; }
-.vbtn7 { top: 50%; left: 61%; }
-.vbtn8 { top: 50%; left: 0%; }
-.vbtn9 { top: 50%; left: 80%; }
-.vbtn10 { top: 70%; left: 33%; }
-.vbtn11 { top: 70%; left: 50%; }
-.vbtn12 { top: 70%; left: 84%; }
+
+  /* Position each button */
+  .vbtn1 { top: 10%; left: 40%; }     /* Centered in the top row */
+  .vbtn2 { top: 30%; left: 23%; }
+  .vbtn3 { top: 30%; left: 42%; }
+  .vbtn4 { top: 30%; left: 61%; }
+  .vbtn5 { top: 50%; left: 23%; }
+  .vbtn6 { top: 50%; left: 42%; }
+  .vbtn7 { top: 50%; left: 61%; }
+  .vbtn8 { top: 50%; left: 0%; }
+  .vbtn9 { top: 50%; left: 80%; }
+  .vbtn10 { top: 70%; left: 33%; }
+  .vbtn11 { top: 70%; left: 50%; }
+  .vbtn12 { top: 70%; left: 84%; }
 </style>
 
 <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
@@ -119,7 +172,6 @@ permalink: /v/
     <a href="https://www.youtube.com/watch?v=s8v2Uv_8zTk&t=53s&ab_channel=Cqmbo__" class="button vbtn10 small" style="top: 70%; left: 33%;">Kirka.io Hacking</a>
     <a href="https://www.youtube.com/watch?v=9Z06RLEvoJQ&ab_channel=Cqmbo__" class="button vbtn11 small" style="top: 70%; left: 50%;">Surf Curse Music</a>
 </div>
-
 
 
 <script>
