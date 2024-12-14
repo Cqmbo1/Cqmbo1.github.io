@@ -47,7 +47,7 @@ permalink: /bloxd-others/
     width: 200%;
     height: 200%;
     background: rgba(255, 255, 255, 0.5);
-    transform: rotate(45deg);
+    transform: rotate(50deg);
     transition: all 0.5s ease;
     opacity: 0.5; /* Static shine effect */
   }
