@@ -46,14 +46,14 @@ permalink: /v/
     width: 200%;
     height: 200%;
     background: rgba(255, 255, 255, 0.5);
-    transform: rotate(30deg);
+    transform: rotate(45deg);
     transition: all 0.5s ease;
     opacity: 0;
   }
 
   .hbutton:hover::after {
     opacity: 1;
-    animation: shine 1s forwards;
+    animation: shine 1s infinite;
   }
 
   @keyframes shine {
@@ -97,14 +97,14 @@ permalink: /v/
     width: 200%;
     height: 200%;
     background: rgba(255, 255, 255, 0.5);
-    transform: rotate(30deg);
+    transform: rotate(45deg);
     transition: all 0.5s ease;
     opacity: 0;
   }
 
   .button:hover::after {
     opacity: 1;
-    animation: shine 1s forwards;
+    animation: shine 1s infinite;
   }
 
 
