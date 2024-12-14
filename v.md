@@ -48,23 +48,12 @@ permalink: /v/
     background: rgba(255, 255, 255, 0.5);
     transform: rotate(45deg);
     transition: all 0.5s ease;
-    opacity: 0;
+    opacity: 0.5; /* Static shine effect */
   }
-
+  
   .hbutton:hover::after {
     opacity: 1;
     animation: shine 1s infinite;
-  }
-
-  @keyframes shine {
-    0% {
-      left: -200%;
-      top: 0;
-    }
-    100% {
-      left: 200%;
-      top: 0;
-    }
   }
 
   /* Button styling */
@@ -99,14 +88,24 @@ permalink: /v/
     background: rgba(255, 255, 255, 0.5);
     transform: rotate(45deg);
     transition: all 0.5s ease;
-    opacity: 0;
+    opacity: 0.5; /* Static shine effect */
   }
-
+  
+    @keyframes shine {
+    0% {
+      left: -200%;
+      top: 0;
+    }
+    100% {
+      left: 200%;
+      top: 0;
+    }
+  }
+  
   .button:hover::after {
     opacity: 1;
-    animation: shine 1s infinite;
+    animation: shine 1.25s infinite;
   }
-
 
   /* Responsive width based on size classes */
   .large {
