@@ -4,7 +4,6 @@ title: Videos
 permalink: /v/
 ---
 
-
 <style>
   /* Gradient background for the page */
   body {
@@ -130,6 +129,29 @@ permalink: /v/
     max-width: 16%; /* Limit to small size */
   }
 
+.specialbtn {
+    background-color: #8ED6F0; /* Brighter button color */
+    border: none;
+    color: white;
+    padding: 10px; /* Reduced padding */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px; /* Increased font size */
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, width 0.3s;
+    overflow: hidden;
+    white-space: nowrap;
+    position: absolute; /* Absolute positioning for button placement */
+    transition: all 0.2s ease, visibility 0s;
+    border: 0px solid rgb(174, 99, 63);
+    border-radius: 200px;
+    background: no-repeat padding-box border-box 46% 53% / cover scroll url("/assets
+/paradisebg.png");
+}
+
+
   /* Container to hold buttons and define their relative positions */
   .video-buttons-container {
     position: relative;
@@ -139,19 +161,13 @@ permalink: /v/
     margin: 0 auto; /* Center container */
   }
 
-  /* Position each button */
-  .vbtn1 { top: 10%; left: 40%; }     /* Centered in the top row */
-  .vbtn2 { top: 30%; left: 23%; }
-  .vbtn3 { top: 30%; left: 42%; }
-  .vbtn4 { top: 30%; left: 61%; }
-  .vbtn5 { top: 50%; left: 23%; }
-  .vbtn6 { top: 50%; left: 42%; }
-  .vbtn7 { top: 50%; left: 61%; }
-  .vbtn8 { top: 50%; left: 0%; }
-  .vbtn9 { top: 50%; left: 80%; }
-  .vbtn10 { top: 70%; left: 33%; }
-  .vbtn11 { top: 70%; left: 50%; }
-  .vbtn12 { top: 70%; left: 84%; }
+/* Position each button */
+.vbtn1 { top: 15%; left: 5%; }     /* Centered in the top row */
+.vbtn2 { top: 15%; left: 40%; }
+.vbtn3 { top: 15%; left: 75%; }
+.vbtn4 { top: 50%; left: 5%; }
+.vbtn5 { top: 50%; left: 40%; }
+.vbtn6 { top: 50%; left: 75%; }
 </style>
 
 <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
@@ -161,19 +177,13 @@ permalink: /v/
 <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
 
 <div class="video-buttons-container">
-    <a href="https://www.youtube.com/watch?v=tWroaQshK2I&t=60s&ab_channel=Cqmbo__" class="button vbtn1 medium" style="top: 10%; left: 40%;">Voxiom.io Hacking</a> 
-    <a href="https://www.youtube.com/watch?v=Jn1FEdjbK5I" class="button vbtn2 small" style="top: 30%; left: 23%;">Bedwars Part 1</a>
-    <a href="https://www.youtube.com/watch?v=irbPBG8V6Cc" class="button vbtn3 small" style="top: 30%; left: 42%;">Bedwars Part 2</a>
-    <a href="https://youtu.be/fNBrKrac_-4" class="button vbtn4 small" style="top: 30%; left: 61%;">Bedwars Part 3</a>
-    <a href="https://www.youtube.com/watch?v=HhtsgdajEzE" class="button vbtn5 small" style="top: 50%; left: 23%;">Bedwars Part 4</a>
-    <a href="https://www.youtube.com/watch?v=3_mCvJ50yVs" class="button vbtn6 small" style="top: 50%; left: 42%;">Bedwars Part 5</a>
-    <a href="https://www.youtube.com/watch?v=djNsquMsbXM" class="button vbtn7 small" style="top: 50%; left: 61%;">Bedwars Part 6</a>
-    <a href="https://www.youtube.com/watch?v=O2S06ThtXTQ" class="button vbtn8 medium" style="top: 50%; left: 0%;">Bloxd.io PvP</a>
-    <a href="https://www.youtube.com/watch?v=VYgxebO5tC0&ab_channel=Cqmbo__" class="button vbtn9 medium" style="top: 50%; left: 80%;">Hacking in Miniblox</a>
-    <a href="https://www.youtube.com/watch?v=s8v2Uv_8zTk&t=53s&ab_channel=Cqmbo__" class="button vbtn10 small" style="top: 70%; left: 33%;">Kirka.io Hacking</a>
-    <a href="https://www.youtube.com/watch?v=9Z06RLEvoJQ&ab_channel=Cqmbo__" class="button vbtn11 small" style="top: 70%; left: 50%;">Surf Curse Music</a>
+    <a href="https://www.youtube.com/watch?v=X5lK0Zd4vLg" class="button vbtn1 medium" style="top: 15%; left: 5%;">Minecraft Elevator</a> 
+    <a href="​​https://www.youtube.com/watch?v=s8v2Uv_8zTk&ab_channel=Cqmbo__" class="button vbtn2 medium" style="top: 15%; left: 40%;">Kirka.io Hacking</a>
+    <a href="https://www.youtube.com/watch?v=9Z06RLEvoJQ&ab_channel=Cqmbo__" class="button vbtn3 medium" style="top: 15%; left: 75%;">Surf Curse - Freaks</a>
+    <a href="https://www.youtube.com/watch?v=tWroaQshK2I&ab_channel=Cqmbo__" class="button vbtn4 medium" style="top: 50%; left: 5%;">Voxiom.io Hacking</a>
+    <a href="https://youtu.be/nHekuG5Wjfs" class="button vbtn5 large specialbtn" style="top: 50%; left: 31%;">EDU Client 2.0</a>
+    <a href="https://www.youtube.com/watch?v=VYgxebO5tC0&ab_channel=Cqmbo__" class="button vbtn6 medium" style="top: 50%; left: 75%;">Hacking in Miniblox</a>
 </div>
-
 
 <script>
   // Create a link element
