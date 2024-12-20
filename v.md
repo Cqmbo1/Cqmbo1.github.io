@@ -164,12 +164,12 @@ background-attachment: scroll;
   }
 
 /* Position each button */
-.vbtn1 { top: 20%; left: 5%; }     /* Centered in the top row */
-.vbtn2 { top: 20%; left: 40%; }
-.vbtn3 { top: 20%; left: 75%; }
-.vbtn4 { top: 55%; left: 5%; }
-.vbtn5 { top: 56%; left: 32%; }
-.vbtn6 { top: 55%; left: 75%; }
+.vbtn1 { top: 15%; left: 5%; }     /* Centered in the top row */
+.vbtn2 { top: 15%; left: 40%; }
+.vbtn3 { top: 15%; left: 75%; }
+.vbtn4 { top: 50%; left: 5%; }
+.vbtn5 { top: 51%; left: 32%; }
+.vbtn6 { top: 50%; left: 75%; }
 </style>
 
 <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
@@ -179,12 +179,12 @@ background-attachment: scroll;
 <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
 
 <div class="video-buttons-container">
-    <a href="https://www.youtube.com/watch?v=X5lK0Zd4vLg" class="button vbtn1 medium" style="top: 20%; left: 5%;">Minecraft Elevator</a> 
-    <a href="​​https://www.youtube.com/watch?v=s8v2Uv_8zTk&ab_channel=Cqmbo__" class="button vbtn2 medium" style="top: 20%; left: 40%;">Kirka.io Hacking</a>
-    <a href="https://www.youtube.com/watch?v=9Z06RLEvoJQ&ab_channel=Cqmbo__" class="button vbtn3 medium" style="top: 20%; left: 75%;">Surf Curse - Freaks</a>
-    <a href="https://www.youtube.com/watch?v=tWroaQshK2I&ab_channel=Cqmbo__" class="button vbtn4 medium" style="top: 55%; left: 5%;">Voxiom.io Hacking</a>
-    <a href="https://youtu.be/nHekuG5Wjfs" class="button vbtn5 large specialbtn" style="top: 56%; left: 32%;">EDU Client 2.0</a>
-    <a href="https://www.youtube.com/watch?v=VYgxebO5tC0&ab_channel=Cqmbo__" class="button vbtn6 medium" style="top: 55%; left: 75%;">Hacking in Miniblox</a>
+    <a href="https://www.youtube.com/watch?v=X5lK0Zd4vLg" class="button vbtn1 medium" style="top: 15%; left: 5%;">Minecraft Elevator</a> 
+    <a href="​​https://www.youtube.com/watch?v=s8v2Uv_8zTk&ab_channel=Cqmbo__" class="button vbtn2 medium" style="top: 15%; left: 40%;">Kirka.io Hacking</a>
+    <a href="https://www.youtube.com/watch?v=9Z06RLEvoJQ&ab_channel=Cqmbo__" class="button vbtn3 medium" style="top: 15%; left: 75%;">Surf Curse - Freaks</a>
+    <a href="https://www.youtube.com/watch?v=tWroaQshK2I&ab_channel=Cqmbo__" class="button vbtn4 medium" style="top: 50%; left: 5%;">Voxiom.io Hacking</a>
+    <a href="https://youtu.be/nHekuG5Wjfs" class="button vbtn5 large specialbtn" style="top: 51%; left: 32%;">EDU Client 2.0</a>
+    <a href="https://www.youtube.com/watch?v=VYgxebO5tC0&ab_channel=Cqmbo__" class="button vbtn6 medium" style="top: 50%; left: 75%;">Hacking in Miniblox</a>
 </div>
 
 <script>
