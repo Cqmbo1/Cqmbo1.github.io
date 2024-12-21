@@ -130,15 +130,6 @@ permalink: /v/
     width: 16%; /* Expand within its container */
     max-width: 16%; /* Limit to small size */
     min-width: 16%;
-  } width: 16%; /* Expand within its container */
-    max-width: 16%; /* Limit to small size */
-    min-width: 16%;
-  } width: 16%; /* Expand within its container */
-    max-width: 16%; /* Limit to small size */
-    min-width: 16%;
-  } width: 16%; /* Expand within its container */
-    max-width: 16%; /* Limit to small size */
-    min-width: 16%;
   }
 
 .specialbtn {

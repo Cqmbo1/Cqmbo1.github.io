@@ -110,7 +110,7 @@ title: Home
   }
 
   /* Responsive width based on size classes */
-      .large {
+  .large {
     border: 5px solid lightblue;
     width: 38%; /* Expand within its container */
     max-width: 38%; /* Limit to large size */
@@ -128,12 +128,6 @@ title: Home
 
   .small {
     border: 5px solid lightblue;
-    width: 16%; /* Expand within its container */
-    max-width: 16%; /* Limit to small size */
-    min-width: 16%;
-  }small {
-    border: 5px solid lightblue;
-    min-width: 16%;
     width: 16%; /* Expand within its container */
     max-width: 16%; /* Limit to small size */
     min-width: 16%;

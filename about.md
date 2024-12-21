@@ -32,15 +32,7 @@ permalink: /about/
     border-radius: 5px;
     position: relative; /* For shine effect */
     overflow: hidden; /* To contain shine effect */
-    transition: background-color 0.3s, width 0.3s;
-    min-width: 15%;
-  } min-width: 15%;
-  } min-width: 15%;
-  } min-width: 15%;
-  } min-width: 15%;
-  } min-width: 15%;
-  } min-width: 15%;
-  } min-width: 15%;
+    transition: background-color 0.3s, width 0.3s;   
   }
 
   .hbutton:hover {
@@ -117,11 +109,13 @@ permalink: /about/
   }
 
   /* Responsive width based on size classes */
-      .large {
+  ge {
     border: 5px solid lightblue;
     width: 38%; /* Expand within its container */
     max-width: 38%; /* Limit to large size */
     font-size: 14px;
+    min-width: 38%;
+    min-width: 38%;
     min-width: 38%;
   }
 
