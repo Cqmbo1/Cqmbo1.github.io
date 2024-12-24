@@ -64,7 +64,7 @@ permalink: /educlient/
     background-color: #8ED6F0; /* Brighter button color */
     border: none;
     color: white;
-    padding: 10px; /* Reduced padding */
+    padding: 6px; /* Reduced padding */
     text-align: center;
     text-decoration: none;
     display: inline-block;
