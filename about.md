@@ -169,7 +169,7 @@ I'm a youtuber, I make minecraft and .io vids. I made a Minecraft Education Hack
 <p>
 Subscribe to me & if you have any questions, comment on any of my videos.
 <br>
-https://www.youtube.com/channel/UCpumE9BB8uejsbQIk_VXtgQ
+<a href="https://www.youtube.com/channel/UCpumE9BB8uejsbQIk_VXtgQ"> https://www.youtube.com/channel/UCpumE9BB8uejsbQIk_VXtgQ</a>
 </p>
 </div>
 
