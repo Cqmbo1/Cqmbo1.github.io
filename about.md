@@ -32,7 +32,9 @@ permalink: /about/
     border-radius: 5px;
     position: relative; /* For shine effect */
     overflow: hidden; /* To contain shine effect */
-    transition: background-color 0.3s, width 0.3s;   
+    transition: background-color 0.3s, width 0.3s;
+    min-width: 15%;
+  } min-width: 15%;
   }
 
   .hbutton:hover {
@@ -109,13 +111,11 @@ permalink: /about/
   }
 
   /* Responsive width based on size classes */
-  ge {
+  .large {
     
     width: 38%; /* Expand within its container */
     max-width: 38%; /* Limit to large size */
     font-size: 14px;
-    min-width: 38%;
-    min-width: 38%;
     min-width: 38%;
   }
 
@@ -132,6 +132,24 @@ permalink: /about/
     width: 16%; /* Expand within its container */
     max-width: 16%; /* Limit to small size */
     min-width: 16%;
+  }
+
+  /* Container to hold buttons and define their relative positions */
+  .video-buttons-container {
+    position: relative;
+    height: 500px; /* Adjust as necessary */
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto; /* Center container */
+  }
+
+  /* Container to hold buttons and define their relative positions */
+  .video-buttons-container {
+    position: relative;
+    height: 500px; /* Adjust as necessary */
+    width: 100%;
+    max-width: 100%;
+    margin-top: 40px;
   }
 </style>
 
