@@ -173,6 +173,7 @@ permalink: /bloxd-others/
   <a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
   <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
   <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton" >FREE HACKS & Others</a>
+  <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
 
 <!-- Repeating the button structure within your specific layout -->
 <div class="video-buttons-container">
