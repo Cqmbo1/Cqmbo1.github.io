@@ -150,8 +150,9 @@ permalink: /idd/
 <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
 <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
 
-<div id="main-text" style="z-index: 10000;">
+<div id="main-text" style="z-index: 10000; text-align: left;">
 Potion Numerical Ids ([input] --> [effect output]) :
+<br>
 <br>
 1 -> Speed
 <br>
@@ -198,13 +199,11 @@ Potion Numerical Ids ([input] --> [effect output]) :
 22 -> Absorption
 <br>
 23 -> Saturation
+</div>
 
 <div id="sub-text" style="z-index: 10000;">
 
 </div>
-
-</div>
-
 
 <script>
   // Create a link element
