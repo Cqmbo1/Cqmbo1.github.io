@@ -1,0 +1,648 @@
+---
+layout: default
+title: JS Tester
+permalink: /tools/js-tester
+---
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live JavaScript Editor</title>
+
+    <link rel="icon" type="image/png" href="/assets/cqmbo__32x32.png">
+
+    <!-- CodeMirror Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/lint.min.css">
+    
+    <!-- CodeMirror Themes -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/3024-day.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/3024-night.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/abbott.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/abcdef.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/ambiance.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/ambiance-mobile.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/ayu-dark.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/ayu-mirage.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/base16-dark.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/base16-light.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/blackboard.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/cobalt.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/colorforth.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/darcula.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/dracula.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/duotone-dark.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/duotone-light.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/eclipse.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/elegant.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/erlang-dark.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/gruvbox-dark.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/hopscotch.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/icecoder.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/idea.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/isotope.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/juejin.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/lesser-dark.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/lucario.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material-darker.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material-palenight.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material-ocean.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/mbo.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/mdn-like.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/midnight.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/monokai.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/moxer.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/nord.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/oceanic-next.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/panda-syntax.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/paraiso-dark.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/paraiso-light.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/pastel-on-dark.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/railscasts.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/rubyblue.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/seti.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/shadowfox.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/solarized.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/the-matrix.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/tomorrow-night-bright.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/tomorrow-night-eighties.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/ttcn.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/twilight.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/yeti.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/yonce.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/zenburn.min.css">
+
+
+
+    <!-- CodeMirror Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/lint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/javascript-lint.min.js"></script>
+
+    <!-- JSHint for Linting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.13.6/jshint.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #282c34;
+            color: white;
+        }
+        .CodeMirror {
+            border: 5px solid #4d4d4d !important;
+            height: 200px !important;
+            background: #1e1e1e !important;
+            color: #fff !important;
+            z-index: 2;
+        }
+        .CodeMirror-cursor {
+            border-left: 2px solid #61dafb !important;
+        }
+        .CodeMirror-gutters {
+			background: #1e1e1e !important; border-right: 5px solid #4d4d4d 			!important; background-color: #1e1e1e !important; color: 					#f8f8f2!important;
+        }
+
+        .CodeMirror-linenumber {
+            color: #f8f8f2 !important;
+            font-weight: bold;
+        }
+        
+        .cm-s-dracula.CodeMirror {
+    		background-color: #1e1e1e !important; /* Force black background 		*/
+		}
+        
+        .cm-s-dracula .CodeMirror-gutters {
+			background: #1e1e1e !important; border-right: 5px solid #4d4d4d 			!important; background-color: #1e1e1e !important; color: 					#f8f8f2!important;
+        }
+        #logOutput, #errorOutput {
+            border: 1px solid #000;
+            padding: 10px;
+            margin-top: 10px;
+            height: 150px;
+            overflow-y: auto;
+            background: #1e1e1e;
+            color: #fff;
+            font-family: monospace;
+            white-space: pre-wrap;
+            position: relative; 
+            z-index: 2;
+        }
+        #scriptOutput {
+            border: 1px solid #000;
+            padding: 10px;
+            margin-top: 10px;
+            height: 600px;
+            overflow-y: auto;
+            background: #1e1e1e;
+            color: #fff;
+            font-family: monospace;
+            white-space: pre-wrap;
+            position: relative; 
+            z-index: 2;
+        }
+        #executeButton, #resetButton, #resetEditorButton {
+            margin-top: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #61dafb;
+            border: none;
+            color: black;
+            font-weight: bold;
+            position: relative; 
+            z-index: 2;
+        }
+        
+        #copyButton {
+                    margin-top: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #61dafb;
+            border: none;
+            color: black;
+            font-weight: bold;
+            position: relative; 
+            z-index: 2;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-in {
+  animation: fadeIn 1s forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+        
+.big-text {
+  font-size: 50px;
+  font-weight: 900;
+  text-align: center;
+  display: block;  /* Make it behave like a block element */
+}
+
+          /* Button styling */
+  .hbutton {
+    background-color: #8ED6F0; /* Brighter button color */
+    border: none;
+    color: white;
+    padding: 10px; /* Reduced padding */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px; /* Increased font size */
+    margin: 10px 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    position: relative; /* For shine effect */
+    overflow: hidden; /* To contain shine effect */
+    transition: background-color 0.3s, width 0.3s;
+    min-width: 15%;
+  }
+
+  .hbutton:hover {
+    background-color: #0DC6D0;
+  }
+
+  .hbutton::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: rotate(50deg);
+    transition: all 0.5s ease;
+    opacity: 0.5; /* Static shine effect */
+  }
+  
+  .hbutton:hover::after {
+    opacity: 1;
+    animation: shine 1s infinite;
+  }
+
+  
+    @keyframes shine {
+    0% {
+      left: -200%;
+      top: 0;
+    }
+    100% {
+      left: 200%;
+      top: 0;
+    }
+  }
+  
+
+  /* Responsive width based on size classes */
+  .large {
+    
+    width: 38%; /* Expand within its container */
+    max-width: 38%; /* Limit to large size */
+    font-size: 14px;
+    min-width: 38%;
+  }
+
+  .medium {
+    
+    width: 20%; /* Expand within its container */
+    max-width: 20%; /* Limit to medium size */
+    font-size: 14px;
+    min-width: 20%;
+  }
+
+  .small {
+    
+    width: 16%; /* Expand within its container */
+    max-width: 16%; /* Limit to small size */
+    min-width: 16%;
+  }
+
+    </style>
+</head>
+<body>
+
+<a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
+<a href="https://cqmbo1.github.io/about" class="hbutton">About Me</a>
+<a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
+<a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
+<a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
+
+<br>
+<br>
+
+<span class="big-text" style="border-top: 2.5px solid white; border-left: 2.5px solid white; border-right: 2.5px solid white;">JS Tester:</span>
+
+<h4 style="line-height: 1.69; text-align: center; border: 2.5px solid white; margin: 0px; padding: 25px;">
+  A built-in JavaScript editor and tester designed to help you write, edit, and run your scripts efficiently.
+  <br> <br>
+  It provides a real-time coding environment where you can experiment with JavaScript, test functionality, and debug errors.
+  <br> <br>
+  This editor is designed to provide you helpful messages to help perfect your code!
+  <br> <br>
+  Your code is automatically saved, so you never have to worry about losing your progress.
+</h4>
+
+
+<h1>Input Your Script Here:</h1>
+    <textarea id="scriptInput"></textarea>
+
+    <button id="executeButton">Execute Script</button>
+    <button id="resetButton">Clear Results</button>
+    <button id="resetEditorButton">Clear Editor</button>
+    <button id="copyButton">Copy Editor Text</button>
+	<label for="clearCheckbox">Clear Result on Execute?</label>
+    <input type="checkbox" id="clearCheckbox">
+    
+    <label for="themeSelector" style="position: relative; z-index: 2;">Select Theme:</label>
+    <select id="themeSelector" style="position: relative; z-index: 2;"></select>
+
+    <h2>Log Output (Console):</h2>
+    <div id="logOutput">Logs will appear here...<br><br></div>
+
+    <h2>Script Errors:</h2>
+    <div id="errorOutput"></div>
+    
+    <h2>Result/Output Display:</h2>
+    <div id="scriptOutput">
+    </div>
+
+    <script>
+        let editor;
+        
+let shouldClear = localStorage.getItem('ShouldClear') === 'true';
+        
+        const logDiv = document.getElementById('logOutput');
+        const errorDiv = document.getElementById('errorOutput');        
+        const scriptOutput = document.getElementById("scriptOutput");
+
+        function setupEditor() {
+            if (editor) editor.toTextArea(); // Destroy existing instance if exists
+            
+editor = CodeMirror.fromTextArea(document.getElementById("scriptInput"), {
+    mode: "javascript",
+    lineNumbers: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    gutters: ["CodeMirror-lint-markers"],
+    theme: "dracula",
+    lint: {
+        esversion: 6,
+        undef: true, // Enable undefined variable checking
+        browser: true, // Allow browser globals like `window`, `document`
+        node: true // Allow Node.js globals
+    }
+});
+
+function toggleCheckbox() {
+if (shouldClear == true) {
+document.getElementById('clearCheckbox').click();
+document.getElementById('clearCheckbox').checked = true;
+}
+}
+
+toggleCheckbox();
+
+function saveEditor() {
+localStorage.setItem('savedProgress', editor.getValue());
+}
+
+setInterval(saveEditor,10);
+
+function loadEditor() {
+editor.setValue(localStorage.getItem('savedProgress'));
+}
+
+loadEditor();
+
+function toggleClear() {
+    var checkBox = document.getElementById('clearCheckbox');
+
+    if (checkBox) {
+        shouldClear = checkBox.checked;
+        localStorage.setItem('ShouldClear', shouldClear);
+    } else {
+        logDiv.innerHTML += `<span style="color: red;">ERROR: Checkbox not found.</span><br>`;
+    }
+}
+
+
+            // Apply custom styles after the editor loads
+            setTimeout(applyCustomStyles, 100);
+
+// Function to override console methods
+function overrideConsoleMethod(method) {
+    const originalMethod = console[method];
+
+    console[method] = function (...messages) {
+        originalMethod(...messages); // Call the original console method
+        
+        // Create the formatted message
+        const formattedMessage = `<span style="color: ${getColor(method)};">[${method.toUpperCase()}]: ${messages.map(m => m.toString()).join(' ')}</span><br>`;
+        
+        // Append message to logDiv
+        logDiv.innerHTML += formattedMessage;
+    };
+}
+
+// Helper function to assign colors based on log type
+function getColor(method) {
+    switch (method) {
+        case 'log': return '#d3d3d3';
+        case 'warn': return 'orange';
+        case 'error': return 'red';
+        case 'info': return 'cyan';
+        case 'debug': return 'gray';
+        default: return 'black';
+    }
+}
+
+// Apply the override to each console method
+['log', 'warn', 'error', 'info', 'debug'].forEach(overrideConsoleMethod);
+
+
+            // Theme switching event listener
+            document.getElementById('themeSelector').addEventListener('change', function () {
+                let selectedTheme = this.value;
+                editor.setOption("theme", selectedTheme);
+                loadTheme(selectedTheme);
+                setTimeout(applyCustomStyles, 100);
+            });
+
+            document.getElementById('executeButton').addEventListener('click', executeScript);
+            document.getElementById('resetButton').addEventListener('click', resetEditor);
+            document.getElementById('resetEditorButton').addEventListener('click', clearEditor);        
+             document.getElementById('copyButton').addEventListener('click', copyEditor);
+                   document.getElementById('clearCheckbox').addEventListener('click', toggleClear);
+        }
+
+function clearEditor(){
+editor.setValue("");
+}
+
+function copyEditor() {
+  navigator.clipboard.writeText(editor.getValue());
+  const button = document.getElementById('copyButton');
+  button.textContent = "Copied!";
+  
+  // Apply fade-in class
+  button.classList.add('fade-in');
+  
+  setTimeout(() => {
+    // Apply fade-out class and reset text
+    button.classList.remove('fade-in');
+    button.classList.add('fade-out');
+    
+    setTimeout(() => {
+      button.textContent = "Copy Editor Text";
+      // Reset fade-out effect
+      button.classList.remove('fade-out');
+    }, 250); // Wait for fade-out to finish before resetting text
+  }, 750);
+}
+
+        function applyCustomStyles() {
+            let editorContainer = document.querySelector('.CodeMirror');
+            editorContainer.style.background = '#1e1e1e';
+            editorContainer.style.color = '#f8f8f2';
+        }
+
+function resetEditor() {
+// Remove the script container to clear all executed scripts
+            const scriptContainers = document.querySelectorAll("#scriptContainer");
+            scriptContainers.forEach((scriptContainer) => {
+            if (scriptContainer) {
+                scriptContainer.remove();
+            }
+            });
+
+            // Recreate the script container for future executions
+const newScriptContainer = document.createElement("div");
+newScriptContainer.id = "scriptContainer";
+newScriptContainer.style.width = "95%";
+newScriptContainer.style.height = "95%"; // Adjusted to fit better
+newScriptContainer.style.zIndex = "100";
+newScriptContainer.style.border = "2px solid lime";
+// Space above and below borders
+newScriptContainer.style.marginTop = "8px";
+newScriptContainer.style.marginBottom = "8px";
+scriptOutput.appendChild(newScriptContainer);
+
+            // Clear logs
+            document.getElementById("logOutput").textContent = "Logs will appear here...\n \n";
+            document.getElementById("errorOutput").textContent = "";
+
+}
+
+
+function executeScript() {
+
+const scriptContent = editor.getValue();
+
+if (shouldClear) { resetEditor() };
+
+// Create an iframe to execute the script
+    let iframe = document.createElement('iframe');
+    iframe.style.width = '100%';
+    iframe.style.height = '90%'; // Adjusted to fit better
+    iframe.style.border = 'none';
+    iframe.style.top = "5%";
+    iframe.style.right = "5%";
+    iframe.style.zIndex = 3; // Ensure the iframe isn't covering other interactive elements
+
+            const scriptContainers = document.querySelectorAll("#scriptContainer");
+            scriptContainers.forEach((scriptContainer) => {
+            if (scriptContainer && shouldClear == true) {
+                scriptContainer.remove();
+            }
+            });
+
+const newScriptContainer = document.createElement("div");
+newScriptContainer.id = "scriptContainer";
+newScriptContainer.style.width = "95%";
+newScriptContainer.style.height = "95%"; // Adjusted to fit better
+newScriptContainer.style.zIndex = "100";
+newScriptContainer.style.border = "2px solid lime";
+// Space above and below borders
+newScriptContainer.style.marginTop = "8px";
+newScriptContainer.style.marginBottom = "8px";
+scriptOutput.appendChild(newScriptContainer);
+
+
+            // Append iframe to the body
+            newScriptContainer.appendChild(iframe);
+
+// Write a basic HTML structure inside the iframe
+    const iframeDocument = iframe.contentWindow.document;
+    iframeDocument.open();
+    iframeDocument.write(`<html><body></body></html>`);
+    iframeDocument.close();
+
+const scriptLogger = iframeDocument.createElement('script');
+scriptLogger.type = "text/javascript";
+scriptLogger.textContent = `
+    (function() {
+        const logDiv = window.parent.document.getElementById('logOutput');
+        const errorDiv = window.parent.document.getElementById('errorOutput');
+
+        // Function to override console methods
+        function overrideConsoleMethod(method) {
+            const originalMethod = console[method];
+
+            console[method] = function (...messages) {
+                originalMethod(...messages); // Call the original console method
+                
+                // Create the formatted message
+                const formattedMessage = \`<span style="color: \${getColor(method)};">[\${method.toUpperCase()}]: \${messages.map(m => m.toString()).join(' ')}</span><br>\`;
+
+                    logDiv.innerHTML += formattedMessage;
+            };
+        }
+
+        // Helper function to assign colors based on log type
+        function getColor(method) {
+            switch (method) {
+                case 'log': return '#d3d3d3';
+                case 'warn': return 'orange';
+                case 'error': return 'red';
+                case 'info': return 'cyan';
+                case 'debug': return 'gray';
+                default: return 'black';
+            }
+        }
+
+        // Apply the override to each console method
+        ['log', 'warn', 'error', 'info', 'debug'].forEach(overrideConsoleMethod);
+
+        try {
+            // Execute the script
+            ${scriptContent}
+        } catch (e) {
+            errorDiv.innerHTML += '<span style="color: red;">[ERROR]: ' + e.toString() + '</span><br>';
+        }
+    })();
+`;
+
+
+try  {
+// Append the script to the iframe
+iframeDocument.body.appendChild(scriptLogger);
+
+
+
+            } catch (error) {
+document.getElementById('errorOutput').innerHTML += '<span style="color: red;">[ERROR]: Error executing the script: ' + error.message + '</span>';
+
+            }
+        }
+
+
+
+
+        // Initialize the editor
+        setupEditor();
+    
+        function loadTheme(theme) {
+            let themeStylesheet = document.getElementById('themeStylesheet');
+            themeStylesheet.href = `https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/${theme}.min.css`;
+        }
+
+        function populateThemeDropdown() {
+const themes = [
+    "3024-day", "3024-night", "abbott", "abcdef", "ambiance", "ambiance-mobile", "ayu-dark", "ayu-mirage",
+    "base16-dark", "base16-light", "blackboard", "cobalt", "colorforth", "darcula", "dracula", "duotone-dark",
+    "duotone-light", "eclipse", "elegant", "erlang-dark", "gruvbox-dark", "hopscotch", "icecoder", "idea",
+    "isotope", "juejin", "lesser-dark", "lucario", "material", "material-darker", "material-palenight",
+    "material-ocean", "mbo", "mdn-like", "midnight", "monokai", "moxer", "nord", "oceanic-next", "panda-syntax",
+    "paraiso-dark", "paraiso-light", "pastel-on-dark", "railscasts", "rubyblue", "seti", "shadowfox",
+    "solarized", "the-matrix", "tomorrow-night-bright", "tomorrow-night-eighties", "ttcn", "twilight",
+    "vibrant-ink", "xq-dark", "xq-light", "yeti", "yonce", "zenburn"
+];
+
+
+            const themeSelector = document.getElementById("themeSelector");
+            themes.forEach(theme => {
+                let option = document.createElement("option");
+                option.value = theme;
+                option.textContent = theme.replace(/-/g, " ");
+                if (theme === "dracula") option.selected = true; // Set "dracula" as the default selected value
+                themeSelector.appendChild(option);
+            });
+        }
+
+        // Initialize the editor and populate theme selector
+        setupEditor();
+        populateThemeDropdown();
+    </script>
+
+</body>
+</html>
