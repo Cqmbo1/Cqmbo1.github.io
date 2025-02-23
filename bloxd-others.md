@@ -175,6 +175,8 @@ permalink: /bloxd-others/
   <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton" >FREE HACKS & Others</a>
   <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
 
+  <br> <br>
+
 <!-- Repeating the button structure within your specific layout -->
 <div class="video-buttons-container">
     <a href="https://www.youtube.com/watch?v=tWroaQshK2I&t=60s&ab_channel=Cqmbo__" class="button fbtn1 medium" style="top: 0%; left: 40%;">Voxiom.io Hacking</a> 
