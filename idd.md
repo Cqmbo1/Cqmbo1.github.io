@@ -206,7 +206,7 @@ Potion Numerical Ids ([input] --> [effect output]) :
 
 Block, Item & Other IDS:
 
-<iframe src="https://pastebin.com/raw/YdQfCQhn" width="800px" height="600px"></iframe>
+<iframe src="https://gist.githubusercontent.com/jocopa3/f8c9f9158ede0e9d057781188ba440f5/raw/ccb4f42bb57e55fbd59e6a71219f68674ba5a6e1/MCPE_1.1.0.1_Ids.txt" width="800px" height="600px"></iframe>
 
 </div>
 
