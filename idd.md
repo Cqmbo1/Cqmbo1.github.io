@@ -152,29 +152,51 @@ permalink: /idd/
 
 <div id="main-text" style="z-index: 10000;">
 Potion Numerical Ids ([input] --> [effect output]) :
-
+<br>
 1 -> Speed
+<br>
 2 -> Slowness
+<br>
 3 -> Haste
+<br>
 4 -> Mining Fatigue
+<br>
 5 -> Strength
+<br>
 6 -> Instant Health
+<br>
 7 -> Instant Damage
+<br>
 8 -> Jump Boost
+<br>
 9 -> Nausea
+<br>
 10 -> Regeneration
+<br>
 11 -> Resistance
+<br>
 12 -> Fire Resistance
+<br>
 13 -> Water Breathing
+<br>
 14 -> Invisibility
+<br>
 15 -> Blindness
+<br>
 16 -> Night Vision
+<br>
 17 -> Hunger
+<br>
 18 -> Weakness
+<br>
 19 -> Poison
+<br>
 20 -> Wither
+<br>
 21 -> Health Boost
+<br>
 22 -> Absorption
+<br>
 23 -> Saturation
 
 <div id="sub-text" style="z-index: 10000;">
