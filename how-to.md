@@ -35,6 +35,7 @@ permalink: /how-to/
     position: relative; /* For shine effect */
     overflow: hidden; /* To contain shine effect */
     transition: background-color 0.3s, width 0.3s;
+    min-width: 15%;
   }
 
   .hbutton:hover {
