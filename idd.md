@@ -152,7 +152,7 @@ permalink: /idd/
 <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
 <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
 
-<div id="main-text" style="z-index: 10000; text-align: left;">
+<div id="main-text" style="z-index: 10000; text-align: left; width: 40%">
 Potion Numerical Ids ([input] --> [effect output]) :
 <br>
 <br>
