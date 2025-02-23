@@ -203,7 +203,7 @@ Potion Numerical Ids ([input] --> [effect output]) :
 23 -> Saturation
 </div>
 
-<div id="sub-text" style="z-index: 10000; width: 50%; height: 90%; text-align: right; right: 5%">
+<div id="sub-text" style="z-index: 10000; width: 50%; height: 90%; text-align: right; right: 5%; position: absolute;">
 
 Block, Item & Other IDS:
 
