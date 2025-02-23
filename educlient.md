@@ -34,8 +34,8 @@ permalink: /educlient/
     overflow: hidden; /* To contain shine effect */
     transition: background-color 0.3s, width 0.3s;
     min-width: 15%;
-  } min-width: 15%;
   }
+  
 
   .hbutton:hover {
     background-color: #0DC6D0;
