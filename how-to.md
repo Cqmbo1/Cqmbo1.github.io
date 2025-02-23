@@ -140,7 +140,7 @@ permalink: /how-to/
 <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton medium">FREE HACKS & Others</a>
 <a href="https://cqmbo1.github.io/tools" class="hbutton medium">Tools</a>
 
-<div id="main-text" style="z-index: 10000; text-align: left;">
+<div id="main-text" style="z-index: 10000;">
 How to get: Click the link for hack client in videos description or in other pages.
 <br>
 Copy link eg: "https://minecraft.makecode.com/47320-38173-87744-53818" (Ver. 4.0).
