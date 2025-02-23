@@ -203,6 +203,10 @@ Potion Numerical Ids ([input] --> [effect output]) :
 
 <div id="sub-text" style="z-index: 10000;">
 
+Block, Item & Other IDS:
+
+<iframe src="https://pastebin.com/raw/YdQfCQhn" width="800px" height="600px"></iframe>
+
 </div>
 
 <script>
