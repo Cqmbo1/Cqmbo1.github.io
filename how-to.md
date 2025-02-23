@@ -132,12 +132,12 @@ permalink: /how-to/
   }
 </style>
 
-<a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
-<a href="https://cqmbo1.github.io/about" class="hbutton">About Me</a>
-<a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
-<a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
-<a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
-<a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
+<a href="https://cqmbo1.github.io/" class="hbutton medium">Welcome</a>
+<a href="https://cqmbo1.github.io/about" class="hbutton medium">About Me</a>
+<a href="https://cqmbo1.github.io/v" class="hbutton medium">Videos</a>
+<a href="https://cqmbo1.github.io/educlient" class="hbutton medium">Edu Client</a>
+<a href="https://cqmbo1.github.io/bloxd-others" class="hbutton medium">FREE HACKS & Others</a>
+<a href="https://cqmbo1.github.io/tools" class="hbutton medium">Tools</a>
 
 <div id="main-text" style="z-index: 10000; text-align: left;">
 How to get: Click the link for hack client in videos description or in other pages.
