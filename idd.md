@@ -150,6 +150,40 @@ permalink: /idd/
 <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
 <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
 
+<div id="main-text" style="z-index: 10000;">
+Potion Numerical Ids ([input] --> [effect output]) :
+
+1 -> Speed
+2 -> Slowness
+3 -> Haste
+4 -> Mining Fatigue
+5 -> Strength
+6 -> Instant Health
+7 -> Instant Damage
+8 -> Jump Boost
+9 -> Nausea
+10 -> Regeneration
+11 -> Resistance
+12 -> Fire Resistance
+13 -> Water Breathing
+14 -> Invisibility
+15 -> Blindness
+16 -> Night Vision
+17 -> Hunger
+18 -> Weakness
+19 -> Poison
+20 -> Wither
+21 -> Health Boost
+22 -> Absorption
+23 -> Saturation
+
+<div id="sub-text" style="z-index: 10000;">
+
+</div>
+
+</div>
+
+
 <script>
   // Create a link element
   var favicon = document.createElement('link');
