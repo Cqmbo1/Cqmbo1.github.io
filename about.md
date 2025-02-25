@@ -142,29 +142,20 @@ permalink: /about/
     max-width: 100%;
     margin: 0 auto; /* Center container */
   }
-
-  /* Container to hold buttons and define their relative positions */
-  .video-buttons-container {
-    position: relative;
-    height: 500px; /* Adjust as necessary */
-    width: 100%;
-    max-width: 100%;
-    margin-top: 40px;
-  }
 </style>
 
 <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
 <a href="https://cqmbo1.github.io/about" class="hbutton">About Me</a>
 <a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
 <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
-<a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
+<a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS</a>
 <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
 
 <div id="main-text" style ="z-index: 10000">
 
 <strong>About Me: Cqmbo__</strong>
 <h3>
-I'm a youtuber, I make minecraft and .io vids. I made a Minecraft Education Hack Client called "EDU Client".
+I'm a youtuber, I make minecraft and .io vids. I make a Minecraft Education Hack Client called "EDU Client".
 </h3>
 
 <p>

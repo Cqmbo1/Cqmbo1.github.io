@@ -166,29 +166,40 @@ background-attachment: scroll;
     margin: 0 auto; /* Center container */
   }
 
-/* Position each button */
-.vbtn1 { top: 15%; left: 5%; }     /* Centered in the top row */
-.vbtn2 { top: 15%; left: 40%; }
-.vbtn3 { top: 15%; left: 75%; }
-.vbtn4 { top: 50%; left: 5%; }
-.vbtn5 { top: 51%; left: 32%; }
-.vbtn6 { top: 50%; left: 75%; }
+  /* Position each button */
+  .fbtn1 { top: 0%; left: 40%; }     /* Centered in the top row */
+  .fbtn2 { top: 20%; left: 23%; }
+  .fbtn3 { top: 20%; left: 42%; }
+  .fbtn4 { top: 20%; left: 61%; }
+  .fbtn8 { top: 40%; left: 0%; }
+  .fbtn5 { top: 40%; left: 23%; }
+  .fbtn6 { top: 40%; left: 42%; }
+  .fbtn7 { top: 40%; left: 61%; }
+  .fbtn9 { top: 40%; left: 80%; }
+  .fbtn10 { top: 60%; left: 33%; }
+  .fbtn11 { top: 60%; left: 50%; }
+  .fbtn12 { top: 80%; left: 30%; }
 </style>
 
 <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
 <a href="https://cqmbo1.github.io/about" class="hbutton">About Me</a>
 <a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
 <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
-<a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
+<a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS</a>
 <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
 
 <div class="video-buttons-container">
-    <a href="https://www.youtube.com/watch?v=X5lK0Zd4vLg" class="button vbtn1 medium" style="top: 15%; left: 5%;">Minecraft Elevator</a> 
-    <a href="​​https://www.youtube.com/watch?v=s8v2Uv_8zTk&ab_channel=Cqmbo__" class="button vbtn2 medium" style="top: 15%; left: 40%;">Kirka.io Hacking</a>
-    <a href="https://www.youtube.com/watch?v=9Z06RLEvoJQ&ab_channel=Cqmbo__" class="button vbtn3 medium" style="top: 15%; left: 75%;">Surf Curse - Freaks</a>
-    <a href="https://www.youtube.com/watch?v=tWroaQshK2I&ab_channel=Cqmbo__" class="button vbtn4 medium" style="top: 50%; left: 5%;">Voxiom.io Hacking</a>
-    <a href="https://youtu.be/nHekuG5Wjfs" class="button vbtn5 large specialbtn" style="top: 51%; left: 32%;">EDU Client 2.0</a>
-    <a href="https://www.youtube.com/watch?v=VYgxebO5tC0&ab_channel=Cqmbo__" class="button vbtn6 medium" style="top: 50%; left: 75%;">Hacking in Miniblox</a>
+    <a href="https://www.youtube.com/watch?v=tWroaQshK2I&t=60s&ab_channel=Cqmbo__" class="button fbtn1 medium" style="top: 0%; left: 40%;">Voxiom.io Hacking</a> 
+    <a href="https://www.youtube.com/watch?v=Jn1FEdjbK5I" class="button fbtn2 small" style="top: 20%; left: 23%;">Bedwars Part 1</a>
+    <a href="https://www.youtube.com/watch?v=irbPBG8V6Cc" class="button fbtn3 small" style="top: 20%; left: 42%;">Bedwars Part 2</a>
+    <a href="https://youtu.be/fNBrKrac_-4" class="button fbtn4 small" style="top: 20%; left: 61%;">Bedwars Part 3</a>
+    <a href="https://www.youtube.com/watch?v=HhtsgdajEzE" class="button fbtn5 small" style="top: 40%; left: 23%;">Bedwars Part 4</a>
+    <a href="https://www.youtube.com/watch?v=3_mCvJ50yVs" class="button fbtn6 small" style="top: 40%; left: 42%;">Bedwars Part 5</a>
+    <a href="https://www.youtube.com/watch?v=djNsquMsbXM" class="button fbtn7 small" style="top: 40%; left: 61%;">Bedwars Part 6</a>
+    <a href="https://www.youtube.com/watch?v=O2S06ThtXTQ" class="button fbtn8 medium" style="top: 40%; left: 0%;">Bloxd.io PvP</a>
+    <a href="https://www.youtube.com/watch?v=VYgxebO5tC0&ab_channel=Cqmbo__" class="button fbtn9 medium" style="top: 40%; left: 80%;">Hacking in Miniblox</a>
+    <a href="https://www.youtube.com/watch?v=s8v2Uv_8zTk&t=53s&ab_channel=Cqmbo__" class="button fbtn10 small" style="top: 60%; left: 33%;">Kirka.io Hacking</a>
+    <a href="https://www.youtube.com/watch?v=9Z06RLEvoJQ&ab_channel=Cqmbo__" class="button fbtn11 small" style="top: 60%; left: 50%;">Surf Curse Music</a>
 </div>
 
 <script>
