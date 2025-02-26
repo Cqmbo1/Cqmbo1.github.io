@@ -12,8 +12,6 @@ permalink: /tools/js-tester
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live JavaScript Editor</title>
 
-    <link rel="icon" type="image/png" href="/assets/cqmbo__32x32.png">
-
     <!-- CodeMirror Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/lint.min.css">
@@ -295,7 +293,7 @@ permalink: /tools/js-tester
 <a href="https://cqmbo1.github.io/about" class="hbutton">About Me</a>
 <a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
 <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
-<a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS</a>
+<a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS & Others</a>
 <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
 
 <br>
@@ -509,12 +507,12 @@ function executeScript() {
 
 const scriptContent = editor.getValue();
 
-if (shouldClear) { resetEditor() };
+if (shouldClear) { resetEditor() }
 
 // Create an iframe to execute the script
     let iframe = document.createElement('iframe');
     iframe.style.width = '100%';
-    iframe.style.height = '90%'; // Adjusted to fit better
+    iframe.style.height = '100%'; // Adjusted to fit better
     iframe.style.border = 'none';
     iframe.style.top = "5%";
     iframe.style.right = "5%";
@@ -645,17 +643,6 @@ const themes = [
         populateThemeDropdown();
     </script>
 
-	
-<script>
-  // Create a link element
-  var favicon = document.createElement('link');
-  favicon.rel = 'icon';                // Set rel attribute for favicon
-  favicon.type = 'image/png';           // Set type attribute
-  favicon.href = '/assets/cqmbo__32x32.png'; // Set the URL for the favicon
-
-  // Append the link element to the head
-  document.head.appendChild(favicon);
-</script>
-
 </body>
 </html>
+
