@@ -188,6 +188,8 @@ background-attachment: scroll;
 <a href="https://cqmbo1.github.io/bloxd-others" class="hbutton">FREE HACKS</a>
 <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
 
+<br><br>
+
 <div class="video-buttons-container">
     <a href="https://www.youtube.com/watch?v=tWroaQshK2I&t=60s&ab_channel=Cqmbo__" class="button fbtn1 medium" style="top: 0%; left: 40%;">Voxiom.io Hacking</a> 
     <a href="https://www.youtube.com/watch?v=Jn1FEdjbK5I" class="button fbtn2 small" style="top: 20%; left: 23%;">Bedwars Part 1</a>
