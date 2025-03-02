@@ -4,7 +4,6 @@ title: HTML Tester
 permalink: /tools/html-tester
 ---
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -497,98 +496,100 @@ scriptOutput.appendChild(newScriptContainer);
 
 
 function executeScript() {
+    const scriptContent = editor.getValue();
 
-const scriptContent = editor.getValue();
+    if (shouldClear) { resetEditor(); }
 
-if (shouldClear) { resetEditor() }
+    // Remove previous script containers
+    document.querySelectorAll("#scriptContainer").forEach((scriptContainer) => {
+        if (scriptContainer && shouldClear) {
+            scriptContainer.remove();
+        }
+    });
 
-// Create an iframe to execute the script
-    let iframe = document.createElement('iframe');
-    iframe.style.width = '100%';
-    iframe.style.height = '100%'; // Adjusted to fit better
-    iframe.style.border = 'none';
+    // Create a new script container
+    const newScriptContainer = document.createElement("div");
+    newScriptContainer.id = "scriptContainer";
+    newScriptContainer.style.width = "95%";
+    newScriptContainer.style.height = "95%";
+    newScriptContainer.style.zIndex = "100";
+    newScriptContainer.style.border = "2px solid lime";
+    newScriptContainer.style.marginTop = "8px";
+    newScriptContainer.style.marginBottom = "8px";
+    newScriptContainer.style.backgroundColor = "white";
+    scriptOutput.appendChild(newScriptContainer);
+
+    // Create an iframe to execute the HTML
+    let iframe = document.createElement("iframe");
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.border = "none";
     iframe.style.top = "5%";
     iframe.style.right = "5%";
-    iframe.style.zIndex = 3; // Ensure the iframe isn't covering other interactive elements
+    iframe.style.zIndex = "3";
 
-            const scriptContainers = document.querySelectorAll("#scriptContainer");
-            scriptContainers.forEach((scriptContainer) => {
-            if (scriptContainer && shouldClear == true) {
-                scriptContainer.remove();
-            }
-            });
+    newScriptContainer.appendChild(iframe);
 
-const newScriptContainer = document.createElement("div");
-newScriptContainer.id = "scriptContainer";
-newScriptContainer.style.width = "95%";
-newScriptContainer.style.height = "95%"; // Adjusted to fit better
-newScriptContainer.style.zIndex = "100";
-newScriptContainer.style.border = "2px solid lime";
-// Space above and below borders
-newScriptContainer.style.marginTop = "8px";
-newScriptContainer.style.marginBottom = "8px";
-newScriptContainer.style.backgroundColor="white";
-scriptOutput.appendChild(newScriptContainer);
-
-
-            // Append iframe to the body
-            newScriptContainer.appendChild(iframe);
-
-// Write a basic HTML structure inside the iframe
     const iframeDocument = iframe.contentWindow.document;
-    iframeDocument.open()
-    iframeDocument.write(scriptContent);
+    iframeDocument.open();
 
-const scriptLogger = iframeDocument.createElement('script');
-scriptLogger.type = "text/javascript";
-scriptLogger.textContent = `
-    (function() {
-        const logDiv = window.parent.document.getElementById('logOutput');
-        const errorDiv = window.parent.document.getElementById('errorOutput');
+    // Add the script logger functionality inside the iframe to capture console logs
+    const scriptLogger = `
+        (function() {
+            // Function to override console methods and redirect to parent
+            function overrideConsoleMethod(method) {
+                const originalMethod = console[method];
+                console[method] = function (...messages) {
+                    // Log the messages in the parent document
+                    const logDiv = window.parent.document.getElementById('logOutput');
+                    if (logDiv) {
+                        const formattedMessage = \`<span style="color: \${getColor(method)};">[\${method.toUpperCase()}]: \${messages.map(m => m.toString()).join(' ')}</span><br>\`;
+                        logDiv.innerHTML += formattedMessage;
+                    }
 
-        // Function to override console methods
-        function overrideConsoleMethod(method) {
-            const originalMethod = console[method];
-
-            console[method] = function (...messages) {
-                originalMethod(...messages); // Call the original console method
-                
-                // Create the formatted message
-                const formattedMessage = \`<span style="color: \${getColor(method)};">[\${method.toUpperCase()}]: \${messages.map(m => m.toString()).join(' ')}</span><br>\`;
-
-                    logDiv.innerHTML += formattedMessage;
-            };
-        }
-
-        // Helper function to assign colors based on log type
-        function getColor(method) {
-            switch (method) {
-                case 'log': return '#d3d3d3';
-                case 'warn': return 'orange';
-                case 'error': return 'red';
-                case 'info': return 'cyan';
-                case 'debug': return 'gray';
-                default: return 'black';
+                    // Call the original console method
+                    originalMethod(...messages);
+                };
             }
-        }
 
-        // Apply the override to each console method
-        ['log', 'warn', 'error', 'info', 'debug'].forEach(overrideConsoleMethod);
-    })();
-`;
-
-
-try  {
-// Append the script to the iframe
-iframeDocument.body.appendChild(scriptLogger);
-    iframeDocument.close();
-
-            } catch (error) {
-document.getElementById('errorOutput').innerHTML += '<span style="color: red;">[ERROR]: Error executing the script: ' + error.message + '</span>';
-    iframeDocument.close();
-
+            // Helper function to assign colors based on log type
+            function getColor(method) {
+                switch (method) {
+                    case 'log': return '#d3d3d3';
+                    case 'warn': return 'orange';
+                    case 'error': return 'red';
+                    case 'info': return 'cyan';
+                    case 'debug': return 'gray';
+                    default: return 'black';
+                }
             }
-        }
+
+            // Apply the override to each console method
+            ['log', 'warn', 'error', 'info', 'debug'].forEach(overrideConsoleMethod);
+        })();
+    `;
+
+    // Append the logger script to the iframe document
+    iframeDocument.write(`
+    <!DOCTYPE html>
+        <html>
+        <head></head>
+        <body>
+        <script>
+        ${scriptLogger}
+        <\/script>
+        ${scriptContent}
+        </body>
+        </html>
+    `);
+
+    try {
+        iframeDocument.close();
+    } catch (error) {
+        document.getElementById("errorOutput").innerHTML += `<span style="color: red;">[ERROR]: ${error.message}</span>`;
+        iframeDocument.close();
+    }
+}
 
 
 
