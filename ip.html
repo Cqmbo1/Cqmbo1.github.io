@@ -1,0 +1,152 @@
+---
+layout: default
+title: Random IP Generator
+permalink: /tools/ip-gen
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random IP Address Generator</title>
+    <script>
+        function generateIPv4() {
+            let ip = [];
+            for (let i = 0; i < 4; i++) {
+                ip.push(Math.floor(Math.random() * 256));
+            }
+            return ip.join('.');
+        }
+
+        function generateIPv6() {
+            let ip = [];
+            for (let i = 0; i < 8; i++) {
+                ip.push(Math.floor(Math.random() * 65536).toString(16));
+            }
+            return ip.join(':');
+        }
+
+        function generateIP() {
+            const ipType = document.querySelector('input[name="ipType"]:checked').value;
+            const count = parseInt(document.getElementById('count').value) || 1; // Default to 1 if input is invalid
+            let result = '';
+            for (let i = 0; i < count; i++) {
+                if (ipType === 'ipv4') {
+                    result += generateIPv4() + '<br>';
+                } else {
+                    result += generateIPv6() + '<br>';
+                }
+            }
+            document.getElementById('result').innerHTML = result;
+        }
+    </script>
+    <style>
+    .whitetext {
+    color: white;
+    }
+            body {
+            font-family: Arial, sans-serif;
+            background: #282c34;
+            color: white;
+        }
+
+        #generate {
+                    margin-top: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #61dafb;
+            border: none;
+            color: black;
+            font-weight: bold;
+            position: relative; 
+            z-index: 2;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-in {
+  animation: fadeIn 1s forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <h1 class="whitetext">Random IP Address Generator</h1>
+<p>This IP generator allows you to create random IP addresses, either in IPv4 or IPv6 format, based on your selection. You can specify the number of addresses you wish to generate, making it a versatile tool for various applications, including network testing and educational demonstrations.</p>
+    <h3 class="whitetext">Type of IP to generate:</h3>
+    <label class="whitetext">
+        <input type="radio" name="ipType" value="ipv4" checked> IPv4
+    </label>
+    <label class="whitetext">
+        <input type="radio" name="ipType" value="ipv6"> IPv6
+    </label>
+    <br>
+    <label for="count" class="whitetext">Number of IPs to generate:</label>
+    <input type="number" id="count" value="1" min="1">
+    <button onclick="generateIP()" id='generate'>Generate IP Address</button>
+    <p id="result" class="whitetext"></p>
+<script>
+document.getElementById('generate').addEventListener('click', showAnimation);
+function showAnimation() {
+  const button = document.getElementById('generate');
+  button.textContent = `Generated ${parseInt(document.getElementById('count').value) || 1} ips!`;
+  
+  // Apply fade-in class
+  button.classList.add('fade-in');
+  
+  setTimeout(() => {
+    // Apply fade-out class and reset text
+    button.classList.remove('fade-in');
+    button.classList.add('fade-out');
+    
+    setTimeout(() => {
+      button.textContent = "Generate IP Address";
+      // Reset fade-out effect
+      button.classList.remove('fade-out');
+    }, 250); // Wait for fade-out to finish before resetting text
+  }, 750);
+}
+
+</script>
+
+<script>
+    // Create a link element
+    var favicon = document.createElement('link');
+    favicon.rel = 'icon';                // Set rel attribute for favicon
+    favicon.type = 'image/png';           // Set type attribute
+    favicon.href = '/assets/cqmbo__32x32.png'; // Set the URL for the favicon
+  
+    // Append the link element to the head
+    document.head.appendChild(favicon);
+  </script>
+</body>
+</html>
+
+
+
+
+
