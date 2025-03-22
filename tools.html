@@ -156,13 +156,19 @@ max-width: 16%;
 }
 
 .im {
-width: 80%;
-height: 50%;
-top: 0%;
-left: 0%;
-position: relative;
-border: 1px solid black;
+  width: 80%; /* Default for mobile */
+  aspect-ratio: 1 / 1; /* Ensures the height matches the width */
+  position: relative;
+  border: 1px solid black;
 }
+
+/* Adjust for desktop */
+@media (min-width: 768px) { /* Adjust breakpoint as needed */
+  .im {
+    width: 50%;
+  }
+}
+
 
 
 
@@ -188,13 +194,9 @@ p {
   font-size: 0.75em; /* Scales with body text */
 }
 
-.f {
- margin-top: 1%;
-}
 
 .z {
 
-display: flex;
 
     flex-wrap: wrap; /* Items will wrap onto the next line if needed */
 
@@ -216,27 +218,27 @@ overflow: hidden;
 
 <div class="d">
 <div class="rectangle" style="top: 6%; left: 5%;">
-<img src="https://cqmbo1.github.io/assets/JSTester.png?raw=true" class="im"></img><br>
+<img src="https://cqmbo1.github.io/assets/JSTester.png?raw=true" class="im"></img><br><br>
 <a href="https://cqmbo1.github.io/tools/js-tester" class="e">JS Tester</a>
 <p>A simple but effective javascript tester and editor.</p>
 </div>
 <div class="rectangle" style="top: 6%; left: 42%;">
-<img src="" class="im"></img><br>
+<img src="https://cqmbo1.github.io/assets/LOADING.png?raw=true" class="im"></img><br><br>
 <a href="https://cqmbo1.github.io/tools/js-tester" class="e">In Progress</a>
 <p>...</p>
 </div>
 <div class="rectangle" style="top: 6%; left: 79%;">
-<img src="https://cqmbo1.github.io/assets/IP.png?raw=true" class="im"></img><br>
+<img src="https://cqmbo1.github.io/assets/IP.png?raw=true" class="im"></img><br><br>
 <a href="https://cqmbo1.github.io/tools/ip-gen" class="e">Random IP Gen</a>
 <p class="f z">A great custom IP Address Generator!</p>
 </div>
 <div class="rectangle" style="top: 56%; left: 5%;">
-<img src="https://cqmbo1.github.io/assets/HTMLTester.png?raw=true" class="im"></img><br>
+<img src="https://cqmbo1.github.io/assets/HTMLTester.png?raw=true" class="im"></img><br><br>
 <a href="https://cqmbo1.github.io/tools/html-tester" class="e">HTML Tester</a>
 <p>An easy-to-use HTML tester.</p>
 </div>
 <div class="rectangle" style="top: 56%; left: 79%;">
-<img src="https://cqmbo1.github.io/assets/UNI.png?raw=true" class="im"></img><br>
+<img src="https://cqmbo1.github.io/assets/UNI.png?raw=true" class="im"></img><br><br>
 <a href="https://cqmbo1.github.io/tools/unicode" class="e">Random Unicode Gen</a>
 <p class="f">An effective custom unicode generator.</p>
 </div>
