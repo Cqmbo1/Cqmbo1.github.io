@@ -4,7 +4,6 @@ title: JS Tester
 permalink: /tools/js-tester
 ---
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -560,10 +559,16 @@ scriptLogger.textContent = `
             console[method] = function (...messages) {
                 originalMethod(...messages); // Call the original console method
                 
-                // Create the formatted message
-                const formattedMessage = \`<span style="color: \${getColor(method)};">[\${method.toUpperCase()}]: \${messages.map(m => m.toString()).join(' ')}</span><br>\`;
+                // Convert all messages to string and join them
+                const messageText = messages.map(m => m.toString()).join(' ');
 
-                    logDiv.innerHTML += formattedMessage;
+                // Create the formatted message
+                const formattedMessage = \`[\${method.toUpperCase()}]: \${messageText}\`;
+
+                const logEntry = document.createElement('div');
+                logEntry.style.color = getColor(method);
+                logEntry.innerText = formattedMessage; // Use innerText to keep raw text format
+                logDiv.appendChild(logEntry);
             };
         }
 
@@ -580,16 +585,23 @@ scriptLogger.textContent = `
         }
 
         // Apply the override to each console method
-        ['log', 'warn', 'error', 'info', 'debug'].forEach(overrideConsoleMethod);
+        ['log', 'warn', 'error', 'info', 'debug'].forEach(method => overrideConsoleMethod(method));
 
         try {
             // Execute the script
             ${scriptContent}
         } catch (e) {
-            errorDiv.innerHTML += '<span style="color: red;">[ERROR]: ' + e.toString() + '</span><br>';
+            const errorEntry = document.createElement('div');
+            errorEntry.style.color = 'red';
+            errorEntry.innerText = \`[ERROR]: \${e.toString()}\`;
+            errorDiv.appendChild(errorEntry);
         }
     })();
 `;
+
+// Append the script to the iframe
+iframeDocument.body.appendChild(scriptLogger);
+
 
 
 try  {
@@ -643,17 +655,8 @@ const themes = [
         populateThemeDropdown();
     </script>
 
-<script>
-  // Create a link element
-  var favicon = document.createElement('link');
-  favicon.rel = 'icon';                // Set rel attribute for favicon
-  favicon.type = 'image/png';           // Set type attribute
-  favicon.href = '/assets/cqmbo__32x32.png'; // Set the URL for the favicon
-
-  // Append the link element to the head
-  document.head.appendChild(favicon);
-</script>
-
 </body>
 </html>
+
+
 
