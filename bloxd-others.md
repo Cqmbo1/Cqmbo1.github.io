@@ -1,7 +1,7 @@
 ---
 layout: default
 title: FREE HACKS
-permalink: /bloxd-others/
+permalink: /free-hacks/
 ---
 
 
