@@ -1,7 +1,7 @@
 ---
 layout: default
 title: FREE HACKS
-permalink: /free-hacks
+permalink: /free-hacks/
 ---
 
 
