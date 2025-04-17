@@ -1,0 +1,101 @@
+---
+layout: default
+title: Minecraft Text Editor
+permalink: /tools/text-editor
+---
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minecraft Text Editor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Press Start 2P', cursive;
+      background-color: #1e1e1e;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .color-btns {
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .color-btns button {
+      padding: 8px 10px;
+      font-size: 10px;
+      font-family: 'Press Start 2P', cursive;
+      border: none;
+      cursor: pointer;
+      color: white;
+      border-radius: 4px;
+    }
+
+    .editor-container {
+      background-color: #2e2e2e;
+      color: white;
+      width: 90%;
+      height: 400px;
+      margin: 0 auto;
+      padding: 10px;
+      border: 2px solid #444;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Minecraft Text Editor</h1>
+
+  <div class="color-btns">
+    <button style="background-color: black;" onclick="changeColor('black')">Black</button>
+    <button style="background-color: darkblue;" onclick="changeColor('darkblue')">Dark Blue</button>
+    <button style="background-color: darkgreen;" onclick="changeColor('darkgreen')">Dark Green</button>
+    <button style="background-color: darkcyan;" onclick="changeColor('darkcyan')">Dark Aqua</button>
+    <button style="background-color: darkred;" onclick="changeColor('darkred')">Dark Red</button>
+    <button style="background-color: darkmagenta;" onclick="changeColor('darkmagenta')">Dark Purple</button>
+    <button style="background-color: orange;" onclick="changeColor('orange')">Gold</button>
+    <button style="background-color: gray;" onclick="changeColor('gray')">Gray</button>
+    <button style="background-color: darkgray;" onclick="changeColor('darkgray')">Dark Gray</button>
+    <button style="background-color: blue;" onclick="changeColor('blue')">Blue</button>
+    <button style="background-color: green;" onclick="changeColor('green')">Green</button>
+    <button style="background-color: aqua;" onclick="changeColor('aqua')">Aqua</button>
+    <button style="background-color: red;" onclick="changeColor('red')">Red</button>
+    <button style="background-color: violet;" onclick="changeColor('violet')">Light Purple</button>
+    <button style="background-color: yellow;" onclick="changeColor('yellow')">Yellow</button>
+    <button style="background-color: white; color: black;" onclick="changeColor('white')">White</button>
+  </div>
+
+  <div contenteditable="true" class="editor-container" id="editor"></div>
+
+  <script>
+    function changeColor(color) {
+      const selection = window.getSelection();
+      if (!selection.rangeCount) return;
+
+      const range = selection.getRangeAt(0);
+      const span = document.createElement("span");
+      span.style.color = color;
+      span.appendChild(range.extractContents());
+      range.insertNode(span);
+
+      // Move cursor after the inserted span
+      selection.removeAllRanges();
+      const newRange = document.createRange();
+      newRange.setStartAfter(span);
+      selection.addRange(newRange);
+    }
+  </script>
+
+</body>
+</html>
