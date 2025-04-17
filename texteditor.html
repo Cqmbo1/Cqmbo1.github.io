@@ -11,7 +11,7 @@ permalink: /tools/text-editor
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Minecraft Text Editor</title>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
   <style>
     body {
       font-family: 'Press Start 2P', cursive;
@@ -58,25 +58,27 @@ permalink: /tools/text-editor
   <h1>Minecraft Text Editor</h1>
 
   <div class="color-btns">
-    <button style="background-color: black;" onclick="changeColor('black')">Black</button>
-    <button style="background-color: darkblue;" onclick="changeColor('darkblue')">Dark Blue</button>
-    <button style="background-color: darkgreen;" onclick="changeColor('darkgreen')">Dark Green</button>
-    <button style="background-color: darkcyan;" onclick="changeColor('darkcyan')">Dark Aqua</button>
-    <button style="background-color: darkred;" onclick="changeColor('darkred')">Dark Red</button>
-    <button style="background-color: darkmagenta;" onclick="changeColor('darkmagenta')">Dark Purple</button>
-    <button style="background-color: orange;" onclick="changeColor('orange')">Gold</button>
-    <button style="background-color: gray;" onclick="changeColor('gray')">Gray</button>
-    <button style="background-color: darkgray;" onclick="changeColor('darkgray')">Dark Gray</button>
-    <button style="background-color: blue;" onclick="changeColor('blue')">Blue</button>
-    <button style="background-color: green;" onclick="changeColor('green')">Green</button>
-    <button style="background-color: aqua;" onclick="changeColor('aqua')">Aqua</button>
-    <button style="background-color: red;" onclick="changeColor('red')">Red</button>
-    <button style="background-color: violet;" onclick="changeColor('violet')">Light Purple</button>
-    <button style="background-color: yellow;" onclick="changeColor('yellow')">Yellow</button>
-    <button style="background-color: white; color: black;" onclick="changeColor('white')">White</button>
+    <button style="background-color:#000;" onclick="changeColor('#000')">Black</button>
+    <button style="background-color:#0000AA;" onclick="changeColor('#0000AA')">Dark Blue</button>
+    <button style="background-color:#00AA00;" onclick="changeColor('#00AA00')">Dark Green</button>
+    <button style="background-color:#00AAAA;" onclick="changeColor('#00AAAA')">Dark Aqua</button>
+    <button style="background-color:#AA0000;" onclick="changeColor('#AA0000')">Dark Red</button>
+    <button style="background-color:#AA00AA;" onclick="changeColor('#AA00AA')">Dark Purple</button>
+    <button style="background-color:#FFAA00;" onclick="changeColor('#FFAA00')">Gold</button>
+    <button style="background-color:#AAAAAA;" onclick="changeColor('#AAAAAA')">Gray</button>
+    <button style="background-color:#555555;" onclick="changeColor('#555555')">Dark Gray</button>
+    <button style="background-color:#5555FF;" onclick="changeColor('#5555FF')">Blue</button>
+    <button style="background-color:#55FF55;" onclick="changeColor('#55FF55')">Green</button>
+    <button style="background-color:#55FFFF;" onclick="changeColor('#55FFFF')">Aqua</button>
+    <button style="background-color:#FF5555;" onclick="changeColor('#FF5555')">Red</button>
+    <button style="background-color:#FF55FF;" onclick="changeColor('#FF55FF')">Light Purple</button>
+    <button style="background-color:#FFFF55;" onclick="changeColor('#FFFF55')">Yellow</button>
+    <button style="background-color:#FFFFFF; color:black;" onclick="changeColor('#FFFFFF')">White</button>
   </div>
 
-  <div contenteditable="true" class="editor-container" id="editor"></div>
+  <div id="editor" class="editor-container" contenteditable="true">
+    Select some text and choose a color.
+  </div>
 
   <script>
     function changeColor(color) {
@@ -84,18 +86,25 @@ permalink: /tools/text-editor
       if (!selection.rangeCount) return;
 
       const range = selection.getRangeAt(0);
+
+      // Avoid crashing if selection includes multiple nodes
       const span = document.createElement("span");
       span.style.color = color;
-      span.appendChild(range.extractContents());
-      range.insertNode(span);
+      try {
+        span.appendChild(range.extractContents());
+        range.insertNode(span);
 
-      // Move cursor after the inserted span
-      selection.removeAllRanges();
-      const newRange = document.createRange();
-      newRange.setStartAfter(span);
-      selection.addRange(newRange);
+        // Move cursor after span
+        selection.removeAllRanges();
+        const newRange = document.createRange();
+        newRange.setStartAfter(span);
+        selection.addRange(newRange);
+      } catch (e) {
+        alert("Please select text inside the editor.");
+      }
     }
   </script>
+
 
 <script>
     // Create a link element
