@@ -153,7 +153,7 @@ title: Home
 <div id="main-text" style="z-index: 10000">
   Welcome, if you haven't already, please subscribe to my channel and look around for 
   <br>
-  🤑FREE HACKS & SCRIPTS I HAVE🤑
+  🤑FREE SCRIPTS I HAVE🤑
   <br> 
   (INCLUDING ONES FOR VOXIOM.IO, KIRKA.IO AND COOKIE CLICKER)
 </div>
