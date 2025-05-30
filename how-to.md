@@ -137,7 +137,7 @@ permalink: /how-to/
 <a href="https://cqmbo1.github.io/about" class="hbutton medium">About Me</a>
 <a href="https://cqmbo1.github.io/v" class="hbutton medium">Videos</a>
 <a href="https://cqmbo1.github.io/educlient" class="hbutton medium">Edu Client</a>
-<a href="https://cqmbo1.github.io/hacks" class="hbutton medium">FREE HACKS</a>
+<a href="https://cqmbo1.github.io/scripts" class="hbutton medium">FREE SCRIPTS</a>
 <a href="https://cqmbo1.github.io/tools" class="hbutton medium">Tools</a>
 
 <div id="main-text" style="z-index: 10000;">
