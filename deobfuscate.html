@@ -366,12 +366,31 @@ function loadEditor() {
     if (cb) cb.checked = checked;
   }
 
-  document.getElementById('auto').click();
+  // Trigger decode button only after a short delay
+  setTimeout(() => {
+    document.getElementById('auto')?.click();
+  }, 50);
 }
 
+// Debounced input listener instead of aggressive interval
+document.getElementById('input').addEventListener('input', () => {
+  clearTimeout(window._saveDebounce);
+  window._saveDebounce = setTimeout(saveEditor, 300);
+});
 
-setInterval(saveEditor,10);
-loadEditor();
+// Save on any radio change
+document.querySelectorAll('input[type="radio"][name="encode"]').forEach(r => {
+  r.addEventListener('change', saveEditor);
+});
+
+// Save on checkbox change
+document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener('change', saveEditor);
+});
+
+// Load once on page ready
+window.addEventListener('DOMContentLoaded', loadEditor);
+
 </script>
 
   
