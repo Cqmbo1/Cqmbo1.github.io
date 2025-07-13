@@ -325,20 +325,52 @@ permalink: /deobfuscate
 </script>
 
 <script>
+
 function saveEditor() {
-localStorage.setItem('savedProgress', document.getElementById('input').value);
+  // Save textarea input
+  localStorage.setItem('savedProgress', document.getElementById('input').value);
+
+  // Save selected radio
+  const selectedRadio = document.querySelector('input[type="radio"][name="encode"]:checked');
+  if (selectedRadio) {
+    localStorage.setItem('selectedRadio', selectedRadio.id);
+  }
+
+  // Save checkbox states
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const checkboxStates = {};
+  checkboxes.forEach(cb => {
+    checkboxStates[cb.id] = cb.checked;
+  });
+  localStorage.setItem('checkboxStates', JSON.stringify(checkboxStates));
 }
 
-setInterval(saveEditor,10);
-
 function loadEditor() {
+  // Load textarea input
   const saved = localStorage.getItem('savedProgress');
   if (saved !== null) {
     document.getElementById('input').value = saved;
   }
+
+  // Load selected radio
+  const selectedRadioId = localStorage.getItem('selectedRadio');
+  if (selectedRadioId) {
+    const radio = document.getElementById(selectedRadioId);
+    if (radio) radio.checked = true;
+  }
+
+  // Load checkbox states
+  const checkboxStates = JSON.parse(localStorage.getItem('checkboxStates') || '{}');
+  for (const [id, checked] of Object.entries(checkboxStates)) {
+    const cb = document.getElementById(id);
+    if (cb) cb.checked = checked;
+  }
+
   document.getElementById('auto').click();
 }
 
+
+setInterval(saveEditor,10);
 loadEditor();
 </script>
 
