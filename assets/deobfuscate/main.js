@@ -233,6 +233,7 @@
 
       document.querySelector('.magic-radio:checked').checked = false;
       document.querySelector('.magic-radio[value="' + type + '"]').checked = true;
+      document.querySelector('.magic-radio[value="' + type + '"]').click();
 
       return type;
     },
