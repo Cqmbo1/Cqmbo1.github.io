@@ -345,12 +345,14 @@ function loadEditor() {
     document.getElementById('input').value = saved;
   }
 
+setTimeout(() => {
   // Load selected radio
   const selectedRadioId = localStorage.getItem('selectedRadio');
   if (selectedRadioId) {
     const radio = document.getElementById(selectedRadioId);
     if (radio) radio.checked = true;
   }
+}, 1000);
 
   // Load checkbox states
   const checkboxStates = JSON.parse(localStorage.getItem('checkboxStates') || '{}');
