@@ -289,10 +289,12 @@ permalink: /deobfuscate
     .then(response => {
       let source = response.js;
 
-nicify.checked = false;
-if (document.querySelector('input[name="encode"]:checked')?.id === 'nicify') {
+const selectedId = localStorage.getItem('selectedRadio');
+if (selectedId === 'nicify') {
+  nicify.checked = false;
   none.checked = true;
 }
+
 
 
       if (!source) {
