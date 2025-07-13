@@ -324,6 +324,20 @@ permalink: /deobfuscate
   isOnline();
 </script>
 
+<script>
+function saveEditor() {
+localStorage.setItem('savedProgress', document.getElementById('input').value);
+}
+
+setInterval(saveEditor,10);
+
+function loadEditor() {
+document.getElementById('input').value = (localStorage.getItem('savedProgress'));
+}
+
+loadEditor();
+</script>
+
   
 </body>
 
