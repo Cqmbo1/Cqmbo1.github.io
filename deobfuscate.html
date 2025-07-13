@@ -289,8 +289,11 @@ permalink: /deobfuscate
     .then(response => {
       let source = response.js;
 
-      nicify.checked = false;
-      none.checked = true;
+nicify.checked = false;
+if (document.querySelector('input[name="encode"]:checked')?.id === 'nicify') {
+  none.checked = true;
+}
+
 
       if (!source) {
         view.textContent = 'Unknown error';
