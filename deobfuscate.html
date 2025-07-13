@@ -24,13 +24,13 @@ permalink: /deobfuscate
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="JavaScript Deobfuscator and Unpacker" />
 <meta property="og:description" content="JavaScript Deobfuscator and Unpacker" />
-<link rel="canonical" href="https://lelinhtinh.github.io/de4js/" />
-<meta property="og:url" content="https://lelinhtinh.github.io/de4js/" />
+<link rel="canonical" href="https://cqmbo1.github.io/deobfuscate/" />
+<meta property="og:url" content="https://cqmbo1.github.io/deobfuscate/" />
 <meta property="og:site_name" content="de4js" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="de4js" />
 <script type="application/ld+json">
-{"headline":"de4js","description":"JavaScript Deobfuscator and Unpacker","url":"https://lelinhtinh.github.io/de4js/","@type":"WebSite","name":"de4js","author":{"@type":"Person","name":"Zzbaivong"},"@context":"https://schema.org"}</script>
+{"headline":"Cqmbo__ Deobfuscator","description":"JS Deobfuscator and Unpacker","url":"https://cqmbo1.github.io/deobfuscate/","@type":"WebSite","name":"Deobfuscator","author":{"@type":"Person","name":"Cqmbo__"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -54,12 +54,12 @@ permalink: /deobfuscate
 
   <header>
     <div class="container">
-      <h1 id="title">de4js<sup>1.12.0</sup></h1>
+      <h1 id="title">Deobfuscator<sup>2.0.0</sup></h1>
       <h2>JavaScript Deobfuscator and Unpacker</h2>
 
       <section id="downloads">
         
-        <a href="https://github.com/lelinhtinh/de4js" target="_blank" class="btn btn-github">
+        <a href="https://github.com/cqmbo1/cqmbo1.github.io" target="_blank" class="btn btn-github">
           <span class="icon"></span>
           View on GitHub
         </a>
@@ -262,6 +262,73 @@ permalink: /deobfuscate
       wb.register();
     }
   </script>
+
+  <script>
+  const nicify = document.getElementById('nicify'),
+        label = nicify.nextSibling.nextSibling.textContent,
+        none = document.getElementById('none'),
+        input = document.getElementById('input'),
+        output = document.getElementById('readable'),
+        view = document.getElementById('view');
+
+  function isOnline() {
+    nicify.disabled = !navigator.onLine;
+    return navigator.onLine;
+  }
+
+  function jsnice() {
+    if (!isOnline()) return;
+    const txt = view.textContent.trim() || input.value.trim();
+    if (!txt) return;
+
+    view.classList.add('waiting');
+
+    fetch('https://jsnice.org/beautify?pretty=0&rename=1&types=0&packers=0&transpile=0&suggest=0', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      },
+      body: txt
+    })
+    .then(res => res.json())
+    .then(response => {
+      let source = response.js;
+
+      nicify.checked = false;
+      none.checked = true;
+
+      if (!source) {
+        view.textContent = 'Unknown error';
+      } else {
+        output.value = source;
+        output.onchange();
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  }
+
+  nicify.disabled = false;
+  nicify.nextSibling.nextSibling.textContent = label;
+
+  input.addEventListener('input', () => {
+    if (nicify.checked) jsnice();
+  });
+
+  nicify.addEventListener('click', () => {
+    if (nicify.checked) jsnice();
+  });
+
+  nicify.addEventListener('change', () => {
+    if (nicify.checked) jsnice();
+  });
+
+  window.addEventListener('online', isOnline);
+  window.addEventListener('offline', isOnline);
+  isOnline();
+</script>
+
   
 </body>
 
