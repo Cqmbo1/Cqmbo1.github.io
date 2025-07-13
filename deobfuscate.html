@@ -289,13 +289,8 @@ permalink: /deobfuscate
     .then(response => {
       let source = response.js;
 
-const selectedId = localStorage.getItem('selectedRadio');
-if (selectedId === 'nicify') {
-  nicify.checked = false;
-  none.checked = true;
-}
-
-
+      nicify.checked = false;
+      none.checked = false;
 
       if (!source) {
         view.textContent = 'Unknown error';
@@ -311,6 +306,18 @@ if (selectedId === 'nicify') {
 
   nicify.disabled = false;
   nicify.nextSibling.nextSibling.textContent = label;
+
+  input.addEventListener('input', () => {
+    if (nicify.checked) jsnice();
+  });
+
+  nicify.addEventListener('click', () => {
+    if (nicify.checked) jsnice();
+  });
+
+  nicify.addEventListener('change', () => {
+    if (nicify.checked) jsnice();
+  });
 
   window.addEventListener('online', isOnline);
   window.addEventListener('offline', isOnline);
@@ -350,7 +357,10 @@ setTimeout(() => {
   const selectedRadioId = localStorage.getItem('selectedRadio');
   if (selectedRadioId) {
     const radio = document.getElementById(selectedRadioId);
-    if (radio) radio.checked = true;
+    if (radio) {
+      radio.checked = true;
+      radio.click();
+    }
   }
 }, 1000);
 
@@ -383,29 +393,12 @@ document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
   cb.addEventListener('change', saveEditor);
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-  loadEditor();
-
-  // Delay enabling listeners until state is restored
-  setTimeout(() => {
-    input.addEventListener('input', () => {
-      if (nicify.checked) jsnice();
-    });
-
-    nicify.addEventListener('click', () => {
-      if (nicify.checked) jsnice();
-    });
-
-    nicify.addEventListener('change', () => {
-      if (nicify.checked) jsnice();
-    });
-  }, 100);
-});
-
+// Load once on page ready
+window.addEventListener('DOMContentLoaded', loadEditor);
 
 </script>
 
   
 </body>
 
-</html>
+</html> 
