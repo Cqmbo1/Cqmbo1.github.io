@@ -198,9 +198,8 @@
       });
       workerFormat.addEventListener('error', workerError);
     }, 250),
-detect = function (source, forceDetect = false) {
-      console.log('detect: source=', source); // Debug input
-      // Check if a radio is stored in localStorage and skip detection unless forced
+    detect = function (source, forceDetect = false) {
+      console.log('detect: source=', source);
       const selectedRadioId = localStorage.getItem('selectedRadio');
       if (!forceDetect && selectedRadioId && document.getElementById(selectedRadioId)) {
         console.log('detect: using localStorage radio=', selectedRadioId);
@@ -217,9 +216,7 @@ detect = function (source, forceDetect = false) {
       } else if (source.replace(/[[\]()!+]/gm, '').trim() === '') {
         type = 'jsfuck';
       } else if (
-        // Refined condition for URLencode
-        /%[0-9A-Fa-f]{2}/.test(source) && // At least one URL-encoded character
-        (source.indexOf(' ') === -1 || source.includes('%20')) // No spaces or has encoded spaces
+        /%[0-9A-Fa-f]{2}/.test(source) && (source.indexOf(' ') === -1 || source.includes('%20'))
       ) {
         type = 'urlencode';
       } else if (
@@ -241,7 +238,7 @@ detect = function (source, forceDetect = false) {
         }
       }
 
-      console.log('detect: type=', type); // Debug output
+      console.log('detect: type=', type);
       document.querySelector('.magic-radio:checked').checked = false;
       const radioToCheck = document.querySelector('.magic-radio[value="' + type + '"]');
       if (radioToCheck) {
@@ -250,12 +247,17 @@ detect = function (source, forceDetect = false) {
 
       return type;
     },
-    decode = debounce(function () {
-      if (temp === '') temp = input.value.trim();
+    decode = debounce(function (forceDetect = false) {
+      if (temp === '') {
+        rawInput = input.value.trim(); // Store raw input
+        temp = rawInput;
+      }
       temp = temp.replace(/\/\*(?!\s*@de4js)[\s\S]*?\*\/|^[\s\t]*\/\/.*/gm, '');
       if (temp === '') return;
 
-      packer = isAuto ? detect(temp) : form.encode.value;
+      console.log('decode: rawInput=', rawInput, 'temp=', temp, 'isAuto=', isAuto, 'forceDetect=', forceDetect);
+      // Use rawInput for detection to avoid decoded output
+      packer = isAuto ? detect(rawInput, forceDetect) : form.encode.value;
 
       if (packer === 'nicify') return;
       if (packer === '') {
@@ -267,15 +269,9 @@ detect = function (source, forceDetect = false) {
         workerDecode = new Worker('https://Cqmbo1.github.io/assets/deobfuscate/worker/decode.js');
         workerDecode.addEventListener('message', function (e) {
           if (e.data !== temp) {
-            temp = e.data;
-
-            if (isAuto) {
-              decode();
-              return;
-            }
+            temp = e.data; // Update temp with decoded output
+            format(); // Format the decoded output
           }
-
-          format();
         });
         workerDecode.addEventListener('error', workerError);
       }
@@ -297,22 +293,20 @@ detect = function (source, forceDetect = false) {
     },
     uploadFile = function (fileObj) {
       if (!fileObj) return;
-
       var fragment = new DocumentFragment();
       fileName.textContent = fileObj.name;
-
       if (!/((text|application)\/(ecmascript|(x-)?javascript)|text\/plain)/.test(fileObj.type)) {
         renderLocal.textContent = 'Invalid file type';
         return;
       }
-
       temp = '';
+      rawInput = ''; // Reset rawInput
       renderLocal.textContent = '';
-
       parseFile(
         fileObj,
         function (data) {
           temp += data;
+          rawInput += data; // Store raw input
           var txt = document.createTextNode(data);
           fragment.appendChild(txt);
         },
@@ -320,12 +314,13 @@ detect = function (source, forceDetect = false) {
           decode();
           renderLocal.appendChild(fragment);
           file.value = '';
-        },
+        }
       );
     };
 
   input.oninput = function () {
-    temp = input.value.trim();
+    rawInput = input.value.trim(); // Update rawInput on input change
+    temp = rawInput;
     decode();
   };
 
@@ -334,7 +329,9 @@ detect = function (source, forceDetect = false) {
 
   autoBtn.onclick = function () {
     isAuto = true;
-    decode();
+    rawInput = input.value.trim(); // Ensure rawInput is up-to-date
+    temp = rawInput;
+    decode(true);
   };
 
   clipboard.on('success', function (e) {
@@ -356,13 +353,9 @@ detect = function (source, forceDetect = false) {
     renderRemove.textContent = '';
     urlRemove.value = '';
     none.click();
-
+    temp = '';
+    rawInput = ''; // Reset rawInput
     stopEffect();
-    setTimeout(function () {
-      input.value = '';
-      temp = '';
-    }, 0);
-
     if (workerDecode) {
       workerDecode.terminate();
       workerDecode = undefined;
@@ -371,9 +364,9 @@ detect = function (source, forceDetect = false) {
       workerFormat.terminate();
       workerFormat = undefined;
     }
-
     preview.classList.remove('show');
   };
+
 
   window.addEventListener('online', updateOnlineStatus);
   window.addEventListener('offline', updateOnlineStatus);
