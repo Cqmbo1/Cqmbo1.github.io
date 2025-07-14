@@ -198,21 +198,28 @@
       });
       workerFormat.addEventListener('error', workerError);
     }, 250),
-    detect = function (source) {
-      var type = '';
+detect = function (source, forceDetect = false) {
+      console.log('detect: source=', source); // Debug input
+      // Check if a radio is stored in localStorage and skip detection unless forced
+      const selectedRadioId = localStorage.getItem('selectedRadio');
+      if (!forceDetect && selectedRadioId && document.getElementById(selectedRadioId)) {
+        console.log('detect: using localStorage radio=', selectedRadioId);
+        return document.getElementById(selectedRadioId).value;
+      }
 
+      var type = '';
       if (/^var\s_\d{4};[\s\n]*var\s_\d{4}\s?=/.test(source)) {
         type = '_numberencode';
       } else if (source.indexOf("/｀ｍ´）ﾉ ~┻━┻   //*´∇｀*/ ['_'];") !== -1) {
-        // eslint-disable-line quotes
         type = 'aaencode';
       } else if (source.indexOf('$={___:++$,$$$$:(![]+"")[$]') !== -1) {
         type = 'jjencode';
       } else if (source.replace(/[[\]()!+]/gm, '').trim() === '') {
         type = 'jsfuck';
       } else if (
-        source.indexOf(' ') === -1 &&
-        (source.indexOf('%2') !== -1 || source.replace(/[^%]+/g, '').length > 3)
+        // Refined condition for URLencode
+        /%[0-9A-Fa-f]{2}/.test(source) && // At least one URL-encoded character
+        (source.indexOf(' ') === -1 || source.includes('%20')) // No spaces or has encoded spaces
       ) {
         type = 'urlencode';
       } else if (
@@ -227,13 +234,19 @@
       ) {
         type = 'wisefunction';
       } else if (source.indexOf('eval(') !== -1) {
-        if (/\b(window|document|console)\.\b/i.test(source)) return type;
-        type = 'evalencode';
+        if (/\b(window|document|console)\.\b/i.test(source)) {
+          type = '';
+        } else {
+          type = 'evalencode';
+        }
       }
 
+      console.log('detect: type=', type); // Debug output
       document.querySelector('.magic-radio:checked').checked = false;
-      document.querySelector('.magic-radio[value="' + type + '"]').checked = true;
-      document.querySelector('.magic-radio[value="' + type + '"]').click();
+      const radioToCheck = document.querySelector('.magic-radio[value="' + type + '"]');
+      if (radioToCheck) {
+        radioToCheck.checked = true;
+      }
 
       return type;
     },
