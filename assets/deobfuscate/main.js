@@ -258,17 +258,18 @@ console.log('Test match 4 (shift loop):', /\w+\[['"]push['"]]\(\w+\[['"]shift['"
 
       return type;
     },
-    decode = debounce(function (forceDetect = false) {
+    decode = debounce(function (forceDetect = false, e) {
       if (temp === '') {
         rawInput = input.value.trim(); // Store raw input
         temp = rawInput;
       }
       temp = temp.replace(/\/\*(?!\s*@de4js)[\s\S]*?\*\/|^[\s\t]*\/\/.*/gm, '');
       if (temp === '') return;
+      let isAuto2 = e || isAuto; 
 
-      console.log('decode: rawInput=', rawInput, 'temp=', temp, 'isAuto=', isAuto, 'forceDetect=', forceDetect);
+      console.log('decode: rawInput=', rawInput, 'temp=', temp, 'isAuto=', isAuto2, 'forceDetect=', forceDetect);
       // Use rawInput for detection to avoid decoded output
-      packer = isAuto ? detect(rawInput, forceDetect) : form.encode.value;
+      packer = isAuto2 ? detect(rawInput, forceDetect) : form.encode.value;
 
       if (packer === 'nicify') return;
       if (packer === '') {
@@ -297,7 +298,6 @@ console.log('Test match 4 (shift loop):', /\w+\[['"]push['"]]\(\w+\[['"]shift['"
     changeEncode = function (e) {
       var _this = e.target;
       if (_this.name !== 'encode') return;
-      decode();
     },
     dragEnd = function () {
       contentLocal.classList.remove('drop-zone', 'drop-enter');
@@ -332,11 +332,23 @@ console.log('Test match 4 (shift loop):', /\w+\[['"]push['"]]\(\w+\[['"]shift['"
   input.oninput = function () {
     rawInput = input.value.trim(); // Update rawInput on input change
     temp = rawInput;
-    decode();
+    decode(true, false);
   };
 
-  form.addEventListener('change', changeEncode);
-  form.addEventListener('click', changeEncode);
+form.addEventListener('change', function(e) {
+      rawInput = input.value.trim(); // Ensure rawInput is up-to-date
+    temp = rawInput;
+  changeEncode(e);
+  decode(true,false);
+});
+
+form.addEventListener('click', function(e) {
+      rawInput = input.value.trim(); // Ensure rawInput is up-to-date
+    temp = rawInput;
+  changeEncode(e);
+  decode(true, false);
+});
+
 
   autoBtn.onclick = function () {
     isAuto = true;

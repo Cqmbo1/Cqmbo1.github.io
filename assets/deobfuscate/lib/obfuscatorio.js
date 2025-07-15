@@ -1,7 +1,8 @@
 /* global utils */
 // eslint-disable-next-line no-unused-vars
 function ObfuscatorIO(source, options = {}) {
-  const detectPattern = /\b([\w$]+)\s*\(\s*(?:(['"])(0x[a-fA-F\d]+|\\x(?:[a-fA-F\d]{2}\\?)*)\2|0x[a-fA-F\d]+)(?:\s*,\s*(['"]).+?\4)?\s*\)/g;
+  const detectPattern = /\b([\w$]+)\s*\(\s*(0x[a-fA-F\d]+|(['"])(?:\\x[a-fA-F\d]{2}|0x[a-fA-F\d]+)\3)\s*\)/g;
+
 
   let detectMatch = source.match(detectPattern);
 
