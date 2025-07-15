@@ -1,7 +1,8 @@
 /* global utils */
 // eslint-disable-next-line no-unused-vars
-function ObfuscatorIO(source, options) {
-  const detectPattern = /((?![^_a-zA-Z$])[\w$]*)\(-?('|")(0x[a-f\d]+|\\x30\\x78[\\xa-f\d]+)\2(\s*,\s*('|").+?\5)?\)/gi;
+function ObfuscatorIO(source, options = {}) {
+  const detectPattern = /\b([\w$]+)\s*\(\s*(?:(['"])(0x[a-fA-F\d]+|\\x(?:[a-fA-F\d]{2}\\?)*)\2|0x[a-fA-F\d]+)(?:\s*,\s*(['"]).+?\4)?\s*\)/g;
+
   let detectMatch = source.match(detectPattern);
 
   if (!detectMatch) throw 'Not matched';
@@ -30,14 +31,25 @@ function ObfuscatorIO(source, options) {
 
 function decode({ headCode, mainCode }, options, detectPattern) {
   headCode = headCode.replace(/\b(const|let)(\s*(?![^_a-zA-Z$])[\w$]*=)/gi, 'var $2');
-  eval(headCode);
+  if (headCode.trim()) {
+    try {
+      eval(headCode);
+    } catch (e) {
+      console.warn('⚠️ Eval failed:', e);
+    }
+  }
 
   mainCode = mainCode.split(';');
   mainCode = mainCode.map((piece) => {
     piece = piece.replace(detectPattern, (key) => {
-      const item = eval(key),
-        q = utils.strWrap(item);
-      return q + utils.escapeRegExp(item, q) + q;
+      try {
+        const item = eval(key),
+          q = utils.strWrap(item);
+        return q + utils.escapeRegExp(item, q) + q;
+      } catch (e) {
+        console.warn('⚠️ Eval failed on key:', key);
+        return key;
+      }
     });
 
     if (options.calc) piece = utils.calcHex(piece);
@@ -47,6 +59,7 @@ function decode({ headCode, mainCode }, options, detectPattern) {
 
     return piece;
   });
+
   mainCode = mainCode.join(';');
 
   if (options.strMerge) mainCode = utils.strMerge(mainCode);
@@ -73,10 +86,17 @@ function splitMultiVar(detectMatch, source) {
     keyStore = keyStore.concat(keyFunc);
   }
 
-  if (!keyStore.length) throw 'Key not found';
+  if (!keyStore.length) {
+    console.warn('⚠️ No decryptor key definitions found — falling back to partial decoding.');
+    return {
+      headCode: '',
+      mainCode: source,
+    };
+  }
 
-  let bodyVar = '',
-    headVarStore = {};
+  let bodyVar = '';
+  let headVarStore = {};
+
   for (const obj of keyStore) {
     bodyVar += obj.code;
     const returnIndex = source.search(funcDefinerPattern(obj.return));
@@ -85,9 +105,16 @@ function splitMultiVar(detectMatch, source) {
     }
   }
 
-  if (Object.keys(headVarStore).length !== 1) throw 'sanex3339';
+  if (Object.keys(headVarStore).length === 0) {
+    console.warn('⚠️ No function return mappings found — using all collected bodies.');
+    return {
+      headCode: bodyVar,
+      mainCode: source,
+    };
+  }
 
-  let { headVar, mainCode } = getHeadVar(Object.values(headVarStore)[0], source);
+  const bestMatch = Object.entries(headVarStore).sort((a, b) => a[1] - b[1])[0][0];
+  const { headVar, mainCode } = getHeadVar(headVarStore[bestMatch], source);
 
   return {
     headCode: headVar + bodyVar,
@@ -99,8 +126,8 @@ function getHeadVar(pos, source) {
   let bo = 0,
     bc = 0,
     sourceSize = source.length,
-    headVar,
-    mainCode;
+    headVar = '',
+    mainCode = '';
 
   const splitSource = (pos) => {
     headVar = source.slice(0, pos);
@@ -117,7 +144,12 @@ function getHeadVar(pos, source) {
     pos++;
   }
 
-  if (!mainCode) throw 'Not splits';
+  if (!mainCode) {
+    console.warn('⚠️ Could not split head and body — fallback to full source');
+    headVar = '';
+    mainCode = source;
+  }
+
   return { headVar, mainCode };
 }
 
@@ -128,18 +160,23 @@ function getVarDefiner(key, source) {
   let keyVar = [];
   let sourceVar = source;
 
-  if (varGroupPattern.test(source)) {
-    sourceVar = source.replace(varGroupPattern, (m) => {
-      const varMatch = m.match(new RegExp(varPattern, 'i'));
-      keyVar.push({
-        key,
-        return: varMatch[2],
-        code: varMatch[0].replace(/,$/, ';'),
-      });
+  try {
+    if (varGroupPattern.test(source)) {
+      sourceVar = source.replace(varGroupPattern, (m) => {
+        const varMatch = m.match(new RegExp(varPattern, 'i'));
+        if (!varMatch) return m;
 
-      if (m.slice(-1) === ';') return '';
-      return varMatch[1] + ' ';
-    });
+        keyVar.push({
+          key,
+          return: varMatch[2],
+          code: varMatch[0].replace(/,$/, ';'),
+        });
+
+        return m.slice(-1) === ';' ? '' : varMatch[1] + ' ';
+      });
+    }
+  } catch (err) {
+    console.warn(`⚠️ Error in getVarDefiner for key "${key}":`, err);
   }
 
   return { sourceVar, keyVar };
@@ -151,38 +188,44 @@ function getFuncDefiner(key, source) {
   let keyFunc = [];
   let sourceFunc = source;
 
-  while (funcGroupPattern.test(source)) {
-    const varIndex = source.search(funcDefinerPattern(key)),
-      sourceSize = source.length;
+  try {
+    while (funcGroupPattern.test(source)) {
+      const varIndex = source.search(funcDefinerPattern(key));
+      const sourceSize = source.length;
 
-    if (varIndex === -1) throw 'Not found';
+      if (varIndex === -1) break;
 
-    let pos = varIndex,
-      bo = 0,
-      bc = 0;
+      let pos = varIndex,
+        bo = 0,
+        bc = 0;
 
-    const splitSource = (pos) => {
-      sourceFunc = source.slice(0, varIndex) + source.slice(pos);
-      const varFunc = source.slice(varIndex, pos);
-      const returnMatch = varFunc.match(/(return\s+((?![^_a-zA-Z$])[\w$]*))(?![\s\S]*return)/i);
-      keyFunc.push({
-        key,
-        return: returnMatch[2],
-        code: varFunc,
-      });
+      const splitSource = (pos) => {
+        sourceFunc = source.slice(0, varIndex) + source.slice(pos);
+        const varFunc = source.slice(varIndex, pos);
+        const returnMatch = varFunc.match(/return\s+([\w$]+)/i);
+        if (!returnMatch) return;
 
-      source = sourceFunc;
-    };
+        keyFunc.push({
+          key,
+          return: returnMatch[1],
+          code: varFunc,
+        });
 
-    while (pos < sourceSize) {
-      if (source.charAt(pos) === '{') bo++;
-      if (source.charAt(pos) === '}') bc++;
-      if (bc === bo && bo !== 0) {
-        splitSource(pos + 2);
-        break;
+        source = sourceFunc;
+      };
+
+      while (pos < sourceSize) {
+        if (source.charAt(pos) === '{') bo++;
+        if (source.charAt(pos) === '}') bc++;
+        if (bo !== 0 && bo === bc) {
+          splitSource(pos + 1);
+          break;
+        }
+        pos++;
       }
-      pos++;
     }
+  } catch (err) {
+    console.warn(`⚠️ Error in getFuncDefiner for key "${key}":`, err);
   }
 
   return { sourceFunc, keyFunc };

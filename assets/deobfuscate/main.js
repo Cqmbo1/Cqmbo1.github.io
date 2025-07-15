@@ -198,6 +198,14 @@
       });
       workerFormat.addEventListener('error', workerError);
     }, 250),
+    isObfuscatorIO = function (source) {
+  let score = 0;
+  if (/\bfunction\s+\w+\(\w+,\s*\w+\)\s*\{[\s\S]+?\w+=function\(\w+,\s*\w+\)\s*\{[\s\S]+?return\s+\w+;/.test(source)) score++;
+  if (/\bfunction\s+(\w+)\s*\(\)\s*\{\s*var\s+\w+\s*=\s*\[[^\]]+\];\s*\1\s*=\s*function\s*\(\)\s*\{\s*return\s+\w+;\s*\};\s*return\s+\1\(\);\s*\}/.test(source)) score++;
+  if (/\bwhile\s*\(\s*!!\[\]\s*\)/.test(source)) score++;
+  if (/\w+\[['"]push['"]]\(\w+\[['"]shift['"]]\(\)\)/.test(source)) score++;
+  return score >= 3;
+},
     detect = function (source, forceDetect = false) {
       console.log('detect: source=', source);
       const selectedRadioId = localStorage.getItem('selectedRadio');
@@ -219,11 +227,9 @@
         /%[0-9A-Fa-f]{2}/.test(source) && (source.indexOf(' ') === -1 || source.includes('%20'))
       ) {
         type = 'urlencode';
-      } else if (
-        /((?![^_a-zA-Z$])[\w$]*)\(-?('|")(0x[a-f\d]+|\\x30\\x78[\\xa-f\d]+)\2(\s*,\s*('|").+?\5)?\)/i.test(source)
-      ) {
-        type = 'obfuscatorio';
-      } else if (/^var\s+((?![^_a-zA-Z$])[\w$]*)\s*=\s*\[.*?\];/.test(source)) {
+} else if (isObfuscatorIO(source)) {
+  type = 'obfuscatorio';
+} else if (/^var\s+((?![^_a-zA-Z$])[\w$]*)\s*=\s*\[.*?\];/.test(source)) {
         type = 'arrayencode';
       } else if (
         source.startsWith('//Protected by WiseLoop PHP JavaScript Obfuscator') ||
@@ -239,6 +245,11 @@
       }
 
       console.log('detect: type=', type);
+            console.log('Test match 1 (lookup function):', /\bfunction\s+\w+\(\w+,\s*\w+\)\s*\{[^}]*?return\s+\w+\(\w+,\s*\w+\);?\s*\}/.test(source));
+console.log('Test match 2 (array-returning closure):', /\bfunction\s+\w+\(\)\s*\{\s*var\s+\w+=\[[^\]]+\];\s*\w+=function\s*\(\)\s*\{\s*return\s+\w+;\s*\};\s*return\s+\w+\(\);\s*\}/.test(source));
+console.log('Test match 3 (while true):', /\bwhile\s*\(\s*!!\[\]\s*\)/.test(source));
+console.log('Test match 4 (shift loop):', /\w+\[['"]push['"]]\(\w+\[['"]shift['"]]\(\)\)/.test(source));
+
       document.querySelector('.magic-radio:checked').checked = false;
       const radioToCheck = document.querySelector('.magic-radio[value="' + type + '"]');
       if (radioToCheck) {
