@@ -344,6 +344,13 @@ function loadEditor() {
   if (selectedRadioId) {
     const radio = document.getElementById(selectedRadioId);
     if (radio) radio.checked = true;
+  } else {
+    const radio = document.getElementById('none');
+    if (radio) {
+      radio.checked = true;
+    } else {
+      alert('Currently, there is an error in the current page. Please contact the developer.')
+    }
   }
 
   // Load checkbox states
