@@ -231,3 +231,5 @@ function getFuncDefiner(key, source) {
 
   return { sourceFunc, keyFunc };
 }
+self.ObfuscatorIO = ObfuscatorIO;
+
