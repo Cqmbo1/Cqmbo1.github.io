@@ -1,8 +1,7 @@
 /* global utils */
 // eslint-disable-next-line no-unused-vars
 function ObfuscatorIO(source, options = {}) {
-  const detectPattern = /\b([\w$]+)\s*\(\s*(0x[a-fA-F\d]+|(['"])(?:\\x[a-fA-F\d]{2}|0x[a-fA-F\d]+)\3)\s*\)/g;
-
+  const detectPattern = /\b([\w$]+)\s*\(\s*(?:(['"])(0x[a-fA-F\d]+|\\x(?:[a-fA-F\d]{2}\\?)*)\2|0x[a-fA-F\d]+)(?:\s*,\s*(['"]).+?\4)?\s*\)/g;
 
   let detectMatch = source.match(detectPattern);
 
@@ -28,6 +27,42 @@ function ObfuscatorIO(source, options = {}) {
   }
 
   return decode(splitMultiVar(detectMatch, source), options, detectPattern);
+}
+
+function evaluateNumberExpressions(code, options) {
+  // Regular expression to match unary and binary expressions
+  const numberExpressionPattern = /(-(?:\d*\.?\d+))|((?:\d*\.?\d+|-?\d*\.?\d+)\s*(\+|-|\/|%|\*|\*\*|&|\||>>|>>>|<<|\^)\s*(?:\d*\.?\d+|-?\d*\.?\d+))/g;
+
+  return code.replace(numberExpressionPattern, (match, unary, binary, operator) => {
+    try {
+      // Handle unary expression (e.g., -42)
+      if (unary) {
+        const value = eval(unary);
+        if (typeof value === 'number' && Number.isFinite(value)) {
+          return value.toString();
+        }
+        return match;
+      }
+
+      // Handle binary expression (e.g., 2 + 3, 5 * 4)
+      if (binary && operator) {
+        const value = eval(binary);
+        if (typeof value === 'number' && Number.isFinite(value)) {
+          // Skip division if result is not an integer
+          if (operator === '/' && !Number.isInteger(value)) {
+            return match;
+          }
+          return value.toString();
+        }
+        return match;
+      }
+
+      return match;
+    } catch (e) {
+      console.warn('⚠️ Failed to evaluate expression:', match, e);
+      return match;
+    }
+  });
 }
 
 function decode({ headCode, mainCode }, options, detectPattern) {
@@ -57,6 +92,9 @@ function decode({ headCode, mainCode }, options, detectPattern) {
     if (options._unescape) piece = utils._unescape(piece);
     piece = utils.toBool(piece);
     piece = utils.propArr(piece);
+
+    // Evaluate unary and binary number expressions if calc option is enabled
+    if (options.calc) piece = evaluateNumberExpressions(piece, options);
 
     return piece;
   });
@@ -232,4 +270,3 @@ function getFuncDefiner(key, source) {
   return { sourceFunc, keyFunc };
 }
 self.ObfuscatorIO = ObfuscatorIO;
-

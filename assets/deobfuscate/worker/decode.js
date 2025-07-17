@@ -35,17 +35,26 @@ self.addEventListener('message', (e) => {
       self.importScripts(base + 'lib/jsfuckdecode.js');
       return JSFuckDecode(source);
     },
-    obfuscatorio: () => {
-      // Load Acorn dependencies before obfuscatorio.js
-      self.importScripts(
-        'https://unpkg.com/acorn@8.10.0/dist/acorn.js',
-        'https://cqmbo1.github.io/assets/deobfuscate/acorn-walk.umd.min.js',
-        'https://unpkg.com/astring@1.8.6/dist/astring.min.js',
-        base + 'lib/obfuscatorio.js'
-      );
-      return ObfuscatorIO(source, options);
-    },
-    cleansource: () => {
+obfuscatorio: () => {
+  try {
+self.importScripts(
+  'https://unpkg.com/acorn@8.10.0/dist/acorn.js',
+  'https://cqmbo1.github.io/assets/deobfuscate/acorn-walk.umd.min.js',
+  'https://unpkg.com/astring@1.8.6/dist/astring.min.js',
+  'https://cqmbo1.github.io/assets/deobfuscate/lib/obfuscatorio.js' // ✅ full path
+);
+
+    console.log("ObfuscatorIO:", typeof ObfuscatorIO);
+    if (typeof ObfuscatorIO !== 'function') {
+      throw new Error("ObfuscatorIO not loaded correctly");
+    }
+    return ObfuscatorIO(source, options);
+  } catch (err) {
+    console.error("Failed to run ObfuscatorIO:", err);
+    throw err;
+  }
+},
+cleansource: () => {
       self.importScripts(base + 'lib/cleansource.js');
       return CleanSource(source, options);
     },
@@ -86,7 +95,7 @@ self.addEventListener('message', (e) => {
       return Wise_FunctionalDecode(source);
     },
   };
-
+console.log(methods[packer])
   if (typeof methods[packer] !== 'function') {
   console.error("decode called with packer:", packer);
 

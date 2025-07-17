@@ -270,7 +270,7 @@ console.log('Test match 4 (shift loop):', /\w+\[['"]push['"]]\(\w+\[['"]shift['"
       console.log('decode: rawInput=', rawInput, 'temp=', temp, 'isAuto=', isAuto2, 'forceDetect=', forceDetect);
       // Use rawInput for detection to avoid decoded output
       packer = isAuto2 ? detect(rawInput, forceDetect) : form.encode.value;
-
+console.log(packer)
       if (packer === 'nicify') return;
       if (packer === '') {
         format();
@@ -279,6 +279,14 @@ console.log('Test match 4 (shift loop):', /\w+\[['"]push['"]]\(\w+\[['"]shift['"
 
       if (!workerDecode) {
         workerDecode = new Worker('https://Cqmbo1.github.io/assets/deobfuscate/worker/decode.js');
+  // Ensure dependencies are loaded in the worker
+  workerDecode.postMessage({
+    dependencies: [
+      'https://unpkg.com/acorn',
+      'https://unpkg.com/acorn-walk',
+      'https://unpkg.com/astring',
+    ],
+  });
         workerDecode.addEventListener('message', function (e) {
           if (e.data !== temp) {
             temp = e.data; // Update temp with decoded output
@@ -289,6 +297,11 @@ console.log('Test match 4 (shift loop):', /\w+\[['"]push['"]]\(\w+\[['"]shift['"
       }
 
       startEffect();
+      if (!packer) {
+  console.error('packer is undefined or empty, cannot decode');
+  return; // or handle gracefully
+}
+      console.log(packer)
       workerDecode.postMessage({
         source: temp,
         packer: packer,
