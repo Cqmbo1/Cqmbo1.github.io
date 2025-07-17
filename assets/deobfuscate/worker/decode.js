@@ -6,7 +6,7 @@
  * @license  MIT
  */
 
-/* globals EvalDecode, ArrayDecode, _NumberDecode, JSFuckDecode, ObfuscatorIO, CleanSource, AADecode, JJdecode, Urlencoded, P_A_C_K_E_R, JavascriptObfuscator, MyObfuscate, Wise_EvalDecode, Wise_FunctionalDecode */
+/* globals EvalDecode, ArrayDecode, _NumberDecode, JSFuckDecode, ObfuscatorIO, CleanSource, AADecode, JJdecode, Urlencoded, P_A_C_K_E_R, JavascriptObfuscator, MyObfuscate, Wise_EvalDecode, Wise_FunctionalDecode, acorn, acornWalk, astring */
 /* eslint-disable no-console */
 
 self.addEventListener('message', (e) => {
@@ -36,7 +36,13 @@ self.addEventListener('message', (e) => {
       return JSFuckDecode(source);
     },
     obfuscatorio: () => {
-      self.importScripts(base + 'lib/obfuscatorio.js');
+      // Load Acorn dependencies before obfuscatorio.js
+      self.importScripts(
+        'https://unpkg.com/acorn@8.10.0/dist/acorn.js',
+        'https://cqmbo1.github.io/assets/deobfuscate/acorn-walk.umd.min.js',
+        'https://unpkg.com/astring@1.8.6/dist/astring.min.js',
+        base + 'lib/obfuscatorio.js'
+      );
       return ObfuscatorIO(source, options);
     },
     cleansource: () => {
@@ -80,6 +86,13 @@ self.addEventListener('message', (e) => {
       return Wise_FunctionalDecode(source);
     },
   };
+
+  if (typeof methods[packer] !== 'function') {
+  console.error("decode called with packer:", packer);
+
+    throw new Error(`Unsupported packer: ${packer}`);
+}
+
 
   try {
     source = methods[packer]();
