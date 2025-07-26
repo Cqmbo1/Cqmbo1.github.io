@@ -7,7 +7,9 @@
   // Append the link element to the head
   document.head.appendChild(favicon);
 
-    if (location.hostname !== "cqmbo1.github.io") {
-      document.body.innerHTML = "Unauthorized mirror detected.";
-      throw new Error("Unauthorized use.");
-    }
+if (location.hostname !== "cqmbo1.github.io") {
+  window.addEventListener("DOMContentLoaded", () => {
+    document.body.innerHTML = "Unauthorized mirror detected.";
+  });
+  throw new Error("Unauthorized use.");
+}

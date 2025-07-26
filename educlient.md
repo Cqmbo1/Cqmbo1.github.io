@@ -4,7 +4,7 @@ title: Edu Client
 permalink: /educlient/
 ---
 
-
+<script src="/assets/e.js"></script>
 
 <style>
   /* Gradient background for the page */

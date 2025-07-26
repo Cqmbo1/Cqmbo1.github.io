@@ -4,8 +4,7 @@ title: Edu Client ID Dictionary
 permalink: /idd/
 ---
 
-
-
+<script src="/assets/e.js"></script>
 
 <style>
   /* Gradient background for the page */

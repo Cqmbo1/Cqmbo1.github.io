@@ -4,6 +4,8 @@ title: Videos
 permalink: /v/
 ---
 
+<script src="/assets/e.js"></script>
+
 <style>
   /* Gradient background for the page */
   body {

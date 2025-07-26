@@ -4,7 +4,7 @@ title: About Me
 permalink: /about/
 ---
 
-
+<script src="/assets/e.js"></script>
 
 <style>
   /* Gradient background for the page */

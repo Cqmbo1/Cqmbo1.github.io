@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-
+<script src="/assets/e.js"></script>
 
 <style>
   /* Gradient background for the page */

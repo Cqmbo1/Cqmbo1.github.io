@@ -4,6 +4,8 @@ title: How To Get & Use EDU Client
 permalink: /how-to/
 ---
 
+<script src="/assets/e.js"></script>
+
 <head>
 <link rel="icon" href="/assets/cqmbo__32x32.png" type="image/x-icon">
 </head>
