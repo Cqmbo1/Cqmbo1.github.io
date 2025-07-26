@@ -6,7 +6,6 @@
  * @license  MIT
  */
 
-
 /* globals ClipboardJS */
 
 (function () {
@@ -46,14 +45,12 @@
         offset += chunkSize;
         chunkReaderBlock(offset, chunkSize, file);
       };
-
     chunkReaderBlock = function (_offset, length, _file) {
       var r = new FileReader();
       var blob = _file.slice(_offset, length + _offset);
       r.onload = readEventHandler;
       r.readAsText(blob);
     };
-
     chunkReaderBlock(offset, chunkSize, file);
   }
 
@@ -87,6 +84,7 @@
     form = document.de4js,
     packer = form.encode.value,
     temp = '',
+    rawInput = '',
     disableAll = function (check) {
       for (var i = 0; i < encode.length; i++) {
         if (encode[i].value === 'nicify') continue;
@@ -110,7 +108,6 @@
       clear.disabled = true;
       autoBtn.disabled = true;
       disableAll(true);
-
       options = Array.from(document.querySelectorAll('.de4js-option')).reduce((obj, e) => {
         obj[e.name] = e.checked;
         return obj;
@@ -139,31 +136,22 @@
     externalUrl,
     externalPreview = function (source) {
       if (externalUrl) URL.revokeObjectURL(externalUrl);
-
       source =
         '<html><head><meta charset="utf-8"><link rel="shortcut icon" type="image/png" href="https://lelinhtinh.github.io/de4js/favicon.png"><title>de4js | Preview</title><style>' +
         externalStyle +
         '</style></head><body><pre class="hljs">' +
         source +
         '</pre></body></html>';
-
-      externalUrl = new Blob([source], {
-        type: 'text/html',
-      });
+      externalUrl = new Blob([source], { type: 'text/html' });
       externalUrl = URL.createObjectURL(externalUrl);
-
       preview.classList.add('show');
       preview.href = externalUrl;
     },
     downloadUrl,
     downloadResult = function (source) {
       if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-
-      downloadUrl = new Blob([source], {
-        type: 'text/javascript',
-      });
+      downloadUrl = new Blob([source], { type: 'text/javascript' });
       downloadUrl = URL.createObjectURL(downloadUrl);
-
       download.classList.add('show');
       download.href = downloadUrl;
     },
@@ -175,7 +163,6 @@
     },
     format = debounce(function () {
       if (temp === '') return;
-
       if (!workerFormat) {
         workerFormat = new Worker('https://Cqmbo1.github.io/assets/deobfuscate/worker/format.js');
         workerFormat.addEventListener('message', function (e) {
@@ -183,14 +170,11 @@
             downloadResult(e.data.result);
             return;
           }
-
           view.innerHTML = e.data.result;
           externalPreview(e.data.result);
-
           stopEffect();
         });
       }
-
       startEffect();
       workerFormat.postMessage({
         source: temp,
@@ -199,13 +183,13 @@
       workerFormat.addEventListener('error', workerError);
     }, 250),
     isObfuscatorIO = function (source) {
-  let score = 0;
-  if (/\bfunction\s+\w+\(\w+,\s*\w+\)\s*\{[\s\S]+?\w+=function\(\w+,\s*\w+\)\s*\{[\s\S]+?return\s+\w+;/.test(source)) score++;
-  if (/\bfunction\s+(\w+)\s*\(\)\s*\{\s*var\s+\w+\s*=\s*\[[^\]]+\];\s*\1\s*=\s*function\s*\(\)\s*\{\s*return\s+\w+;\s*\};\s*return\s+\1\(\);\s*\}/.test(source)) score++;
-  if (/\bwhile\s*\(\s*!!\[\]\s*\)/.test(source)) score++;
-  if (/\w+\[['"]push['"]]\(\w+\[['"]shift['"]]\(\)\)/.test(source)) score++;
-  return score >= 3;
-},
+      let score = 0;
+      if (/\bfunction\s+\w+\(\w+,\s*\w+\)\s*\{[\s\S]+?\w+=function\(\w+,\s*\w+\)\s*\{[\s\S]+?return\s+\w+;/.test(source)) score++;
+      if (/\bfunction\s+(\w+)\s*\(\)\s*\{\s*var\s+\w+\s*=\s*\[[^\]]+\];\s*\1\s*=\s*function\s*\(\)\s*\{\s*return\s+\w+;\s*\};\s*return\s+\1\(\);\s*\}/.test(source)) score++;
+      if (/\bwhile\s*\(\s*!!\[\]\s*\)/.test(source)) score++;
+      if (/\w+\[['"]push['"]]\(\w+\[['"]shift['"]]\(\)\)/.test(source)) score++;
+      return score >= 3;
+    },
     detect = function (source, forceDetect = false) {
       console.log('detect: source=', source);
       const selectedRadioId = localStorage.getItem('selectedRadio');
@@ -213,7 +197,6 @@
         console.log('detect: using localStorage radio=', selectedRadioId);
         return document.getElementById(selectedRadioId).value;
       }
-
       var type = '';
       if (/^var\s_\d{4};[\s\n]*var\s_\d{4}\s?=/.test(source)) {
         type = '_numberencode';
@@ -223,13 +206,11 @@
         type = 'jjencode';
       } else if (source.replace(/[[\]()!+]/gm, '').trim() === '') {
         type = 'jsfuck';
-      } else if (
-        /%[0-9A-Fa-f]{2}/.test(source) && (source.indexOf(' ') === -1 || source.includes('%20'))
-      ) {
+      } else if (/%[0-9A-Fa-f]{2}/.test(source) && (source.indexOf(' ') === -1 || source.includes('%20'))) {
         type = 'urlencode';
-} else if (isObfuscatorIO(source)) {
-  type = 'obfuscatorio';
-} else if (/^var\s+((?![^_a-zA-Z$])[\w$]*)\s*=\s*\[.*?\];/.test(source)) {
+      } else if (isObfuscatorIO(source)) {
+        type = 'obfuscatorio';
+      } else if (/^var\s+((?![^_a-zA-Z$])[\w$]*)\s*=\s*\[.*?\];/.test(source)) {
         type = 'arrayencode';
       } else if (
         source.startsWith('//Protected by WiseLoop PHP JavaScript Obfuscator') ||
@@ -243,65 +224,86 @@
           type = 'evalencode';
         }
       }
-
       console.log('detect: type=', type);
-            console.log('Test match 1 (lookup function):', /\bfunction\s+\w+\(\w+,\s*\w+\)\s*\{[^}]*?return\s+\w+\(\w+,\s*\w+\);?\s*\}/.test(source));
-console.log('Test match 2 (array-returning closure):', /\bfunction\s+\w+\(\)\s*\{\s*var\s+\w+=\[[^\]]+\];\s*\w+=function\s*\(\)\s*\{\s*return\s+\w+;\s*\};\s*return\s+\w+\(\);\s*\}/.test(source));
-console.log('Test match 3 (while true):', /\bwhile\s*\(\s*!!\[\]\s*\)/.test(source));
-console.log('Test match 4 (shift loop):', /\w+\[['"]push['"]]\(\w+\[['"]shift['"]]\(\)\)/.test(source));
-
+      console.log('Test match 1 (lookup function):', /\bfunction\s+\w+\(\w+,\s*\w+\)\s*\{[^}]*?return\s+\w+\(\w+,\s*\w+\);?\s*\}/.test(source));
+      console.log('Test match 2 (array-returning closure):', /\bfunction\s+\w+\(\)\s*\{\s*var\s+\w+=\[[^\]]+\];\s*\w+=function\s*\(\)\s*\{\s*return\s+\w+;\s*\};\s*return\s+\w+\(\);\s*\}/.test(source));
+      console.log('Test match 3 (while true):', /\bwhile\s*\(\s*!!\[\]\s*\)/.test(source));
+      console.log('Test match 4 (shift loop):', /\w+\[['"]push['"]]\(\w+\[['"]shift['"]]\(\)\)/.test(source));
       document.querySelector('.magic-radio:checked').checked = false;
       const radioToCheck = document.querySelector('.magic-radio[value="' + type + '"]');
       if (radioToCheck) {
         radioToCheck.checked = true;
       }
-
       return type;
     },
     decode = debounce(function (forceDetect = false, e) {
       if (temp === '') {
-        rawInput = input.value.trim(); // Store raw input
+        rawInput = input.value.trim();
         temp = rawInput;
       }
       temp = temp.replace(/\/\*(?!\s*@de4js)[\s\S]*?\*\/|^[\s\t]*\/\/.*/gm, '');
       if (temp === '') return;
-      let isAuto2 = e || isAuto; 
-
+      let isAuto2 = e || isAuto;
       console.log('decode: rawInput=', rawInput, 'temp=', temp, 'isAuto=', isAuto2, 'forceDetect=', forceDetect);
-      // Use rawInput for detection to avoid decoded output
       packer = isAuto2 ? detect(rawInput, forceDetect) : form.encode.value;
-console.log(packer)
+      console.log('packer=', packer);
       if (packer === 'nicify') return;
+      if (packer === 'obfuscatorio') {
+        const config = {
+          silent: document.getElementById('silent').checked,
+          objectSimplification: {
+            isEnabled: document.getElementById('objectSimplification').checked,
+            unsafeReplace: true
+          },
+          objectPacking: { isEnabled: document.getElementById('objectPacking').checked },
+          proxyFunctionInlining: { isEnabled: document.getElementById('proxyFunctionInlining').checked },
+          stringRevealing: { isEnabled: document.getElementById('stringRevealing').checked },
+          expressionSimplification: { isEnabled: document.getElementById('expressionSimplification').checked },
+          constantPropagation: { isEnabled: document.getElementById('constantPropagation').checked },
+          reassignmentRemoval: { isEnabled: document.getElementById('reassignmentRemoval').checked },
+          sequenceSplitting: { isEnabled: document.getElementById('sequenceSplitting').checked },
+          controlFlowRecovery: { isEnabled: document.getElementById('controlFlowRecovery').checked },
+          deadBranchRemoval: { isEnabled: document.getElementById('deadBranchRemoval').checked },
+          antiTamperRemoval: { isEnabled: document.getElementById('antiTamperRemoval').checked },
+          unusedVariableRemoval: { isEnabled: document.getElementById('unusedVariableRemoval').checked },
+          propertySimplification: { isEnabled: document.getElementById('propertySimplification').checked }
+        };
+        try {
+          startEffect();
+          temp = window.deobfuscator.deobfuscate(temp, config);
+          readable.value = temp;
+          format();
+        } catch (err) {
+          workerError(err);
+        }
+        return;
+      }
       if (packer === '') {
         format();
         return;
       }
-
       if (!workerDecode) {
         workerDecode = new Worker('https://Cqmbo1.github.io/assets/deobfuscate/worker/decode.js');
-  // Ensure dependencies are loaded in the worker
-  workerDecode.postMessage({
-    dependencies: [
-      'https://unpkg.com/acorn',
-      'https://unpkg.com/acorn-walk',
-      'https://unpkg.com/astring',
-    ],
-  });
+        workerDecode.postMessage({
+          dependencies: [
+            'https://unpkg.com/acorn',
+            'https://unpkg.com/acorn-walk',
+            'https://unpkg.com/astring',
+          ],
+        });
         workerDecode.addEventListener('message', function (e) {
           if (e.data !== temp) {
-            temp = e.data; // Update temp with decoded output
-            format(); // Format the decoded output
+            temp = e.data;
+            format();
           }
         });
         workerDecode.addEventListener('error', workerError);
       }
-
       startEffect();
       if (!packer) {
-  console.error('packer is undefined or empty, cannot decode');
-  return; // or handle gracefully
-}
-      console.log(packer)
+        console.error('packer is undefined or empty, cannot decode');
+        return;
+      }
       workerDecode.postMessage({
         source: temp,
         packer: packer,
@@ -324,13 +326,13 @@ console.log(packer)
         return;
       }
       temp = '';
-      rawInput = ''; // Reset rawInput
+      rawInput = '';
       renderLocal.textContent = '';
       parseFile(
         fileObj,
         function (data) {
           temp += data;
-          rawInput += data; // Store raw input
+          rawInput += data;
           var txt = document.createTextNode(data);
           fragment.appendChild(txt);
         },
@@ -343,29 +345,28 @@ console.log(packer)
     };
 
   input.oninput = function () {
-    rawInput = input.value.trim(); // Update rawInput on input change
+    rawInput = input.value.trim();
     temp = rawInput;
     decode(true, false);
   };
 
-form.addEventListener('change', function(e) {
-      rawInput = input.value.trim(); // Ensure rawInput is up-to-date
+  form.addEventListener('change', function (e) {
+    rawInput = input.value.trim();
     temp = rawInput;
-  changeEncode(e);
-  decode(true,false);
-});
+    changeEncode(e);
+    decode(true, false);
+  });
 
-form.addEventListener('click', function(e) {
-      rawInput = input.value.trim(); // Ensure rawInput is up-to-date
+  form.addEventListener('click', function (e) {
+    rawInput = input.value.trim();
     temp = rawInput;
-  changeEncode(e);
-  decode(true, false);
-});
-
+    changeEncode(e);
+    decode(true, false);
+  });
 
   autoBtn.onclick = function () {
     isAuto = true;
-    rawInput = input.value.trim(); // Ensure rawInput is up-to-date
+    rawInput = input.value.trim();
     temp = rawInput;
     decode(true);
   };
@@ -390,7 +391,7 @@ form.addEventListener('click', function(e) {
     urlRemove.value = '';
     none.click();
     temp = '';
-    rawInput = ''; // Reset rawInput
+    rawInput = '';
     stopEffect();
     if (workerDecode) {
       workerDecode.terminate();
@@ -403,21 +404,16 @@ form.addEventListener('click', function(e) {
     preview.classList.remove('show');
   };
 
-
   window.addEventListener('online', updateOnlineStatus);
   window.addEventListener('offline', updateOnlineStatus);
   updateOnlineStatus();
 
-  // Tabs control
   wrapper.addEventListener('click', function (e) {
     var _this = e.target;
     if (!_this.classList.contains('tab')) return;
-
     clear.click();
-
     wrapper.querySelector('.tab.active').classList.remove('active');
     _this.classList.add('active');
-
     wrapper.querySelector('.tab-content.show').classList.remove('show');
     wrapper.querySelector('#content' + _this.dataset.target).classList.add('show');
   });
@@ -436,10 +432,8 @@ form.addEventListener('click', function(e) {
 
   document.ondrop = function (e) {
     e.preventDefault();
-
     dragEnd();
     if (e.target.id !== 'contentLocal') return;
-
     uploadFile(e.dataTransfer.files[0]);
   };
 
@@ -477,18 +471,15 @@ form.addEventListener('click', function(e) {
     e.preventDefault();
     var fragment = new DocumentFragment(),
       url = urlRemove.value;
-
     temp = '';
     renderRemove.textContent = '';
-
     fetch(url)
       .then(function (res) {
         if (!res.ok) {
           throw Error(res.statusText);
         }
         if (
-          res.headers.get('content-type').search(/((text|application)\/(ecmascript|(x-)?javascript)|text\/plain)/i) ===
-          -1
+          res.headers.get('content-type').search(/((text|application)\/(ecmascript|(x-)?javascript)|text\/plain)/i) === -1
         ) {
           throw Error('Invalid file type');
         }
@@ -496,8 +487,8 @@ form.addEventListener('click', function(e) {
       })
       .then(function (data) {
         temp = data;
+        rawInput = data;
         decode();
-
         var txt = document.createTextNode(data);
         fragment.appendChild(txt);
         renderRemove.appendChild(fragment);

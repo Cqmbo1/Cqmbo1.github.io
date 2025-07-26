@@ -6,7 +6,6 @@ permalink: /deobfuscate
 
 <!DOCTYPE html>
 <html lang="en-US">
-
 <head>
   <meta charset='utf-8'>
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -14,51 +13,41 @@ permalink: /deobfuscate
   <meta name="google-site-verification" content="BbaaM88Az_X9Kkutg_1d0lgK5u9URFdntKd8lB41hLs">
   <link rel="icon" href="favicon.ico">
   <link rel="manifest" href="manifest.webmanifest">
-  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&amp;subset=latin-ext,vietnamese" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&subset=latin-ext,vietnamese" rel="stylesheet">
   <link rel="stylesheet" href="https://Cqmbo1.github.io/assets/deobfuscate/css/style.css">
   <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Deobs | JavaScript Deobfuscator and Unpacker</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Deobfuscate" />
-<meta name="author" content="Cqmbo__" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="JavaScript Deobfuscator and Unpacker" />
-<meta property="og:description" content="JavaScript Deobfuscator and Unpacker" />
-<link rel="canonical" href="https://cqmbo1.github.io/deobfuscate/" />
-<meta property="og:url" content="https://cqmbo1.github.io/deobfuscate/" />
-<meta property="og:site_name" content="de4js" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="de4js" />
-<script type="application/ld+json">
-{"headline":"Cqmbo__ Deobfuscator","description":"JS Deobfuscator and Unpacker","url":"https://cqmbo1.github.io/deobfuscate/","@type":"WebSite","name":"Deobfuscator","author":{"@type":"Person","name":"Cqmbo__"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-
-
+  <title>Deobs | JavaScript Deobfuscator and Unpacker</title>
+  <meta name="generator" content="Jekyll v3.9.0" />
+  <meta property="og:title" content="Deobfuscate" />
+  <meta name="author" content="Cqmbo__" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="description" content="JavaScript Deobfuscator and Unpacker" />
+  <meta property="og:description" content="JavaScript Deobfuscator and Unpacker" />
+  <link rel="canonical" href="https://cqmbo1.github.io/deobfuscate/" />
+  <meta property="og:url" content="https://cqmbo1.github.io/deobfuscate/" />
+  <meta property="og:site_name" content="de4js" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="twitter:title" content="de4js" />
+  <script type="application/ld+json">
+    {"headline":"Cqmbo__ Deobfuscator","description":"JS Deobfuscator and Unpacker","url":"https://cqmbo1.github.io/deobfuscate/","@type":"WebSite","name":"Deobfuscator","author":{"@type":"Person","name":"Cqmbo__"},"@context":"https://schema.org"}
+  </script>
+  <!-- End Jekyll SEO tag -->
   <script src="/assets/e.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106940288-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments)
-    };
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'UA-106940288-1');
-
   </script>
-  
+  <script src="https://cqmbo1.github.io/assets/deobfuscate/obfuscateio/deobfuscator.js"></script>
 </head>
-
 <body>
-
   <header>
     <div class="container">
       <h1 id="title">Deobfuscator<sup>2.0.0</sup></h1>
       <h2>JavaScript Deobfuscator and Unpacker</h2>
-
       <section id="downloads">
-        
         <a href="https://github.com/cqmbo1/cqmbo1.github.io" target="_blank" class="btn btn-github">
           <span class="icon"></span>
           View on GitHub
@@ -66,7 +55,6 @@ permalink: /deobfuscate
       </section>
     </div>
   </header>
-
   <div class="container">
     <section id="main_content">
       <div class="tabs">
@@ -98,142 +86,125 @@ permalink: /deobfuscate
           <pre id="renderRemove" class="render read-only"></pre>
         </div>
       </div>
-
       <div class="config tab-content show">
         <form name="de4js">
           <div class="methods-wrap">
             <input id="none" class="magic-radio" type="radio" value="" name="encode">
             <label for="none">None</label>
-            
             <input id="evalencode" class="magic-radio de4js-method" type="radio" value="evalencode" name="encode">
             <label for="evalencode">Eval</label>
-            
             <input id="arrayencode" class="magic-radio de4js-method" type="radio" value="arrayencode" name="encode">
             <label for="arrayencode">Array</label>
-            
             <input id="obfuscatorio" class="magic-radio de4js-method" type="radio" value="obfuscatorio" name="encode">
             <label for="obfuscatorio">Obfuscator IO</label>
-            
             <input id="_numberencode" class="magic-radio de4js-method" type="radio" value="_numberencode" name="encode">
             <label for="_numberencode">_Number</label>
-            
             <input id="jsfuck" class="magic-radio de4js-method" type="radio" value="jsfuck" name="encode">
             <label for="jsfuck">JSFuck</label>
-            
             <input id="jjencode" class="magic-radio de4js-method" type="radio" value="jjencode" name="encode">
             <label for="jjencode">JJencode</label>
-            
             <input id="aaencode" class="magic-radio de4js-method" type="radio" value="aaencode" name="encode">
             <label for="aaencode">AAencode</label>
-            
             <input id="urlencode" class="magic-radio de4js-method" type="radio" value="urlencode" name="encode">
             <label for="urlencode">URLencode</label>
-            
             <input id="p_a_c_k_e_r" class="magic-radio de4js-method" type="radio" value="p_a_c_k_e_r" name="encode">
             <label for="p_a_c_k_e_r">Packer</label>
-            
             <input id="javascriptobfuscator" class="magic-radio de4js-method" type="radio" value="javascriptobfuscator" name="encode">
             <label for="javascriptobfuscator">JS Obfuscator</label>
-            
             <input id="myobfuscate" class="magic-radio de4js-method" type="radio" value="myobfuscate" name="encode">
             <label for="myobfuscate">My Obfuscate</label>
-                                    
             <input id="cleansource" class="magic-radio de4js-method" type="radio" value="cleansource" name="encode">
             <label for="cleansource">Clean Source</label>
-            
             <input id="nicify" class="magic-radio" type="radio" value="nicify" name="encode" disabled>
             <label for="nicify">
-              <a href="https://github.com/lelinhtinh/de4js/blob/master/README.md#helper" target="_blank"
-                class="help">Unreadable</a>
+              <a href="https://github.com/lelinhtinh/de4js/blob/master/README.md#helper" target="_blank" class="help">Unreadable</a>
             </label>
           </div>
           <div class="options-wrap">
-            
-            <input id="lineNumbers" class="magic-checkbox de4js-option" type="checkbox" value="yes"
-              name="lineNumbers" >
+            <input id="lineNumbers" class="magic-checkbox de4js-option" type="checkbox" value="yes" name="lineNumbers">
             <label for="lineNumbers">Line numbers</label>
-            
-            <input id="formatCode" class="magic-checkbox de4js-option" type="checkbox" value="yes"
-              name="formatCode"  checked >
+            <input id="formatCode" class="magic-checkbox de4js-option" type="checkbox" value="yes" name="formatCode" checked>
             <label for="formatCode">Format Code</label>
-            
-            <input id="_unescape" class="magic-checkbox de4js-option" type="checkbox" value="yes"
-              name="_unescape" >
+            <input id="_unescape" class="magic-checkbox de4js-option" type="checkbox" value="yes" name="_unescape">
             <label for="_unescape">Unescape strings</label>
-            
-            <input id="methodChain" class="magic-checkbox de4js-option" type="checkbox" value="yes"
-              name="methodChain"  checked >
+            <input id="methodChain" class="magic-checkbox de4js-option" type="checkbox" value="yes" name="methodChain" checked>
             <label for="methodChain">Recover object-path</label>
-            
-            <input id="calc" class="magic-checkbox de4js-option" type="checkbox" value="yes"
-              name="calc" >
+            <input id="calc" class="magic-checkbox de4js-option" type="checkbox" value="yes" name="calc">
             <label for="calc">Execute expression</label>
-            
-            <input id="strMerge" class="magic-checkbox de4js-option" type="checkbox" value="yes"
-              name="strMerge"  checked >
+            <input id="strMerge" class="magic-checkbox de4js-option" type="checkbox" value="yes" name="strMerge" checked>
             <label for="strMerge">Merge strings</label>
-            
-            <input id="removeGrouping" class="magic-checkbox de4js-option" type="checkbox" value="yes"
-              name="removeGrouping" >
+            <input id="removeGrouping" class="magic-checkbox de4js-option" type="checkbox" value="yes" name="removeGrouping">
             <label for="removeGrouping">Remove grouping</label>
-            
+          </div>
+          <div class="obfuscatorio-options" style="display: none;">
+            <h3>Obfuscator IO Options</h3>
+            <input id="silent" class="magic-checkbox" type="checkbox" name="silent">
+            <label for="silent">Silent</label>
+            <input id="objectSimplification" class="magic-checkbox" type="checkbox" name="objectSimplification" checked>
+            <label for="objectSimplification">Object Simplification</label>
+            <input id="objectPacking" class="magic-checkbox" type="checkbox" name="objectPacking" checked>
+            <label for="objectPacking">Object Packing</label>
+            <input id="proxyFunctionInlining" class="magic-checkbox" type="checkbox" name="proxyFunctionInlining" checked>
+            <label for="proxyFunctionInlining">Proxy Function Inlining</label>
+            <input id="stringRevealing" class="magic-checkbox" type="checkbox" name="stringRevealing" checked>
+            <label for="stringRevealing">String Revealing</label>
+            <input id="expressionSimplification" class="magic-checkbox" type="checkbox" name="expressionSimplification" checked>
+            <label for="expressionSimplification">Expression Simplification</label>
+            <input id="constantPropagation" class="magic-checkbox" type="checkbox" name="constantPropagation" checked>
+            <label for="constantPropagation">Constant Propagation</label>
+            <input id="reassignmentRemoval" class="magic-checkbox" type="checkbox" name="reassignmentRemoval" checked>
+            <label for="reassignmentRemoval">Reassignment Removal</label>
+            <input id="sequenceSplitting" class="magic-checkbox" type="checkbox" name="sequenceSplitting" checked>
+            <label for="sequenceSplitting">Sequence Splitting</label>
+            <input id="controlFlowRecovery" class="magic-checkbox" type="checkbox" name="controlFlowRecovery" checked>
+            <label for="controlFlowRecovery">Control Flow Recovery</label>
+            <input id="deadBranchRemoval" class="magic-checkbox" type="checkbox" name="deadBranchRemoval" checked>
+            <label for="deadBranchRemoval">Dead Branch Removal</label>
+            <input id="antiTamperRemoval" class="magic-checkbox" type="checkbox" name="antiTamperRemoval" checked>
+            <label for="antiTamperRemoval">Anti-Tamper Removal</label>
+            <input id="unusedVariableRemoval" class="magic-checkbox" type="checkbox" name="unusedVariableRemoval" checked>
+            <label for="unusedVariableRemoval">Unused Variable Removal</label>
+            <input id="propertySimplification" class="magic-checkbox" type="checkbox" name="propertySimplification" checked>
+            <label for="propertySimplification">Property Simplification</label>
           </div>
         </form>
       </div>
-
       <div class="center">
-        <button id="clear" class="btn" type="reset">
-          Clear
-        </button>
-        <button id="auto" class="btn" type="button">
-          Auto Decode
-        </button>
+        <button id="clear" class="btn" type="reset">Clear</button>
+        <button id="auto" class="btn" type="button">Auto Decode</button>
       </div>
-
       <div class="view-wrap">
         <div class="view-control">
           <button id="copyjs" class="btn" type="button">
-            <img class="btn-icon" src="https://Cqmbo1.github.io/assets/deobfuscate/images/buttons/copy-document.png"
-              alt="Copy to clipboard">
+            <img class="btn-icon" src="https://Cqmbo1.github.io/assets/deobfuscate/images/buttons/copy-document.png" alt="Copy to clipboard">
           </button>
           <a id="download" class="btn" type="button" href="#" download="result.js">
             <img class="btn-icon" src="https://Cqmbo1.github.io/assets/deobfuscate/images/buttons/download.png" alt="Download file">
           </a>
           <a id="preview" class="btn" type="button" href="#">
-            <img class="btn-icon" src="https://Cqmbo1.github.io/assets/deobfuscate/images/buttons/external-link-symbol.png"
-              alt="Open in new tab">
+            <img class="btn-icon" src="https://Cqmbo1.github.io/assets/deobfuscate/images/buttons/external-link-symbol.png" alt="Open in new tab">
           </a>
         </div>
         <textarea id="readable"></textarea>
         <pre id="view" class="hljs" style="background-color: black;"></pre>
       </div>
     </section>
-
     <footer id="footer">
       <section class="credits">
         <h3>Credits</h3>
-        <p>Project maintained by <a href="https://github.com/cqmbo1" title="lelinhtinh">lelinhtinh</a>
-          <br>Hosted on GitHub Pages
-        </p>
-        <p>Icons made by <a target="_blank" href="https://www.flaticon.com/free-icon/artificial-intelligence_653469"
-            title="Eucalyp">Eucalyp</a></p>
+        <p>Project maintained by <a href="https://github.com/cqmbo1" title="lelinhtinh">lelinhtinh</a><br>Hosted on GitHub Pages</p>
+        <p>Icons made by <a target="_blank" href="https://www.flaticon.com/free-icon/artificial-intelligence_653469" title="Eucalyp">Eucalyp</a></p>
       </section>
     </footer>
   </div>
-
   <script type="text/javascript" src="https://Cqmbo1.github.io/assets/deobfuscate/third_party/clipboard-js/clipboard.min.js"></script>
   <script src="https://Cqmbo1.github.io/assets/deobfuscate/main.js" type="text/javascript"></script>
-
-  
   <script type="module">
     import { Workbox } from 'https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-window.prod.mjs';
-
     if ('serviceWorker' in navigator) {
       const wb = new Workbox("https://Cqmbo1.github.io/assets/deobfuscate/sw.js");
-
       wb.addEventListener('installed', (event) => {
         if (!event.isUpdate) return;
-
         caches.keys().then((cacheNames) =>
           Promise.all(
             cacheNames.map((cacheName) => {
@@ -242,169 +213,130 @@ permalink: /deobfuscate
             })
           )
         );
-
         if (confirm('A new version is downloaded. Launch it?')) {
           location.reload(true);
         }
       });
-
       wb.register();
     }
   </script>
-
   <script>
-  const nicify = document.getElementById('nicify'),
-        label = nicify.nextSibling.nextSibling.textContent,
-        none = document.getElementById('none'),
-        input = document.getElementById('input'),
-        output = document.getElementById('readable'),
-        view = document.getElementById('view');
-
-  function isOnline() {
-    nicify.disabled = !navigator.onLine;
-    return navigator.onLine;
-  }
-
-  function jsnice() {
-    if (!isOnline()) return;
-    const txt = view.textContent.trim() || input.value.trim();
-    if (!txt) return;
-
-    view.classList.add('waiting');
-
-    fetch('https://jsnice.org/beautify?pretty=0&rename=1&types=0&packers=0&transpile=0&suggest=0', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-      },
-      body: txt
-    })
-    .then(res => res.json())
-    .then(response => {
-      let source = response.js;
-
-const selectedId = localStorage.getItem('selectedRadio');
-if (selectedId === 'nicify') {
-  nicify.checked = false;
-  none.checked = true;
-}
-
-
-
-      if (!source) {
-        view.textContent = 'Unknown error';
-      } else {
-        output.value = source;
-        output.onchange();
-      }
-    })
-    .catch(err => {
-      console.error(err);
-    });
-  }
-
-  nicify.disabled = false;
-  nicify.nextSibling.nextSibling.textContent = label;
-
-  window.addEventListener('online', isOnline);
-  window.addEventListener('offline', isOnline);
-  isOnline();
-</script>
-
-<script>
-
-function saveEditor() {
-  // Save textarea input
-  localStorage.setItem('savedProgress', document.getElementById('input').value);
-
-  // Save selected radio
-  const selectedRadio = document.querySelector('input[type="radio"][name="encode"]:checked');
-  if (selectedRadio) {
-    localStorage.setItem('selectedRadio', selectedRadio.id);
-  }
-
-  // Save checkbox states
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  const checkboxStates = {};
-  checkboxes.forEach(cb => {
-    checkboxStates[cb.id] = cb.checked;
-  });
-  localStorage.setItem('checkboxStates', JSON.stringify(checkboxStates));
-}
-
-function loadEditor() {
-  // Load textarea input
-  const saved = localStorage.getItem('savedProgress');
-  if (saved !== null) {
-    document.getElementById('input').value = saved;
-  }
-
-  // Load selected radio
-  const selectedRadioId = localStorage.getItem('selectedRadio');
-  if (selectedRadioId) {
-    const radio = document.getElementById(selectedRadioId);
-    if (radio) radio.checked = true;
-  } else {
-    const radio = document.getElementById('none');
-    if (radio) {
-      radio.checked = true;
-    } else {
-      alert('Currently, there is an error in the current page. Please contact the developer.')
+    const nicify = document.getElementById('nicify'),
+          label = nicify.nextSibling.nextSibling.textContent,
+          none = document.getElementById('none'),
+          input = document.getElementById('input'),
+          output = document.getElementById('readable'),
+          view = document.getElementById('view');
+    function isOnline() {
+      nicify.disabled = !navigator.onLine;
+      return navigator.onLine;
     }
-  }
-
-  // Load checkbox states
-  const checkboxStates = JSON.parse(localStorage.getItem('checkboxStates') || '{}');
-  for (const [id, checked] of Object.entries(checkboxStates)) {
-    const cb = document.getElementById(id);
-    if (cb) cb.checked = checked;
-  }
-
-  // Trigger decode button only after a short delay
-  setTimeout(() => {
-    document.getElementById('auto')?.click();
-  }, 500);
-}
-
-// Debounced input listener instead of aggressive interval
-document.getElementById('input').addEventListener('input', () => {
-  clearTimeout(window._saveDebounce);
-  window._saveDebounce = setTimeout(saveEditor, 300);
-});
-
-// Save on any radio change
-document.querySelectorAll('input[type="radio"][name="encode"]').forEach(r => {
-  r.addEventListener('change', saveEditor);
-});
-
-// Save on checkbox change
-document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-  cb.addEventListener('change', saveEditor);
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-  loadEditor();
-
-  // Delay enabling listeners until state is restored
-  setTimeout(() => {
-    input.addEventListener('input', () => {
-      if (nicify.checked) jsnice();
+    function jsnice() {
+      if (!isOnline()) return;
+      const txt = view.textContent.trim() || input.value.trim();
+      if (!txt) return;
+      view.classList.add('waiting');
+      fetch('https://jsnice.org/beautify?pretty=0&rename=1&types=0&packers=0&transpile=0&suggest=0', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: txt
+      })
+      .then(res => res.json())
+      .then(response => {
+        let source = response.js;
+        const selectedId = localStorage.getItem('selectedRadio');
+        if (selectedId === 'nicify') {
+          nicify.checked = false;
+          none.checked = true;
+        }
+        if (!source) {
+          view.textContent = 'Unknown error';
+        } else {
+          output.value = source;
+          output.onchange();
+        }
+      })
+      .catch(err => { console.error(err); })
+      .finally(() => { view.classList.remove('waiting'); });
+    }
+    nicify.disabled = false;
+    nicify.nextSibling.nextSibling.textContent = label;
+    window.addEventListener('online', isOnline);
+    window.addEventListener('offline', isOnline);
+    isOnline();
+  </script>
+  <script>
+    function saveEditor() {
+      localStorage.setItem('savedProgress', document.getElementById('input').value);
+      const selectedRadio = document.querySelector('input[type="radio"][name="encode"]:checked');
+      if (selectedRadio) {
+        localStorage.setItem('selectedRadio', selectedRadio.id);
+      }
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const checkboxStates = {};
+      checkboxes.forEach(cb => {
+        checkboxStates[cb.id] = cb.checked;
+      });
+      localStorage.setItem('checkboxStates', JSON.stringify(checkboxStates));
+    }
+    function loadEditor() {
+      const saved = localStorage.getItem('savedProgress');
+      if (saved !== null) {
+        document.getElementById('input').value = saved;
+      }
+      const selectedRadioId = localStorage.getItem('selectedRadio');
+      if (selectedRadioId) {
+        const radio = document.getElementById(selectedRadioId);
+        if (radio) radio.checked = true;
+      } else {
+        const radio = document.getElementById('none');
+        if (radio) radio.checked = true;
+        else alert('Currently, there is an error in the current page. Please contact the developer.');
+      }
+      const checkboxStates = JSON.parse(localStorage.getItem('checkboxStates') || '{}');
+      for (const [id, checked] of Object.entries(checkboxStates)) {
+        const cb = document.getElementById(id);
+        if (cb) cb.checked = checked;
+      }
+      setTimeout(() => {
+        document.getElementById('auto')?.click();
+          setTimeout(() => {
+            toggleObfuscatorIOOptions();
+          }, 500);
+      }, 500);
+    }
+    function toggleObfuscatorIOOptions() {
+      const obfuscatorioRadio = document.getElementById('obfuscatorio');
+      const obfuscatorioOptions = document.querySelector('.obfuscatorio-options');
+      obfuscatorioOptions.style.display = obfuscatorioRadio.checked ? 'block' : 'none';
+    }
+    document.getElementById('input').addEventListener('input', () => {
+      clearTimeout(window._saveDebounce);
+      window._saveDebounce = setTimeout(saveEditor, 300);
     });
-
-    nicify.addEventListener('click', () => {
-      if (nicify.checked) jsnice();
+    document.querySelectorAll('input[type="radio"][name="encode"]').forEach(r => {
+      r.addEventListener('change', () => {
+        saveEditor();
+        toggleObfuscatorIOOptions();
+      });
     });
-
-    nicify.addEventListener('change', () => {
-      if (nicify.checked) jsnice();
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', saveEditor);
     });
-  }, 100);
-});
-
-
-</script>
-
-  
+    window.addEventListener('DOMContentLoaded', () => {
+      loadEditor();
+      setTimeout(() => {
+        input.addEventListener('input', () => {
+          if (nicify.checked) jsnice();
+        });
+        nicify.addEventListener('click', () => {
+          if (nicify.checked) jsnice();
+        });
+        nicify.addEventListener('change', () => {
+          if (nicify.checked) jsnice();
+        });
+      }, 100);
+    });
+  </script>
 </body>
-
 </html>
