@@ -1,9 +1,3 @@
----
-layout: default
-title: JS Deobfuscator
-permalink: /deobfuscate
----
-
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -40,6 +34,8 @@ permalink: /deobfuscate
     gtag('js', new Date());
     gtag('config', 'UA-106940288-1');
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/prettier@2.8.8/standalone.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prettier@2.8.8/parser-babel.js"></script>
   <script src="/assets/deobfuscate/obfuscateio/deobfuscator.js"></script>
 </head>
 <body>
@@ -78,10 +74,8 @@ permalink: /deobfuscate
           <pre id="renderLocal" class="render read-only"></pre>
         </div>
         <div class="tab-content" id="contentRemote">
-          <form class="form-wrapper cf" id="formRemove">
-            <input type="url" placeholder="Enter a URL" id="urlRemove" required>
-            <button type="submit" class="btn" id="submitRemove">Submit</button>
-          </form>
+          <input type="url" placeholder="Enter a URL" id="urlRemove" required>
+          <button type="submit" class="btn" id="submitRemove">Submit</button>
           <small>Cross-origin requests require Access-Control-Allow-Origin header</small>
           <pre id="renderRemove" class="render read-only"></pre>
         </div>
@@ -221,16 +215,44 @@ permalink: /deobfuscate
     }
   </script>
   <script>
+    function formatCode(code) {
+      try {
+        return prettier.format(code, {
+          parser: "babel",
+          plugins: prettierPlugins,
+          printWidth: 80,
+          tabWidth: 2,
+          useTabs: false,
+          semi: true,
+          singleQuote: true,
+          trailingComma: "es5",
+          bracketSpacing: true,
+          arrowParens: "avoid"
+        });
+      } catch (e) {
+        console.error('Formatting error:', e);
+        return code;
+      }
+    }
+
+    function convertIndices(code) {
+      return code.replace(/v\((\d+)\)/g, (match, num) => {
+        const hex = (Number(num) + 0x108).toString(16);
+        return `v(0x${hex})`;
+      });
+    }
+
     const nicify = document.getElementById('nicify'),
-          label = nicify.nextSibling.nextSibling.textContent,
           none = document.getElementById('none'),
           input = document.getElementById('input'),
           output = document.getElementById('readable'),
           view = document.getElementById('view');
+
     function isOnline() {
       nicify.disabled = !navigator.onLine;
       return navigator.onLine;
     }
+
     function jsnice() {
       if (!isOnline()) return;
       const txt = view.textContent.trim() || input.value.trim();
@@ -252,20 +274,21 @@ permalink: /deobfuscate
         if (!source) {
           view.textContent = 'Unknown error';
         } else {
+          source = convertIndices(source);
+          source = formatCode(source);
           output.value = source;
-          output.onchange();
+          view.textContent = source;
         }
       })
       .catch(err => { console.error(err); })
       .finally(() => { view.classList.remove('waiting'); });
     }
+
     nicify.disabled = false;
-    nicify.nextSibling.nextSibling.textContent = label;
     window.addEventListener('online', isOnline);
     window.addEventListener('offline', isOnline);
     isOnline();
-  </script>
-  <script>
+
     function saveEditor() {
       localStorage.setItem('savedProgress', document.getElementById('input').value);
       const selectedRadio = document.querySelector('input[type="radio"][name="encode"]:checked');
@@ -279,6 +302,7 @@ permalink: /deobfuscate
       });
       localStorage.setItem('checkboxStates', JSON.stringify(checkboxStates));
     }
+
     function loadEditor() {
       const saved = localStorage.getItem('savedProgress');
       if (saved !== null) {
@@ -300,29 +324,34 @@ permalink: /deobfuscate
       }
       setTimeout(() => {
         document.getElementById('auto')?.click();
-          setTimeout(() => {
-            toggleObfuscatorIOOptions();
-          }, 500);
+        setTimeout(() => {
+          toggleObfuscatorIOOptions();
+        }, 500);
       }, 500);
     }
+
     function toggleObfuscatorIOOptions() {
       const obfuscatorioRadio = document.getElementById('obfuscatorio');
       const obfuscatorioOptions = document.querySelector('.obfuscatorio-options');
       obfuscatorioOptions.style.display = obfuscatorioRadio.checked ? 'block' : 'none';
     }
+
     document.getElementById('input').addEventListener('input', () => {
       clearTimeout(window._saveDebounce);
       window._saveDebounce = setTimeout(saveEditor, 300);
     });
+
     document.querySelectorAll('input[type="radio"][name="encode"]').forEach(r => {
       r.addEventListener('change', () => {
         saveEditor();
         toggleObfuscatorIOOptions();
       });
     });
+
     document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
       cb.addEventListener('change', saveEditor);
     });
+
     window.addEventListener('DOMContentLoaded', () => {
       loadEditor();
       setTimeout(() => {
