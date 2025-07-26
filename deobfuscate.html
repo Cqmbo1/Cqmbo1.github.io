@@ -14,7 +14,7 @@ permalink: /deobfuscate
   <link rel="icon" href="favicon.ico">
   <link rel="manifest" href="manifest.webmanifest">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&subset=latin-ext,vietnamese" rel="stylesheet">
-  <link rel="stylesheet" href="https://Cqmbo1.github.io/assets/deobfuscate/css/style.css">
+  <link rel="stylesheet" href="/assets/deobfuscate/css/style.css">
   <!-- Begin Jekyll SEO tag v2.7.1 -->
   <title>Deobs | JavaScript Deobfuscator and Unpacker</title>
   <meta name="generator" content="Jekyll v3.9.0" />
@@ -29,7 +29,7 @@ permalink: /deobfuscate
   <meta name="twitter:card" content="summary" />
   <meta property="twitter:title" content="de4js" />
   <script type="application/ld+json">
-    {"headline":"Cqmbo__ Deobfuscator","description":"JS Deobfuscator and Unpacker","url":"https://cqmbo1.github.io/deobfuscate/","@type":"WebSite","name":"Deobfuscator","author":{"@type":"Person","name":"Cqmbo__"},"@context":"https://schema.org"}
+    {"headline":"Cqmbo__ Deobfuscator","description":"JS Deobfuscator and Unpacker","url":"/deobfuscate/","@type":"WebSite","name":"Deobfuscator","author":{"@type":"Person","name":"Cqmbo__"},"@context":"https://schema.org"}
   </script>
   <!-- End Jekyll SEO tag -->
   <script src="/assets/e.js"></script>
@@ -40,7 +40,7 @@ permalink: /deobfuscate
     gtag('js', new Date());
     gtag('config', 'UA-106940288-1');
   </script>
-  <script src="https://cqmbo1.github.io/assets/deobfuscate/obfuscateio/deobfuscator.js"></script>
+  <script src="/assets/deobfuscate/obfuscateio/deobfuscator.js"></script>
 </head>
 <body>
   <header>
@@ -176,13 +176,13 @@ permalink: /deobfuscate
       <div class="view-wrap">
         <div class="view-control">
           <button id="copyjs" class="btn" type="button">
-            <img class="btn-icon" src="https://Cqmbo1.github.io/assets/deobfuscate/images/buttons/copy-document.png" alt="Copy to clipboard">
+            <img class="btn-icon" src="/assets/deobfuscate/images/buttons/copy-document.png" alt="Copy to clipboard">
           </button>
           <a id="download" class="btn" type="button" href="#" download="result.js">
-            <img class="btn-icon" src="https://Cqmbo1.github.io/assets/deobfuscate/images/buttons/download.png" alt="Download file">
+            <img class="btn-icon" src="/assets/deobfuscate/images/buttons/download.png" alt="Download file">
           </a>
           <a id="preview" class="btn" type="button" href="#">
-            <img class="btn-icon" src="https://Cqmbo1.github.io/assets/deobfuscate/images/buttons/external-link-symbol.png" alt="Open in new tab">
+            <img class="btn-icon" src="/assets/deobfuscate/images/buttons/external-link-symbol.png" alt="Open in new tab">
           </a>
         </div>
         <textarea id="readable"></textarea>
@@ -197,12 +197,12 @@ permalink: /deobfuscate
       </section>
     </footer>
   </div>
-  <script type="text/javascript" src="https://Cqmbo1.github.io/assets/deobfuscate/third_party/clipboard-js/clipboard.min.js"></script>
-  <script src="https://Cqmbo1.github.io/assets/deobfuscate/main.js" type="text/javascript"></script>
+  <script type="text/javascript" src="/assets/deobfuscate/third_party/clipboard-js/clipboard.min.js"></script>
+  <script src="/assets/deobfuscate/main.js" type="text/javascript"></script>
   <script type="module">
     import { Workbox } from 'https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-window.prod.mjs';
     if ('serviceWorker' in navigator) {
-      const wb = new Workbox("https://Cqmbo1.github.io/assets/deobfuscate/sw.js");
+      const wb = new Workbox("/assets/deobfuscate/sw.js");
       wb.addEventListener('installed', (event) => {
         if (!event.isUpdate) return;
         caches.keys().then((cacheNames) =>
