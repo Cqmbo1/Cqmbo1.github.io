@@ -4,7 +4,7 @@ title: About Me
 permalink: /about/
 ---
 
-<script src="/assets/e.js"></script>
+<script src="https://cqmbo1.github.io/assets/e.js"></script>o/assets/e.js"></script>
 
 <style>
   /* Gradient background for the page */
