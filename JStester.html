@@ -85,7 +85,7 @@ permalink: /tools/js-tester
 
     <!-- JSHint for Linting -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.13.6/jshint.min.js"></script>
-    <script src="https://cqmbo1.github.io/assets/e.js"></script>o/assets/e.js"></script>o/assets/e.js"></script>o/assets/e.js"></script>o/assets/e.js"></script>o/assets/e.js"></script>
+    <script src="https://cqmbo1.github.io/assets/e.js"></script>
 
     <style>
         body {
@@ -372,13 +372,13 @@ document.getElementById('clearCheckbox').checked = true;
 toggleCheckbox();
 
 function saveEditor() {
-localStorage.setItem('savedProgress', editor.getValue());
+localStorage.setItem('savedJSProgress', editor.getValue());
 }
 
 setInterval(saveEditor,10);
 
 function loadEditor() {
-editor.setValue(localStorage.getItem('savedProgress'));
+editor.setValue(localStorage.getItem('savedJSProgress'));
 }
 
 loadEditor();
