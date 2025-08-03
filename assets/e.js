@@ -95,6 +95,9 @@ if (location.hostname !== "cqmbo1.github.io") {
       previouslyOpen = false;
       clearAllTimeouts();
       document.body.innerHTML = "Developer tools closed. Redirect canceled. Good BOYYYYYYYY.";
+      setTimeout(() => {
+        location.reload();
+      },5000);
     }
   }
 
