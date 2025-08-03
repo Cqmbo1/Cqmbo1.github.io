@@ -116,7 +116,18 @@ if (location.hostname !== "cqmbo1.github.io") {
     requestAnimationFrame(() => {
       let end = performance.now();
       if (end - start > 100) {
-        document.body.innerHTML = "DevTools detected via event loop lag.";
+            timeoutIds.push(setTimeout(() => {
+      document.body.innerHTML = "DevTools detected via event loop lag. Execution halted. Redirecting in 3.";
+      timeoutIds.push(setTimeout(() => {
+        document.body.innerHTML = "DevTools detected via event loop lag. Execution halted. Redirecting in 2.";
+        timeoutIds.push(setTimeout(() => {
+          document.body.innerHTML = "DevTools detected via event loop lag.Execution halted. Redirecting in 1.";
+          timeoutIds.push(setTimeout(() => {
+            location.href = 'https://cqmbo1.github.io';
+          }, 1000));
+        }, 1000));
+      }, 1000));
+    }, 1000));
         throw new Error("DevTools interference detected.");
       }
     });
