@@ -6,6 +6,10 @@ permalink: /how-to/
 
 <script src="https://cqmbo1.github.io/assets/e.js"></script>
 
+<script src="https://cqmbo1.github.io/assets/linkgithub.js"></script>
+
+<script src="https://cqmbo1.github.io/assets/githubstyling.js"></script>
+
 <head>
 <link rel="icon" href="/assets/cqmbo__32x32.png" type="image/x-icon">
 </head>

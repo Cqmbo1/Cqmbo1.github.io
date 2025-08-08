@@ -5,6 +5,10 @@ title: Home
 
 <script src="https://cqmbo1.github.io/assets/e.js"></script>
 
+<script src="https://cqmbo1.github.io/assets/linkgithub.js"></script>
+
+<script src="https://cqmbo1.github.io/assets/githubstyling.js"></script>
+
 <style>
   /* Gradient background for the page */
   body {
