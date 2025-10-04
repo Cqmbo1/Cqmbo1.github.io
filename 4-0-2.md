@@ -10,11 +10,7 @@ Function("_65Ic2","const JceBIKM=[0,null,32,2,1,256,6,3,8,16,4,\"undefined\",\"L
 </script>
 {% endraw %}
 
-<script src="https://cqmbo1.github.io/assets/e.js"></script>
 
-<script src="https://cqmbo1.github.io/assets/linkgithub.js"></script>
-
-<script src="https://cqmbo1.github.io/assets/githubstyling.js"></script>
 
 <style>
   /* Gradient background for the page */
