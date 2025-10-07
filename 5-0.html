@@ -1,27 +1,355 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="/assets/cqmbo__32x32.png">
-  <style>
-    body {
-      background: linear-gradient(to bottom, #add8e6, #ffffff);
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding-top: 50px;
-      margin: 0;
-      color: #333;
-    }
-    a {
-      color: #0DC6D0;
-      text-decoration: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edu Client Ver. 5.0</title>
+    <style>
+        /* Gradient background for the page */
+        body {
+            background: linear-gradient(to bottom, #add8e6, #ffffff); /* Light blue to white gradient */
+            color: #333; /* Text color for readability */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            margin: 0;
+        }
+
+        /* Button styling */
+        .hbutton {
+            background-color: #8ED6F0; /* Brighter button color */
+            border: none;
+            color: white;
+            padding: 10px; /* Reduced padding */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px; /* Increased font size */
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative; /* For shine effect */
+            overflow: hidden; /* To contain shine effect */
+            transition: background-color 0.3s, width 0.3s;
+            min-width: 15%;
+        }
+
+        .hbutton:hover {
+            background-color: #0DC6D0;
+        }
+
+        .hbutton::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: rotate(50deg);
+            transition: all 0.5s ease;
+            opacity: 0.5; /* Static shine effect */
+        }
+        
+        .hbutton:hover::after {
+            opacity: 1;
+            animation: shine 1s infinite;
+        }
+
+        /* Button styling */
+        .button {
+            background-color: #8ED6F0; /* Brighter button color */
+            border: none;
+            color: white;
+            padding: 6px; /* Reduced padding */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 15px; /* Increased font size */
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, width 0.3s;
+            overflow: hidden;
+            white-space: nowrap;
+            position: absolute; /* Absolute positioning for button placement */
+        }
+
+        .button:hover {
+            background-color: #0DC6D0;
+        }
+        
+        .button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0.5; /* Static shine effect */
+        }
+        
+        @keyframes shine {
+            0% {
+                left: -200%;
+                top: 0;
+            }
+            100% {
+                left: 200%;
+                top: 0;
+            }
+        }
+        
+        .button:hover::after {
+            opacity: 1;
+            animation: shine 1.25s infinite;
+        }
+
+        /* Responsive width based on size classes */
+        .large {
+            width: 38%; /* Expand within its container */
+            max-width: 38%; /* Limit to large size */
+            font-size: 14px;
+            min-width: 38%;
+        }
+
+        .medium {
+            width: 20%; /* Expand within its container */
+            max-width: 20%; /* Limit to medium size */
+            font-size: 14px;
+            min-width: 20%;
+        }
+
+        .small {
+            width: 16%; /* Expand within its container */
+            max-width: 16%; /* Limit to small size */
+            min-width: 16%;
+        }
+
+        /* Container to hold buttons and define their relative positions */
+        .video-buttons-container {
+            position: relative;
+            height: 500px; /* Adjust as necessary */
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto; /* Center container */
+        }
+    </style>
 </head>
 <body>
-  
+    <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
+    <a href="https://cqmbo1.github.io/about" class="hbutton">About Me</a>
+    <a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
+    <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
+    <a href="https://cqmbo1.github.io/code" class="hbutton">SCRIPTS</a>
+    <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
+
+    <div id="main-text" style="z-index: 10000;">
+        <h3 style="text-align: center; line-height: 1.5;">
+            5.0
+            <br>
+            <a href="https://makecode.com/_bW7JvpEr7ATW">https://makecode.com/_bW7JvpEr7ATW</a>
+            <br>
+            Added: 29 more new hacks!
+            <br>
+            Note: Unbolded hacks are available in the previous version
+            <br>
+            Hacks (in game type help or the symbol before the dash [ie: for scaffold type "scaffold"]):
+        </h3>
+        <br>
+
+        cy - teleport on the y axis
+        <br>
+        cz - teleport on the z axis
+        <br>
+        cx - teleport on the x axis
+        <br>
+        scaffold - places blocks under you (creative only, skip to 3.0 for all gamemode scaffold)
+        <br>
+        stopscaffold - stops scaffold
+        <br>
+        kit - gives you full diamond armor & tools.
+        <br>
+        food - gives you 16 steak.
+        <br>
+        deez - nutz
+        <br>
+        gmc - switches gamemode to creative
+        <br>
+        gms - switched gamemode to survival
+        <br>
+        give (item) (amount) - gives you any item requested
+        <br>
+        portal - gives you supplies to make a nether portal
+        <br>
+        fastbreak - break blocks 2.5x faster 
+        <br>
+        speedhack - move 2.5x faster
+        <br>
+        water-br. - breath underwater!
+        <br>
+        explode - blow up anything and anyone.
+        <br>
+        nuker - mine big & fast
+        <br>
+        nukeroff - turns off nuker
+        <br>
+        autobase - automatically builds a base for you.
+        <br>
+        one-shot - one shot anything!
+        <br>
+        bedrock - gives you 64 bedrock
+        <br>
+        panic - turns off all hacks
+        <br>
+        fullbright - see in the dark.
+        <br>
+        MassTP - Teleports everyone to you
+        <br>
+        NoDMG - Take no damage
+        <br>
+        autopp - automatically builds a for you
+        <br>
+        autofloor - automatically builds a floor for you
+        <br>
+        autowall - automatically builds a wall for you
+        <br>
+        NoDMGLegit - take reduced damage
+        <br>
+        Autobase+ - automatically builds a obsidian base
+        <br>
+        Autobase++ - automatically builds a bedrock base
+        <br>
+        NoFire/NoFireoff - take no fire damage/turns off NoFire.
+        <br>
+        CircleNuker/CircleNukeroff - nuker but a circle/turns off circlenuker.
+        <br>
+        Richcircle/Richsphere - impress your friends or anyone with your wealthyness.
+        <br>
+        r.kit - gives you all the redstone items there are.
+        <br>
+        t.kit - gives you all the trapping items there are.
+        <br>
+        widescaffold/widescaffoldoff - scaffold but 9x wider/turns off widescaffold.
+        <br>
+        c.kit - gives you all the items needed to mlg, perfect for clutching.
+        <br>
+        criticals - automatically does critical hit damage to entities.
+        <br>
+        kb.kit - knock anything back, perfect for sky wars or knocking people off an island
+        <br>
+        GodBow - Gives you a God Bow
+        <br>
+        GodTridents - enchanted tridents coming right up!
+        <br>
+        GodTridents2 - Riptide
+        <br>
+        Autokeep/Autokeepoff - Enables keepinventory/turns autokeep off (disables keepinventory)
+        <br>
+        HighJump - jump 2.5x higher
+        <br>
+        NoWeather/NoWeatheroff - It'll always be a sunny day!/turns off NoWeather.
+        <br>
+        Speedfastbreak - break blocks even faster than fastbreak.
+        <br>
+        Tired - summons a bed for bedtime!
+        <br>
+        TNTScaffold/TNTScaffoldoff - rain tnt on anyone while walking in the air/turns tntscaffold off.
+        <br>
+        I.kit - gives you illegal items!
+        <br>
+        Xp+ - rains hundreds of satisfying bottles of xp to fulfil your needs.
+        <br>
+        Suicide - kills yourself
+        <br>
+        Mass-suicide - kills everyone
+        <br>
+        mob-suicide - kills all entities.
+        <br>
+        w.tntscaffold/w.tntscaffoldoff - rain 9x the tnt while walking compared to tntscaffold WARNING: MAY CAUSE LAG!/turns w.tntscaffold off
+        <br>
+        OpenWaterESP/OpenWaterESPoff - checks if where you're fishing can yield treasure/turns OpenWaterESP off
+        <br>
+        AerialStrike - sends bombs from the sky!
+        <br>
+        Nuke - AerialStrike but more powerful.
+        <br>
+        infinihealth - gives you infinite health
+        <br>
+        Superspeed - run 255x faster than normal.
+        <br>
+        <strong>New in 5.0:</strong>
+        <br>
+        <strong>customnuke (x z) (power) - customize nuke's size with custom power</strong>
+        <br>
+        <strong>customscaffold  (xz) (block) / customscaffoldoff - scaffold but with a custom width & block/turns customscaffold off</strong>
+        <br>
+        <strong>effect (effect) (duration) (amp) - gives you a custom effect with a custom duration and amplifier.</strong>
+        <br>
+        <strong>custombase (xyz) - autobase but with custom dimensions</strong>
+        <br>
+        <strong>custombase+ (xyz) - autobase+ but with custom dimensions</strong>
+        <br>
+        <strong>custombase++ (xyz) - autobase++ but with custom dimensions</strong>
+        <br>
+        <strong>NOTE: All custombases should be at least y3.</strong>
+        <br>
+        <strong>customnuker (xyz) / customnukeroff - nuker but with customizable size/turns off customnuker</strong>
+        <br>
+        <strong>customwall (xyz) - lets you make a wall that surrounds you with customizable dimensions</strong>
+        <br>
+        <strong>customfloor (xz) (block) - lets you make a floor made out of a custom block & dimensions.</strong>
+        <br>
+        <strong>calculatora (1st term)  (2nd term) - a addition calculator with customizable terms but with a limit of 2 terms.</strong>
+        <br>
+        <strong>calculators (1st term) (2nd term) - a subtraction calculator with customizable terms but with a limit of 2 terms.</strong>
+        <br>
+        <strong>calculatorm (1st term) (2nd term) - a multiplication calculator with customizable terms but with a limit of 2 terms.</strong>
+        <br>
+        <strong>calculatord (1st term) (2nd term) - a division calculator with customizable terms but with a limit of 2 terms.</strong>
+        <br>
+        <strong>calculatorsr (1st term) (2nd term) - a squareroot calculator with customizable terms but with a limit of 2 terms.</strong>
+        <br>
+        <strong>annoy (phrase) - repeats the phrase you said many times. (Now only numbers such as 69).</strong>
+        <br>
+        <strong>customcirclenuker (radius) / customcirclenukeroff - circlenuker but with customizable radius / turns off customcirclenuker.</strong>
+        <br>
+        <strong>lottery (itemid) (amount) - gives a random person a custom item & amount of that item</strong>
+        <br>
+        <strong>customkb (amount) (amount) - gives you a custom amount of the kb kit</strong>
+        <br>
+        <strong>customexplode (amount) - explode but with custom tnt output</strong>
+        <br>
+        <strong>customrichcircle (radius) - richcircle but with a custom radius</strong>
+        <br>
+        <strong>customrichsphere (radius) - richsphere but with a custom radius</strong>
+        <br>
+        <strong>custombedrock (amount) - gives yourself a custom amount of bedrock</strong>
+        <br>
+        <strong>customxp (xp amount) - rains a custom amount of satisfying xp bottles</strong>
+        <br>
+        <strong>customHighJump (height) - HighJump but with a custom height</strong>
+        <br>
+        <strong>give (itemid) (amount) - gives yourself anything with any amount</strong>
+        <br>
+        <strong>customspeed (speed) - run at a custom speed</strong>
+        <br>
+        <strong>customhealth (health) - get a custom amount of health (health = input x4)</strong>
+        <br>
+        <strong>InfinihealthLegit - have more health</strong>
+    </div>
+
+    <script>
+        // Create a link element
+        var favicon = document.createElement('link');
+        favicon.rel = 'icon';                // Set rel attribute for favicon
+        favicon.type = 'image/png';           // Set type attribute
+        favicon.href = '/assets/cqmbo__32x32.png'; // Set the URL for the favicon
+
+        // Append the link element to the head
+        document.head.appendChild(favicon);
+    </script>
 </body>
 </html>
-      
