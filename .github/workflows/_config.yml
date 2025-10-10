@@ -1,6 +1,0 @@
-# _config.yml
-
-# Build settings
-exclude:
-  - "*.md.old"  # Excludes all .md.old files
-  - "*.html"    # Excludes all .html files
