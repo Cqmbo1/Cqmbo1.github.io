@@ -1,7 +1,7 @@
 # Cqmbo1.github.io
 ## 📝 Licensing Notice
 
-Original content—including writing, design, and branding—is © 2024 **Cqmbo__**.
+Original content—including writing, design, and branding—is © 2026 **Cqmbo__**.
 
 ---
 
