@@ -550,9 +550,56 @@ scriptOutput.appendChild(newScriptContainer);
 const scriptLogger = iframeDocument.createElement('script');
 scriptLogger.type = "text/javascript";
 scriptLogger.textContent = `
-["log","warn","error","info","debug"].forEach((function(n){const r=console[n];console[n]=function(...e){const o=e.map((n=>n.toString())).join(" ");if(["[loader] Hash mismatch for","Loading img"].some((n=>o.includes(n))))return void r(...e);const t=window.parent.document.getElementById("logOutput");if(t){const r=\`<span style="color: ${function(n){switch(n){case"log":return"#d3d3d3";case"warn":return"orange";case"error":return"red";case"info":return"cyan";case"debug":return"gray";default:return"black"}}(n)};">[${n.toUpperCase()}]: ${o}</span><br>\`;t.innerHTML+=r}r(...e)}}));
-    `;
+(function() {
+    // Function to override console methods and redirect to parent
+    function overrideConsoleMethod(method) {
+        const originalMethod = console[method];
+        console[method] = function (...messages) {
+            
+            // Combine messages into a single string for easy filtering
+            const fullMessage = messages.map(m => m.toString()).join(' ');
 
+            // --- FILTER LOGIC START ---
+            const shouldFilter = [
+                "[loader] Hash mismatch for",
+                "Loading img"
+            ].some(filterText => fullMessage.includes(filterText));
+
+            if (shouldFilter) {
+                // Optionally call the original method so it still shows in dev tools
+                originalMethod(...messages);
+                return; 
+            }
+            // --- FILTER LOGIC END ---
+
+            // Log the messages in the parent document
+            const logDiv = window.parent.document.getElementById('logOutput');
+            if (logDiv) {
+                const formattedMessage = \`<span style="color: \${getColor(method)};">[\${method.toUpperCase()}]: \${fullMessage}</span><br>\`;
+                logDiv.innerHTML += formattedMessage;
+            }
+
+            // Call the original console method
+            originalMethod(...messages);
+        };
+    }
+
+    // Helper function to assign colors based on log type
+    function getColor(method) {
+        switch (method) {
+            case 'log': return '#d3d3d3';
+            case 'warn': return 'orange';
+            case 'error': return 'red';
+            case 'info': return 'cyan';
+            case 'debug': return 'gray';
+            default: return 'black';
+        }
+    }
+
+    // Apply the override to each console method
+    ['log', 'warn', 'error', 'info', 'debug'].forEach(overrideConsoleMethod);
+})();
+`;
 // Append the script to the iframe
 iframeDocument.body.appendChild(scriptLogger);
 
