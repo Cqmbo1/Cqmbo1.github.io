@@ -550,56 +550,8 @@ scriptOutput.appendChild(newScriptContainer);
 const scriptLogger = iframeDocument.createElement('script');
 scriptLogger.type = "text/javascript";
 scriptLogger.textContent = `
-    (function() {
-        const logDiv = window.parent.document.getElementById('logOutput');
-        const errorDiv = window.parent.document.getElementById('errorOutput');
-
-        // Function to override console methods
-        function overrideConsoleMethod(method) {
-            const originalMethod = console[method];
-
-            console[method] = function (...messages) {
-                originalMethod(...messages); // Call the original console method
-                
-                // Convert all messages to string and join them
-                const messageText = messages.map(m => m.toString()).join(' ');
-
-                // Create the formatted message
-                const formattedMessage = \`[\${method.toUpperCase()}]: \${messageText}\`;
-
-                const logEntry = document.createElement('div');
-                logEntry.style.color = getColor(method);
-                logEntry.innerText = formattedMessage; // Use innerText to keep raw text format
-                logDiv.appendChild(logEntry);
-            };
-        }
-
-        // Helper function to assign colors based on log type
-        function getColor(method) {
-            switch (method) {
-                case 'log': return '#d3d3d3';
-                case 'warn': return 'orange';
-                case 'error': return 'red';
-                case 'info': return 'cyan';
-                case 'debug': return 'gray';
-                default: return 'black';
-            }
-        }
-
-        // Apply the override to each console method
-        ['log', 'warn', 'error', 'info', 'debug'].forEach(method => overrideConsoleMethod(method));
-
-        try {
-            // Execute the script
-            ${scriptContent}
-        } catch (e) {
-            const errorEntry = document.createElement('div');
-            errorEntry.style.color = 'red';
-            errorEntry.innerText = \`[ERROR]: \${e.toString()}\`;
-            errorDiv.appendChild(errorEntry);
-        }
-    })();
-`;
+["log","warn","error","info","debug"].forEach((function(n){const r=console[n];console[n]=function(...e){const o=e.map((n=>n.toString())).join(" ");if(["[loader] Hash mismatch for","Loading img"].some((n=>o.includes(n))))return void r(...e);const t=window.parent.document.getElementById("logOutput");if(t){const r=\`<span style="color: ${function(n){switch(n){case"log":return"#d3d3d3";case"warn":return"orange";case"error":return"red";case"info":return"cyan";case"debug":return"gray";default:return"black"}}(n)};">[${n.toUpperCase()}]: ${o}</span><br>\`;t.innerHTML+=r}r(...e)}}));
+    `;
 
 // Append the script to the iframe
 iframeDocument.body.appendChild(scriptLogger);
