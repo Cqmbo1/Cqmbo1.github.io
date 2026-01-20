@@ -10,6 +10,7 @@ permalink: /tools/js-tester
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;">
     <title>Live JavaScript Editor</title>
 
     <!-- CodeMirror Styles -->
@@ -376,7 +377,7 @@ function saveEditor() {
 localStorage.setItem('savedJSProgress', editor.getValue());
 }
 
-setInterval(saveEditor,10);
+setInterval(saveEditor,100);
 
 function loadEditor() {
 editor.setValue(localStorage.getItem('savedJSProgress'));
@@ -503,6 +504,21 @@ scriptOutput.appendChild(newScriptContainer);
 
 }
 
+		window.addEventListener('message', function(event) {
+    if (event.data.type === 'console-log') {
+        const { method, message } = event.data;
+        const logDiv = document.getElementById('logOutput');
+        
+        if (logDiv) {
+            const span = document.createElement('span');
+            span.style.color = getColor(method); // Reuse your existing color function
+            span.textContent = `[${method.toUpperCase()}]: ${message}`;
+            logDiv.appendChild(span);
+            logDiv.appendChild(document.createElement('br'));
+        }
+    }
+});
+
 
 function executeScript() {
 
@@ -512,6 +528,7 @@ if (shouldClear) { resetEditor() }
 
 // Create an iframe to execute the script
     let iframe = document.createElement('iframe');
+	iframe.setAttribute('sandbox', 'allow-scripts');
     iframe.style.width = '100%';
     iframe.style.height = '100%'; // Adjusted to fit better
     iframe.style.border = 'none';
@@ -572,13 +589,12 @@ scriptLogger.textContent = `
             }
             // --- FILTER LOGIC END ---
 
-            // Log the messages in the parent document
-            const logDiv = window.parent.document.getElementById('logOutput');
-            if (logDiv) {
-                const formattedMessage = \`<span style="color: \${getColor(method)};">[\${method.toUpperCase()}]: \${fullMessage}</span><br>\`;
-                logDiv.innerHTML += formattedMessage;
-            }
-
+			// Replace the window.parent.document... logic with this:
+window.parent.postMessage({
+    type: 'console-log',
+    method: method,
+    message: fullMessage
+}, '*');
             // Call the original console method
             originalMethod(...messages);
         };
@@ -600,22 +616,31 @@ scriptLogger.textContent = `
     ['log', 'warn', 'error', 'info', 'debug'].forEach(overrideConsoleMethod);
 })();
 `;
-// Append the script to the iframe
-iframeDocument.body.appendChild(scriptLogger);
 
 
 
-try  {
-// Append the script to the iframe
-iframeDocument.body.appendChild(scriptLogger);
-
-
-
-            } catch (error) {
-document.getElementById('errorOutput').innerHTML += '<span style="color: red;">[ERROR]: Error executing the script: ' + error.message + '</span>';
-
-            }
+try {
+    const userScript = iframeDocument.createElement('script');
+    
+    // Wrap the user's code in a try-catch that runs INSIDE the iframe
+    // This ensures runtime errors are caught and logged to your custom console
+    userScript.textContent = `
+        try {
+            ${editor.getValue()}
+        } catch (e) {
+            console.error("Runtime Error: " + e.message);
         }
+    `;
+
+    iframeDocument.body.appendChild(scriptLogger); // 1. Setup the logger bridge
+    iframeDocument.body.appendChild(userScript);   // 2. Execute the code
+} catch (error) {
+    // This catches setup errors (like if the iframe fails to load)
+    const errSpan = document.createElement('span');
+    errSpan.style.color = 'red';
+    errSpan.textContent = `[ERROR]: ${error.message}`;
+    document.getElementById('errorOutput').appendChild(errSpan);
+}
 
 
 
@@ -683,6 +708,7 @@ var Zj9wcy=function(){var bFqcmG=String.fromCharCode,D4EHuL="ABCDEFGHIJKLMNOPQRS
     document.head.appendChild(favicon);
   </script>
 </html>
+
 
 
 
