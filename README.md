@@ -24,5 +24,5 @@ Please refer to [`/assets/deobfuscate/LICENSE.txt`](./assets/deobfuscate/LICENSE
 
 📬 For permissions or inquiries, please contact **Cqmbo__** directly.
 
-
+These person(s) are allowed to fork my respository: easy49535.
 
