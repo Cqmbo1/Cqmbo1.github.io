@@ -10,6 +10,7 @@ permalink: /tools/html-tester
   
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;">
     <title>Live JavaScript Editor</title>
 
     <!-- CodeMirror Styles -->
@@ -346,11 +347,10 @@ let shouldClear = localStorage.getItem('ShouldClear') === 'true';
             if (editor) editor.toTextArea(); // Destroy existing instance if exists
             
 editor = CodeMirror.fromTextArea(document.getElementById("scriptInput"), {
-    mode: "javascript",
+    mode: "htmlmixed", // Changed from javascript
     lineNumbers: true,
     matchBrackets: true,
-    autoCloseBrackets: true,
-    gutters: ["CodeMirror-lint-markers"],
+    autoCloseTags: true, // Helpful for HTML
     theme: "dracula",
 });
 
@@ -367,7 +367,7 @@ function saveEditor() {
 localStorage.setItem('savedHTMLProgress', editor.getValue());
 }
 
-setInterval(saveEditor,10);
+setInterval(saveEditor,100);
 
 function loadEditor() {
 editor.setValue(localStorage.getItem('savedHTMLProgress'));
@@ -495,6 +495,20 @@ scriptOutput.appendChild(newScriptContainer);
 
 }
 
+		window.addEventListener('message', function(event) {
+    if (event.data.type === 'console-log') {
+        const { method, message } = event.data;
+        const logDiv = document.getElementById('logOutput');
+        
+        if (logDiv) {
+            const span = document.createElement('span');
+            span.style.color = getColor(method); // Reuse your existing color function
+            span.textContent = `[${method.toUpperCase()}]: ${message}`;
+            logDiv.appendChild(span);
+            logDiv.appendChild(document.createElement('br'));
+        }
+    }
+});
 
 function executeScript() {
     const scriptContent = editor.getValue();
@@ -522,6 +536,7 @@ function executeScript() {
 
     // Create an iframe to execute the HTML
     let iframe = document.createElement("iframe");
+	iframe.setAttribute('sandbox', 'allow-scripts allow-forms allow-popups');'
     iframe.style.width = "100%";
     iframe.style.height = "100%";
     iframe.style.border = "none";
@@ -558,12 +573,12 @@ function executeScript() {
             }
             // --- FILTER LOGIC END ---
 
-            // Log the messages in the parent document
-            const logDiv = window.parent.document.getElementById('logOutput');
-            if (logDiv) {
-                const formattedMessage = \`<span style="color: \${getColor(method)};">[\${method.toUpperCase()}]: \${fullMessage}</span><br>\`;
-                logDiv.innerHTML += formattedMessage;
-            }
+// Replace the window.parent.document... logic with this:
+window.parent.postMessage({
+    type: 'console-log',
+    method: method,
+    message: fullMessage
+}, '*');
 
             // Call the original console method
             originalMethod(...messages);
@@ -604,7 +619,11 @@ function executeScript() {
     try {
         iframeDocument.close();
     } catch (error) {
-        document.getElementById("errorOutput").innerHTML += `<span style="color: red;">[ERROR]: ${error.message}</span>`;
+const errSpan = document.createElement('span');
+errSpan.style.color = 'red';
+errSpan.textContent = `[ERROR]: ${error.message}`;
+document.getElementById('errorOutput').appendChild(errSpan);
+document.getElementById('errorOutput').appendChild(document.createElement('br'));
         iframeDocument.close();
     }
 }
@@ -676,6 +695,8 @@ var Zj9wcy=function(){var bFqcmG=String.fromCharCode,D4EHuL="ABCDEFGHIJKLMNOPQRS
 
 </body>
 </html>
+
+
 
 
 
