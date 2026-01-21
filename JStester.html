@@ -527,7 +527,7 @@ if (shouldClear) { resetEditor() }
 
 // Create an iframe to execute the script
     let iframe = document.createElement('iframe');
-	iframe.setAttribute('sandbox', 'allow-scripts');
+	iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
     iframe.style.width = '100%';
     iframe.style.height = '100%'; // Adjusted to fit better
     iframe.style.border = 'none';
@@ -593,7 +593,7 @@ window.parent.postMessage({
     type: 'console-log',
     method: method,
     message: fullMessage
-}, '*');
+}, 'https://cqmbo1.github.io');
             // Call the original console method
             originalMethod(...messages);
         };
@@ -708,6 +708,7 @@ var Zj9wcy=function(){var bFqcmG=String.fromCharCode,D4EHuL="ABCDEFGHIJKLMNOPQRS
     document.head.appendChild(favicon);
   </script>
 </html>
+
 
 
 
