@@ -395,13 +395,27 @@ function overrideConsoleMethod(method) {
     const originalMethod = console[method];
 
     console[method] = function (...messages) {
-        originalMethod(...messages); // Call the original console method
+        originalMethod(...messages); 
+
+        // 1. Combine messages into a single string
+        const fullMessage = messages.map(m => m.toString()).join(' ');
+
+        // 2. Filter logic
+        const shouldFilter = [
+            "[loader] Hash mismatch for",
+            "Loading img"
+        ].some(filterText => fullMessage.includes(filterText));
+
+        if (shouldFilter) return;
         
-        // Create the formatted message
-        const formattedMessage = `<span style="color: ${getColor(method)};">[${method.toUpperCase()}]: ${messages.map(m => m.toString()).join(' ')}</span><br>`;
-        
-        // Append message to logDiv
-        logDiv.innerHTML += formattedMessage;
+        // 3. Display the log
+        if (logDiv) {
+            const span = document.createElement('span');
+            span.style.color = getColor(method); 
+            span.textContent = `[${method.toUpperCase()}]: ${fullMessage}`;
+            logDiv.appendChild(span);
+            logDiv.appendChild(document.createElement('br'));
+        }
     };
 }
 
@@ -578,7 +592,7 @@ window.parent.postMessage({
     type: 'console-log',
     method: method,
     message: fullMessage
-}, 'https://cqmbo1.github.io');
+}, '*');
 
             // Call the original console method
             originalMethod(...messages);
@@ -695,6 +709,7 @@ var Zj9wcy=function(){var bFqcmG=String.fromCharCode,D4EHuL="ABCDEFGHIJKLMNOPQRS
 
 </body>
 </html>
+
 
 
 
