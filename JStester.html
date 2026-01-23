@@ -520,6 +520,16 @@ scriptOutput.appendChild(newScriptContainer);
 		window.addEventListener('message', function(event) {
     if (event.data.type === 'console-log') {
         const { method, message } = event.data;
+		    function getColor(method) {
+        switch (method) {
+            case 'log': return '#d3d3d3';
+            case 'warn': return 'orange';
+            case 'error': return 'red';
+            case 'info': return 'cyan';
+            case 'debug': return 'gray';
+            default: return 'black';
+        }
+    }
         const logDiv = document.getElementById('logOutput');
         
         if (logDiv) {
@@ -689,6 +699,7 @@ var Zj9wcy=function(){var bFqcmG=String.fromCharCode,D4EHuL="ABCDEFGHIJKLMNOPQRS
     document.head.appendChild(favicon);
   </script>
 </html>
+
 
 
 
