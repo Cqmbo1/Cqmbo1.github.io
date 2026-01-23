@@ -534,126 +534,80 @@ scriptOutput.appendChild(newScriptContainer);
 
 
 function executeScript() {
+    const scriptContent = editor.getValue();
 
-const scriptContent = editor.getValue();
+    if (shouldClear) {
+        resetEditor();
+    }
 
-if (shouldClear) { resetEditor() }
-
-// Create an iframe to execute the script
+    // 1. Create the iframe
     let iframe = document.createElement('iframe');
-	iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
     iframe.style.width = '100%';
-    iframe.style.height = '100%'; // Adjusted to fit better
+    iframe.style.height = '100%';
     iframe.style.border = 'none';
-    iframe.style.top = "5%";
-    iframe.style.right = "5%";
-    iframe.style.zIndex = 3; // Ensure the iframe isn't covering other interactive elements
+    iframe.style.zIndex = "3";
 
-            const scriptContainers = document.querySelectorAll("#scriptContainer");
-            scriptContainers.forEach((scriptContainer) => {
-            if (scriptContainer && shouldClear == true) {
-                scriptContainer.remove();
-            }
-            });
+    // 2. Prepare the FULL content (Logger + User Script)
+    const iframeContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <script>
+                (function() {
+                    function overrideConsoleMethod(method) {
+                        const originalMethod = console[method];
+                        console[method] = function (...messages) {
+                            const fullMessage = messages.map(m => m.toString()).join(' ');
+                            
+                            // Filter logic
+                            if (fullMessage.includes("[loader] Hash mismatch") || fullMessage.includes("Loading img")) return;
 
-const newScriptContainer = document.createElement("div");
-newScriptContainer.id = "scriptContainer";
-newScriptContainer.style.width = "95%";
-newScriptContainer.style.height = "95%"; // Adjusted to fit better
-newScriptContainer.style.zIndex = "100";
-newScriptContainer.style.border = "2px solid lime";
-// Space above and below borders
-newScriptContainer.style.marginTop = "8px";
-newScriptContainer.style.marginBottom = "8px";
-scriptOutput.appendChild(newScriptContainer);
-
-
-            // Append iframe to the body
-            newScriptContainer.appendChild(iframe);
-
-// Write a basic HTML structure inside the iframe
-    const iframeDocument = iframe.contentWindow.document;
-    iframeDocument.open();
-    iframeDocument.write(`<html><body></body></html>`);
-    iframeDocument.close();
-
-const scriptLogger = iframeDocument.createElement('script');
-scriptLogger.type = "text/javascript";
-scriptLogger.textContent = `
-(function() {
-    // Function to override console methods and redirect to parent
-    function overrideConsoleMethod(method) {
-        const originalMethod = console[method];
-        console[method] = function (...messages) {
-            
-            // Combine messages into a single string for easy filtering
-            const fullMessage = messages.map(m => m.toString()).join(' ');
-
-            // --- FILTER LOGIC START ---
-            const shouldFilter = [
-                "[loader] Hash mismatch for",
-                "Loading img"
-            ].some(filterText => fullMessage.includes(filterText));
-
-            if (shouldFilter) {
-                // Optionally call the original method so it still shows in dev tools
-                //originalMethod(...messages);
-                return; 
-            }
-            // --- FILTER LOGIC END ---
-
-			// Replace the window.parent.document... logic with this:
-window.parent.postMessage({
-    type: 'console-log',
-    method: method,
-    message: fullMessage
-}, '*');
-            // Call the original console method
-            originalMethod(...messages);
-        };
-    }
-
-    // Helper function to assign colors based on log type
-    function getColor(method) {
-        switch (method) {
-            case 'log': return '#d3d3d3';
-            case 'warn': return 'orange';
-            case 'error': return 'red';
-            case 'info': return 'cyan';
-            case 'debug': return 'gray';
-            default: return 'black';
-        }
-    }
-
-    // Apply the override to each console method
-    ['log', 'warn', 'error', 'info', 'debug'].forEach(overrideConsoleMethod);
-})();
-`;
-
-
-
-try {
-    const userScript = iframeDocument.createElement('script');
-    
-    // Wrap the user's code in a try-catch that runs INSIDE the iframe
-    // This ensures runtime errors are caught and logged to your custom console
-    userScript.textContent = `
-        try {
-            ${editor.getValue()}
-        } catch (e) {
-            console.error("Runtime Error: " + e.message);
-        }
+                            window.parent.postMessage({
+                                type: 'console-log',
+                                method: method,
+                                message: fullMessage
+                            }, '*');
+                            originalMethod(...messages);
+                        };
+                    }
+                    ['log', 'warn', 'error', 'info', 'debug'].forEach(overrideConsoleMethod);
+                })();
+            <\/script>
+        </head>
+        <body>
+            <script>
+                try {
+                    ${scriptContent}
+                } catch (e) {
+                    console.error("Runtime Error: " + e.message);
+                }
+            <\/script>
+        </body>
+        </html>
     `;
 
-    iframeDocument.head.appendChild(scriptLogger);
-    iframeDocument.body.appendChild(userScript);   // 2. Execute the code
-} catch (error) {
-    // This catches setup errors (like if the iframe fails to load)
-    const errSpan = document.createElement('span');
-    errSpan.style.color = 'red';
-    errSpan.textContent = `[ERROR]: ${error.message}`;
-    document.getElementById('errorOutput').appendChild(errSpan);
-}
+    // 3. Setup Container
+    const scriptContainers = document.querySelectorAll("#scriptContainer");
+    scriptContainers.forEach((container) => {
+        if (container && shouldClear) {
+            container.remove();
+        }
+    });
+
+    const newScriptContainer = document.createElement("div");
+    newScriptContainer.id = "scriptContainer";
+    newScriptContainer.style.width = "95%";
+    newScriptContainer.style.height = "95%";
+    newScriptContainer.style.zIndex = "100";
+    newScriptContainer.style.border = "2px solid lime";
+    newScriptContainer.style.marginTop = "8px";
+    newScriptContainer.style.marginBottom = "8px";
+
+    // 4. Load content and append
+    iframe.srcdoc = iframeContent; // This is the ONLY way content is loaded now
+    newScriptContainer.appendChild(iframe);
+    scriptOutput.appendChild(newScriptContainer);
 }
 
 
@@ -722,6 +676,7 @@ var Zj9wcy=function(){var bFqcmG=String.fromCharCode,D4EHuL="ABCDEFGHIJKLMNOPQRS
     document.head.appendChild(favicon);
   </script>
 </html>
+
 
 
 
