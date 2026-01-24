@@ -347,10 +347,11 @@ let shouldClear = localStorage.getItem('ShouldClear') === 'true';
             if (editor) editor.toTextArea(); // Destroy existing instance if exists
             
 editor = CodeMirror.fromTextArea(document.getElementById("scriptInput"), {
-    mode: "htmlmixed", // Changed from javascript
+    mode: "javascript",
     lineNumbers: true,
     matchBrackets: true,
-    autoCloseTags: true, // Helpful for HTML
+    autoCloseBrackets: true,
+    gutters: ["CodeMirror-lint-markers"],
     theme: "dracula",
 });
 
@@ -512,6 +513,16 @@ scriptOutput.appendChild(newScriptContainer);
 		window.addEventListener('message', function(event) {
     if (event.data.type === 'console-log') {
         const { method, message } = event.data;
+		    function getColor(method) {
+        switch (method) {
+            case 'log': return '#d3d3d3';
+            case 'warn': return 'orange';
+            case 'error': return 'red';
+            case 'info': return 'cyan';
+            case 'debug': return 'gray';
+            default: return 'black';
+        }
+    }
         const logDiv = document.getElementById('logOutput');
         
         if (logDiv) {
