@@ -1,0 +1,1 @@
+I claim no ownership of the contents within this folder ("font-awesome"), credits goes to: https://fontawesome.com/.
