@@ -8,233 +8,54 @@ permalink: /dcprivacy/
 <html>
 <head>
   <style>
-  /* Gradient background for the page */
+  /* Your existing gradient and button CSS remains here... */
+  
   body {
-    background: linear-gradient(to bottom, #add8e6, #ffffff); /* Light blue to white gradient */
-    color: #333; /* Text color for readability */
+    background: linear-gradient(to bottom, #add8e6, #ffffff);
+    color: #333;
     font-family: Arial, sans-serif;
     text-align: center;
     padding-top: 50px;
     margin: 0;
   }
 
-  /* Button styling */
+  /* Fixed the container to be responsive */
+  .privacy-content {
+    position: relative;
+    height: auto; 
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.5); /* Slight backing to make text pop */
+    border-radius: 10px;
+    text-align: left; /* Better for reading long text */
+  }
+
   .hbutton {
-    background-color: #8ED6F0; /* Brighter button color */
+    background-color: #8ED6F0;
     border: none;
     color: white;
-    padding: 10px; /* Reduced padding */
+    padding: 10px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 18px; /* Increased font size */
+    font-size: 18px;
     margin: 10px 5px;
     cursor: pointer;
     border-radius: 5px;
-    position: relative; /* For shine effect */
-    overflow: hidden; /* To contain shine effect */
-    transition: background-color 0.3s, width 0.3s;
-    min-width: 15%;
-  } min-width: 15%;
-    min-width: 15%;
-  }
-
-  .hbutton:hover {
-    background-color: #0DC6D0;
-  }
-
-  .hbutton::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: rgba(255, 255, 255, 0.5);
-    transform: rotate(50deg);
-    transition: all 0.5s ease;
-    opacity: 0.5; /* Static shine effect */
-  }
-  
-  .hbutton:hover::after {
-    opacity: 1;
-    animation: shine 1s infinite;
-  }
-
-  /* Button styling */
-  .button {
-    background-color: #8ED6F0; /* Brighter button color */
-    border: none;
-    color: white;
-    padding: 6px; /* Reduced padding */
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 15px; /* Increased font size */
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s, width 0.3s;
+    position: relative;
     overflow: hidden;
-    white-space: nowrap;
-                display: block;
-        margin: 0 auto;
-        position: relative;
-        top: 1%; /* Adjust as needed for spacing */
-
+    transition: background-color 0.3s;
+    min-width: 15%;
   }
 
-  .button:hover {
-    background-color: #0DC6D0;
-  }
-  
-   .button::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: rgba(255, 255, 255, 0.5);
-    transform: rotate(45deg);
-    transition: all 0.5s ease;
-    opacity: 0.5; /* Static shine effect */
-  }
-  
-    @keyframes shine {
-    0% {
-      left: -200%;
-      top: 0;
-    }
-    100% {
-      left: 200%;
-      top: 0;
-    }
-  }
-  
-  .button:hover::after {
-    opacity: 1;
-    animation: shine 1.25s infinite;
-  }
+  .hbutton:hover { background-color: #0DC6D0; }
 
-  /* Responsive width based on size classes */
-  .large {
-    
-    width: 80%; /* Expand within its container */
-    font-size: 0.5em;
-    min-width: 50%;
-    left: 0%;
-    position: relative;
-  }
+  p { font-size: 0.9em; line-height: 1.6; }
+  h2 { font-size: 1.2em; color: #007799; margin-top: 20px; }
 
-  .medium {
-    
-    width: 20%; /* Expand within its container */
-    max-width: 20%; /* Limit to medium size */
-    font-size: 14px;
-    min-width: 20%;
-  }
-
-  .small {
-    
-    width: 16%; /* Expand within its container */
-    max-width: 16%; /* Limit to small size */
-    min-width: 16%;
-  }
-
-  /* Container to hold buttons and define their relative positions */
-  .video-buttons-container {
-    position: relative;
-    height: 500px; /* Adjust as necessary */
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto; /* Center container */
-  }
-
-  /* Container to hold buttons and define their relative positions */
-  .video-buttons-container {
-    position: relative;
-    height: 500px; /* Adjust as necessary */
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto; /* Center container */
-  }
-
-  /* Position each button */
-  .fbtn1 { top: 0%; left: 40%; }     /* Centered in the top row */
-  .fbtn2 { top: 20%; left: 23%; }
-  .fbtn3 { top: 20%; left: 42%; }
-  .fbtn4 { top: 20%; left: 61%; }
-  .fbtn8 { top: 40%; left: 0%; }
-  .fbtn5 { top: 40%; left: 23%; }
-  .fbtn6 { top: 40%; left: 42%; }
-  .fbtn7 { top: 40%; left: 61%; }
-  .fbtn9 { top: 40%; left: 80%; }
-  .fbtn10 { top: 60%; left: 33%; }
-  .fbtn11 { top: 60%; left: 50%; }
-  .fbtn12 { top: 80%; left: 30%; }
-
-  .rectangle {
-width: 16%;
-height: 37%;
-padding: 1%;
-max-width: 16%;
-  
-  position: absolute;
-}
-
-.im {
-  width: 80%; /* Default for mobile */
-  aspect-ratio: 1 / 1; /* Ensures the height matches the width */
-  position: relative;
-  border: 1px solid black;
-  margin-bottom: 5%;
-        display: block;
-        margin: 0 auto;    
-}
-
-/* Adjust for desktop */
-@media (min-width: 768px) { /* Adjust breakpoint as needed */
-  .im {
-    width: 50%;
-  }
-}
-
-
-
-
-  /* Container to hold buttons and define their relative positions */
-  .d {
-    position: relative;
-    height: 500px; /* Adjust as necessary */
-    width: 100%;
-    max-width: 100%;
-    left: 0%;
-  }
-
-.e {
-  font-size: 0.85em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-  white-space: normal;
-  max-width: 100%;
-}
-
-p {
-  font-size: 0.75em; /* Scales with body text */
-}
-
-
-.z {
-
-
-    flex-wrap: wrap; /* Items will wrap onto the next line if needed */
-
-overflow: hidden;
-
-}
-
-</style>
+  </style>
 </head>
 <body>
 
@@ -242,63 +63,44 @@ overflow: hidden;
   <a href="https://cqmbo1.github.io/about" class="hbutton">About Me</a>
   <a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
   <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
-<a href="https://cqmbo1.github.io/code" class="hbutton">SCRIPTS</a>
+  <a href="https://cqmbo1.github.io/code" class="hbutton">SCRIPTS</a>
   <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
 
-  <br> <br>
-<div class="d">
-<p>Privacy Policy for Cqmbo's Bot
-  <br>
-Last Updated: April 2026
-<br>
-This policy explains how Cqmbo's Bot ("the Bot") handles your data. My goal is to keep the server safe from automated spam and ban evasion while respecting your privacy.
-<br>
-1. Data We Collect
-  <br>
-To verify your identity and prevent "alt" accounts from bypassing server rules, the Bot processes the following information when you click a verification link:
-<br>
-Discord User ID: To link your verification status to your account.
-<br>
-IP Address: Processed temporarily to check for VPNs and proxies.
-<br>
-2. How We Use Your Data
-  <br>
-VPN Detection: Your IP address is sent to a third-party API (IPHub) to determine if you are using a virtual private network or proxy.
-<br>
-Alt Detection: We use a cryptographic "hash" of your IP address. This turns your IP into a long string of random letters and numbers (e.g., a8f5f...).
-<br>
-We do not store your raw IP address. * We only store the hash. This allows us to see if two Discord accounts are joining from the same connection without us actually knowing what your IP address is.
-<br>
-3. Data Retention
-  <br>
-Verification Logs: Records of successful or failed verifications are stored in our private database to maintain your "Member" status.
-<br>
-Data Deletion: If you leave the server and wish for your hashed data to be removed, please contact a Server Administrator.
-<br>
-4. Third-Party Services
-  <br>
-We use Cloudflare to secure our connection and IPHub to verify network integrity. These services may process your IP address according to their own privacy policies to provide these security features.
-<br>
-5. Contact
-  <br>
-If you have questions regarding this policy or your data, please contact the Server Manager via Discord.</p>
-</div>
+  <br><br>
 
+  <div class="privacy-content">
+    <h1 style="text-align: center;">Privacy Policy for Cqmbo's Bot</h1>
+    <p style="text-align: center; font-style: italic;">Last Updated: April 2026</p>
+    
+    <p>This policy explains how Cqmbo's Bot ("the Bot") handles your data. My goal is to keep the server safe from automated spam and ban evasion while respecting your privacy.</p>
 
+    <h2>1. Data We Collect</h2>
+    <p>To verify your identity and prevent "alt" accounts from bypassing server rules, the Bot processes the following information when you click a verification link:<br>
+    <strong>Discord User ID:</strong> To link your verification status to your account.<br>
+    <strong>IP Address:</strong> Processed temporarily to check for VPNs and proxies.</p>
 
-{% raw %}
-<script>
-</script>
-{% endraw %}
-<script>
-  // Create a link element
-  var favicon = document.createElement('link');
-  favicon.rel = 'icon';                // Set rel attribute for favicon
-  favicon.type = 'image/png';           // Set type attribute
-  favicon.href = '/assets/cqmbo__32x32.png'; // Set the URL for the favicon
+    <h2>2. How We Use Your Data</h2>
+    <p><strong>VPN Detection:</strong> Your IP address is sent to a third-party API (IPHub) to determine if you are using a virtual private network or proxy.<br>
+    <strong>Alt Detection:</strong> We use a cryptographic "hash" of your IP address. This turns your IP into a long string of random letters and numbers (e.g., a8f5f...).<br>
+    <em>We do not store your raw IP address.</em> We only store the hash. This allows us to see if two Discord accounts are joining from the same connection without us actually knowing what your IP address is.</p>
 
-  // Append the link element to the head
-  document.head.appendChild(favicon);
-</script>
+    <h2>3. Data Retention</h2>
+    <p><strong>Verification Logs:</strong> Records of successful or failed verifications are stored in our private database to maintain your "Member" status.<br>
+    <strong>Data Deletion:</strong> If you leave the server and wish for your hashed data to be removed, please contact a Server Administrator.</p>
+
+    <h2>4. Third-Party Services</h2>
+    <p>We use Cloudflare to secure our connection and IPHub to verify network integrity. These services may process your IP address according to their own privacy policies to provide these security features.</p>
+
+    <h2>5. Contact</h2>
+    <p>If you have questions regarding this policy or your data, please contact the Server Manager via Discord.</p>
+  </div>
+
+  <script>
+    var favicon = document.createElement('link');
+    favicon.rel = 'icon';
+    favicon.type = 'image/png';
+    favicon.href = '/assets/cqmbo__32x32.png';
+    document.head.appendChild(favicon);
+  </script>
 </body>
 </html>
