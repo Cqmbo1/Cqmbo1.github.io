@@ -179,6 +179,11 @@ Function("_65Ic2","const JceBIKM=[0,null,32,2,1,256,6,3,8,16,4,\"undefined\",\"L
   <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
   <a href="https://cqmbo1.github.io/code" class="hbutton">SCRIPTS</a>
   <!-- <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a> -->
+    <div class="dropdown">
+        <button class="dropbtn hbutton">TOOLS ▾</button>
+        <div class="dropdown-content" id="tool-list">
+            </div>
+    </div>
     <script>
 
 function loadRemoteTools() {
