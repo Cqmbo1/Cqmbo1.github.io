@@ -297,28 +297,26 @@ permalink: /tools/js-tester
 <a href="https://cqmbo1.github.io/code" class="hbutton">SCRIPTS</a>
 /* <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a> */
     <script>
-        const tools = {
-            'js-tester': {name: 'JS Tester', desc: 'A simple but effective javascript tester and editor.'},
-            'ip-gen':{name: 'Random IP Gen', desc: 'A great custom IP Address Generator!'},
-            'html-tester':{name: 'HTML Tester', desc: 'An easy-to-use HTML tester.'},
-            'unicode':{name: 'Random Unicode Gen', desc: 'An effective custom unicode generator.'}
-        }
 
+function loadRemoteTools() {
+    const script = document.createElement('script');
+    script.src = "https://cqmbo1.github.io/assets/tools.js";
+    script.type = "text/javascript";
 
+    script.onload = () => {
+        console.log("Tools script loaded and executed successfully.");
+    };
 
+    script.onerror = () => {
+        console.error("Failed to load the tools script.");
+    };
 
-        const dropdownContainer = document.getElementById('tool-list');
+    document.head.appendChild(script);
+}
 
+// Run the loader
+loadRemoteTools();
 
-
-
-        Object.entries(tools).forEach(([key, { name, desc }]) => {
-            const a = document.createElement('a');
-            a.href = `https://cqmbo1.github.io/tools/${key}`;
-            a.textContent = name;
-            a.title = desc;
-            dropdownContainer.appendChild(a);
-        });
     </script>
 
 <br>
