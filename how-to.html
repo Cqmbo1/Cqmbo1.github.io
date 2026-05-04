@@ -140,7 +140,29 @@ permalink: /how-to/
     <a href="https://cqmbo1.github.io/v" class="hbutton medium">Videos</a>
     <a href="https://cqmbo1.github.io/educlient" class="hbutton medium">Edu Client</a>
     <a href="https://cqmbo1.github.io/code" class="hbutton">SCRIPTS</a>
-    <a href="https://cqmbo1.github.io/tools" class="hbutton medium">Tools</a>
+    /* <a href="https://cqmbo1.github.io/tools" class="hbutton medium">Tools</a> */
+    <script>
+
+function loadRemoteTools() {
+    const script = document.createElement('script');
+    script.src = "https://cqmbo1.github.io/assets/tools.js";
+    script.type = "text/javascript";
+
+    script.onload = () => {
+        console.log("Tools script loaded and executed successfully.");
+    };
+
+    script.onerror = () => {
+        console.error("Failed to load the tools script.");
+    };
+
+    document.head.appendChild(script);
+}
+
+// Run the loader
+loadRemoteTools();
+
+    </script>
 
     <div id="main-text" style="z-index: 10000;">
         How to get: Click the link for hack client in videos description or in other pages.

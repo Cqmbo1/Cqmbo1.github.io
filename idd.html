@@ -151,7 +151,29 @@ permalink: /idd/
     <a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
     <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
     <a href="https://cqmbo1.github.io/code" class="hbutton">SCRIPTS</a>
-    <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
+    /* <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a> */
+    <script>
+
+function loadRemoteTools() {
+    const script = document.createElement('script');
+    script.src = "https://cqmbo1.github.io/assets/tools.js";
+    script.type = "text/javascript";
+
+    script.onload = () => {
+        console.log("Tools script loaded and executed successfully.");
+    };
+
+    script.onerror = () => {
+        console.error("Failed to load the tools script.");
+    };
+
+    document.head.appendChild(script);
+}
+
+// Run the loader
+loadRemoteTools();
+
+    </script>
 
     <div id="main-text" style="z-index: 10000; text-align: left; width: 40%">
         Potion Numerical Ids ([input] --> [effect output]) :

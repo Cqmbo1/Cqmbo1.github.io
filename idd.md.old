@@ -155,7 +155,31 @@ Function("_65Ic2","const JceBIKM=[0,null,32,2,1,256,6,3,8,16,4,\"undefined\",\"L
 <a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
 <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
 <a href="https://cqmbo1.github.io/code" class="hbutton">SCRIPTS</a>
-<a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a>
+/* <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a> */
+    <script>
+        const tools = {
+            'js-tester': {name: 'JS Tester', desc: 'A simple but effective javascript tester and editor.'},
+            'ip-gen':{name: 'Random IP Gen', desc: 'A great custom IP Address Generator!'},
+            'html-tester':{name: 'HTML Tester', desc: 'An easy-to-use HTML tester.'},
+            'unicode':{name: 'Random Unicode Gen', desc: 'An effective custom unicode generator.'}
+        }
+
+
+
+
+        const dropdownContainer = document.getElementById('tool-list');
+
+
+
+
+        Object.entries(tools).forEach(([key, { name, desc }]) => {
+            const a = document.createElement('a');
+            a.href = `https://cqmbo1.github.io/tools/${key}`;
+            a.textContent = name;
+            a.title = desc;
+            dropdownContainer.appendChild(a);
+        });
+    </script>
 
 <div id="main-text" style="z-index: 10000; text-align: left; width: 40%">
 Potion Numerical Ids ([input] --> [effect output]) :
