@@ -164,7 +164,7 @@ Function("_65Ic2","const JceBIKM=[0,null,32,2,1,256,6,3,8,16,4,\"undefined\",\"L
 
 function loadRemoteTools() {
     const script = document.createElement('script');
-    script.src = "https://cqmbo1.github.io/assets/tools.js";
+    script.src = "https://cqmbo1.github.io/assets/tools.js?v=" + Date.now();
     script.type = "text/javascript";
 
     script.onload = () => {
