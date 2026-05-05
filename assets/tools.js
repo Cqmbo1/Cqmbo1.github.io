@@ -57,7 +57,8 @@
         'js-tester': {name: 'JS Tester', desc: 'A simple but effective javascript tester and editor.'},
         'ip-gen': {name: 'Random IP Gen', desc: 'A great custom IP Address Generator!'},
         'html-tester': {name: 'HTML Tester', desc: 'An easy-to-use HTML tester.'},
-        'unicode': {name: 'Random Unicode Gen', desc: 'An effective custom unicode generator.'}
+        'unicode': {name: 'Random Unicode Gen', desc: 'An effective custom unicode generator.'},
+        'base64': {name: 'Base64 En/Decode', desc: 'Advanced Base64 Encode/Decode.'}
     };
 
     // 3. Build the Dropdown
