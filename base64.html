@@ -130,10 +130,8 @@ permalink: /tools/base64
             gap: 8px;
         }
         
-        /* Custom File Upload Styling */
-        input[type="file"] {
-            color: #61dafb;
-        }
+        /* Custom UI Styling */
+        input[type="file"] { color: #61dafb; }
         input[type="file"]::file-selector-button {
             background: #61dafb;
             color: black;
@@ -144,9 +142,15 @@ permalink: /tools/base64
             cursor: pointer;
             margin-right: 10px;
         }
-    </style>
+        
+        select {
+            background: #1c1f24;
+            color: #61dafb;
+            border: 1px solid #444;
+            padding: 3px;
+            border-radius: 3px;
+        }
 
-     <style>
         .dropdown {
             position: relative;
             display: inline-block;
@@ -160,14 +164,14 @@ permalink: /tools/base64
             box-shadow: 0px 8px 25px rgba(0,0,0,0.15);
             z-index: 1000;
             border-radius: 8px;
-            margin-top: -5px; /* Pulls it closer to the button */
-            overflow: hidden; /* Keeps hover effects inside rounded corners */
+            margin-top: -5px; 
+            overflow: hidden; 
             border: 1px solid #add8e6;
         }
 
         .dropdown:hover .dropdown-content {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: dropdownFadeIn 0.3s ease;
         }
 
         .dropdown-content a {
@@ -185,7 +189,7 @@ permalink: /tools/base64
             color: #0DC6D0;
         }
 
-        @keyframes fadeIn {
+        @keyframes dropdownFadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -194,7 +198,7 @@ permalink: /tools/base64
             margin-top: 40px;
             line-height: 1.6;
         }
- </style>
+    </style>
 </head>
 <body>
     <a href="https://cqmbo1.github.io/" class="hbutton">Welcome</a>
@@ -202,67 +206,77 @@ permalink: /tools/base64
     <a href="https://cqmbo1.github.io/v" class="hbutton">Videos</a>
     <a href="https://cqmbo1.github.io/educlient" class="hbutton">Edu Client</a>
     <a href="https://cqmbo1.github.io/code" class="hbutton">SCRIPTS</a>
-        <!-- <a href="https://cqmbo1.github.io/tools" class="hbutton">Tools</a> -->
     <div class="dropdown">
         <button class="dropbtn hbutton">TOOLS ▾</button>
-        <div class="dropdown-content" id="tool-list">
-            </div>
+        <div class="dropdown-content" id="tool-list"></div>
     </div>
-    <script>
-
-function loadRemoteTools() {
-    const script = document.createElement('script');
-    script.src = "https://cqmbo1.github.io/assets/tools.js?v=" + Date.now();
-    script.type = "text/javascript";
-
-    script.onload = () => {
-        console.log("Tools script loaded and executed successfully.");
-    };
-
-    script.onerror = () => {
-        console.error("Failed to load the tools script.");
-    };
-
-    document.head.appendChild(script);
-}
-
-// Run the loader
-loadRemoteTools();
-
-    </script>
+    
+    <script>
+        function loadRemoteTools() {
+            const script = document.createElement('script');
+            script.src = "https://cqmbo1.github.io/assets/tools.js?v=" + Date.now();
+            script.type = "text/javascript";
+            script.onload = () => console.log("Tools script loaded and executed successfully.");
+            script.onerror = () => console.error("Failed to load the tools script.");
+            document.head.appendChild(script);
+        }
+        loadRemoteTools();
+    </script>
 
     <h1 class="whitetext">Advanced Base64 Toolkit</h1>
-    <p>Encode text or files to Base64, or decode Base64 back into readable text. Features live processing, URL-safe encoding, and file conversions.</p>
+    <p>Encode text or files to Base64, or decode Base64 back into readable text. Features live processing, line-by-line tools, URL-safe encoding, and file conversions.</p>
 
+    <!-- Controls Dashboard -->
     <div class="controls-grid">
         <div class="control-group">
             <h4 class="whitetext" style="margin: 0;">Mode</h4>
-            <label class="whitetext">
-                <input type="radio" name="operation" value="encode" checked onchange="handleLive()"> Encode
-            </label>
-            <label class="whitetext">
-                <input type="radio" name="operation" value="decode" onchange="handleLive()"> Decode
-            </label>
+            <label class="whitetext"><input type="radio" name="operation" value="encode" checked onchange="handleLive()"> Encode</label>
+            <label class="whitetext"><input type="radio" name="operation" value="decode" onchange="handleLive()"> Decode</label>
         </div>
         
         <div class="control-group">
-            <h4 class="whitetext" style="margin: 0;">Options</h4>
-            <label class="whitetext">
-                <input type="checkbox" id="liveMode" checked onchange="handleLive()"> Live Processing
+            <h4 class="whitetext" style="margin: 0;">Data Format</h4>
+            <label class="whitetext">Charset: 
+                <select id="charset" onchange="handleLive()">
+                    <option value="UTF-8">UTF-8</option>
+                    <option value="BINARY">BINARY (Raw)</option>
+                </select>
+            </label>
+            <label class="whitetext">Newline: 
+                <select id="newline" onchange="handleLive()">
+                    <option value="LF">LF (Unix \n)</option>
+                    <option value="CRLF">CRLF (Win \r\n)</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="control-group">
+            <h4 class="whitetext" style="margin: 0;">Processing Options</h4>
+            <label class="whitetext" title="Encodes or decodes each line individually instead of as one block.">
+                <input type="checkbox" id="lineByLine" onchange="handleLive()"> Encode/Decode each line separately
+            </label>
+            <label class="whitetext" title="Splits the Base64 output into lines of 76 characters (MIME standard).">
+                <input type="checkbox" id="split76" onchange="handleLive()"> Split into 76-character chunks
             </label>
             <label class="whitetext" title="Replaces '+' with '-', '/' with '_', and removes '=' padding">
                 <input type="checkbox" id="urlSafe" onchange="handleLive()"> URL-Safe Base64
             </label>
         </div>
-
+        
         <div class="control-group">
-            <h4 class="whitetext" style="margin: 0;">File to Base64</h4>
-            <input type="file" id="fileInput" accept="*/*">
+            <h4 class="whitetext" style="margin: 0;">Options</h4>
+            <label class="whitetext"><input type="checkbox" id="liveMode" checked onchange="handleLive()"> Live Mode OFF/ON</label>
+            <div style="margin-top: 5px;">
+                <span class="whitetext" style="font-size:12px; font-weight:bold;">File to Base64:</span><br>
+                <input type="file" id="fileInput" accept="*/*" style="margin-top:3px;">
+            </div>
         </div>
     </div>
 
+    <!-- Input Area -->
     <textarea id="inputText" class="text-box" placeholder="Type or paste text/Base64 here..."></textarea><br>
 
+    <!-- Action Buttons -->
     <div style="margin-bottom: 20px;">
         <button id="processBtn" class="action-btn" onclick="processText(true)">Process Manual</button>
         <button class="action-btn" onclick="copyResult()">Copy Result</button>
@@ -278,25 +292,24 @@ loadRemoteTools();
         const resultElement = document.getElementById('result');
         const liveModeCheckbox = document.getElementById('liveMode');
         const urlSafeCheckbox = document.getElementById('urlSafe');
+        const lineByLineCheckbox = document.getElementById('lineByLine');
+        const split76Checkbox = document.getElementById('split76');
+        const charsetSelect = document.getElementById('charset');
+        const newlineSelect = document.getElementById('newline');
         const fileInput = document.getElementById('fileInput');
 
-        // Setup Live Input Listener
         inputText.addEventListener('input', handleLive);
 
         function handleLive() {
-            if (liveModeCheckbox.checked) {
-                processText(false); // False means don't trigger the button animation
-            }
+            if (liveModeCheckbox.checked) processText(false); 
         }
 
-        // Handle File Uploads (Converts file to Base64 Data URL)
         fileInput.addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                // Set the text area to the encoded file string
                 document.querySelector('input[name="operation"][value="encode"]').checked = true;
                 inputText.value = e.target.result;
                 processText(true);
@@ -307,6 +320,11 @@ loadRemoteTools();
         function processText(triggerAnimation = false) {
             const operation = document.querySelector('input[name="operation"]:checked').value;
             const text = inputText.value;
+            const charset = charsetSelect.value;
+            const nlChar = newlineSelect.value === 'LF' ? '\n' : '\r\n';
+            const doLineByLine = lineByLineCheckbox.checked;
+            const doSplit76 = split76Checkbox.checked;
+            const doUrlSafe = urlSafeCheckbox.checked;
 
             if (!text) {
                 resultElement.innerHTML = "Waiting for input...";
@@ -315,40 +333,76 @@ loadRemoteTools();
 
             try {
                 let output = "";
+
                 if (operation === 'encode') {
-                    // Encode logic
-                    output = btoa(unescape(encodeURIComponent(text))); // Handles Unicode characters
-                    
-                    if (urlSafeCheckbox.checked) {
-                        output = output.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+                    // Normalize newlines in the input text first
+                    let normalizedText = text.replace(/\r\n|\r|\n/g, nlChar);
+
+                    const encodeChunk = (str) => {
+                        let b64 = "";
+                        if (charset === 'UTF-8') {
+                            b64 = btoa(unescape(encodeURIComponent(str)));
+                        } else {
+                            // Binary: Treat as raw latin1 string
+                            b64 = btoa(str); 
+                        }
+                        
+                        if (doUrlSafe) {
+                            b64 = b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+                        }
+                        
+                        if (doSplit76) {
+                            const chunks = b64.match(/.{1,76}/g);
+                            if (chunks) b64 = chunks.join(nlChar);
+                        }
+                        return b64;
+                    };
+
+                    if (doLineByLine) {
+                        const lines = normalizedText.split(nlChar);
+                        output = lines.map(encodeChunk).join(nlChar);
+                    } else {
+                        output = encodeChunk(normalizedText);
                     }
+
                     if (triggerAnimation) showAnimation('processBtn', "Encoded!");
 
                 } else {
-                    // Decode logic
-                    let decodeTarget = text;
-                    
-                    if (urlSafeCheckbox.checked || text.includes('-') || text.includes('_')) {
-                        // Revert URL-safe characters back to standard Base64
-                        decodeTarget = decodeTarget.replace(/-/g, '+').replace(/_/g, '/');
-                        // Add padding back if necessary
-                        while (decodeTarget.length % 4) {
-                            decodeTarget += '=';
+                    // DECODE
+                    const decodeChunk = (b64Chunk) => {
+                        let target = b64Chunk.trim();
+                        if (!target) return "";
+                        
+                        // Revert URL safe if needed
+                        if (doUrlSafe || target.includes('-') || target.includes('_')) {
+                            target = target.replace(/-/g, '+').replace(/_/g, '/');
+                            while (target.length % 4) target += '=';
                         }
+
+                        if (charset === 'UTF-8') {
+                            return decodeURIComponent(escape(atob(target)));
+                        } else {
+                            return atob(target);
+                        }
+                    };
+
+                    if (doLineByLine) {
+                        const lines = text.split(/\r\n|\r|\n/);
+                        output = lines.map(decodeChunk).join(nlChar);
+                    } else {
+                        // Standard base64 decode ignores whitespace/newlines
+                        const strippedB64 = text.replace(/\s+/g, '');
+                        output = decodeChunk(strippedB64);
                     }
-                    
-                    // Decode logic handling Unicode characters
-                    output = decodeURIComponent(escape(atob(decodeTarget)));
+
                     if (triggerAnimation) showAnimation('processBtn', "Decoded!");
                 }
                 
-                // Use textContent to prevent XSS if user types HTML
                 resultElement.textContent = output; 
                 
             } catch (e) {
-                // Soft error for live mode, hard error if manually triggered
                 if (triggerAnimation || !liveModeCheckbox.checked) {
-                    resultElement.innerHTML = "<span style='color: #ff6b6b;'>Error: Invalid input or encoding.</span>";
+                    resultElement.innerHTML = "<span style='color: #ff6b6b;'>Error: Invalid input encoding. If decoding binary, try swapping Charset.</span>";
                 }
             }
         }
