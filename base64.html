@@ -304,18 +304,53 @@ permalink: /tools/base64
             if (liveModeCheckbox.checked) processText(false); 
         }
 
+        // --- NEW SMARTER FILE UPLOAD LOGIC ---
         fileInput.addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
+            
+            // Check if it's a text-based file (handles .ahk, .txt, .js, etc)
+            const isText = file.type.startsWith('text/') || 
+                           file.name.match(/\.(txt|ahk|js|html|css|json|csv|xml|py|md|log)$/i);
+
             reader.onload = function(e) {
-                document.querySelector('input[name="operation"][value="encode"]').checked = true;
-                inputText.value = e.target.result;
-                processText(true);
+                if (isText) {
+                    // It's text! Put the raw text into the input box and let processText handle it.
+                    document.querySelector('input[name="operation"][value="encode"]').checked = true;
+                    inputText.value = e.target.result;
+                    processText(true);
+                } else {
+                    // It's binary! Extract pure Base64, apply chunking/url-safe, and output it.
+                    const dataUrl = e.target.result;
+                    const base64Data = dataUrl.substring(dataUrl.indexOf(',') + 1);
+                    
+                    document.querySelector('input[name="operation"][value="encode"]').checked = true;
+                    inputText.value = `[Binary File Uploaded: ${file.name}]\n\nRaw Base64 string has been generated below.`;
+                    
+                    let finalOutput = base64Data;
+                    if (urlSafeCheckbox.checked) {
+                        finalOutput = finalOutput.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+                    }
+                    if (split76Checkbox.checked) {
+                        const nlChar = newlineSelect.value === 'LF' ? '\n' : '\r\n';
+                        const chunks = finalOutput.match(/.{1,76}/g);
+                        if (chunks) finalOutput = chunks.join(nlChar);
+                    }
+                    
+                    resultElement.textContent = finalOutput;
+                    showAnimation('processBtn', "Encoded File!");
+                }
             };
-            reader.readAsDataURL(file);
+
+            if (isText) {
+                reader.readAsText(file); // Read as raw text
+            } else {
+                reader.readAsDataURL(file); // Read as Base64 encoded binary
+            }
         });
+        // ---------------------------------------
 
         function processText(triggerAnimation = false) {
             const operation = document.querySelector('input[name="operation"]:checked').value;
@@ -326,8 +361,10 @@ permalink: /tools/base64
             const doSplit76 = split76Checkbox.checked;
             const doUrlSafe = urlSafeCheckbox.checked;
 
-            if (!text) {
-                resultElement.innerHTML = "Waiting for input...";
+            if (!text || text.startsWith("[Binary File Uploaded:")) {
+                if(!text.startsWith("[Binary File Uploaded:")) {
+                    resultElement.innerHTML = "Waiting for input...";
+                }
                 return;
             }
 
