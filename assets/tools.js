@@ -58,7 +58,12 @@
         'ip-gen': {name: 'Random IP Gen', desc: 'A great custom IP Address Generator!'},
         'html-tester': {name: 'HTML Tester', desc: 'An easy-to-use HTML tester.'},
         'unicode': {name: 'Random Unicode Gen', desc: 'An effective custom unicode generator.'},
-        'base64': {name: 'Base64 En/Decode', desc: 'Advanced Base64 Encode/Decode.'}
+        'base64': {name: 'Base64 En/Decode', desc: 'Advanced Base64 Encode/Decode.'},
+        'case-converter': {name: 'Case Converter', desc: 'Quickly switch text between camelCase, snake_case, PascalCase, and slug-case.'},
+        'hash-generator': {name: 'Cryptographic Hash Generator', desc: 'Generate MD5, SHA-1, SHA-256, and SHA-512 hashes.'},
+        'json-formatter': {name: 'JSON Formatter & Validator', desc: 'Takes ugly or minified JSON and makes it readable, or checks for syntax errors.'},
+        'jwt-decoder': {name: 'JWT Decoder', desc: 'Decode JSON Web Tokens to view header and payload data.'},
+        'url-encoder': {name: 'URL Encoder/Decoder', desc: 'Encode or decode strings for safe URL transmission.'},
     };
 
     // 3. Build the Dropdown
