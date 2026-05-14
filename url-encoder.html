@@ -157,18 +157,30 @@ permalink: /tools/url-encoder
         }
 
         
-        function processText(triggerAnimation = false) {
-            const text = inputText.value;
-            const op = document.querySelector('input[name="operation"]:checked').value;
-            if (!text) { resultElement.innerHTML = "Waiting for input..."; return; }
-            try {
-                if (op === 'encode') resultElement.textContent = encodeURIComponent(text);
-                else resultElement.textContent = decodeURIComponent(text);
-                if (triggerAnimation) showAnimation('processBtn', op === 'encode' ? "Encoded!" : "Decoded!");
-            } catch (e) {
-                resultElement.innerHTML = "<span style='color: #ff6b6b;'>Error: Invalid URI sequence.</span>";
-            }
+function processText(triggerAnimation = false) {
+    const text = inputText.value;
+    const op = document.querySelector('input[name="operation"]:checked').value;
+    
+    if (!text) { 
+        resultElement.innerHTML = "Waiting for input..."; 
+        return; 
+    }
+
+    try {
+        // Switching to encodeURI/decodeURI keeps ://, /, and ? intact
+        if (op === 'encode') {
+            resultElement.textContent = encodeURI(text);
+        } else {
+            resultElement.textContent = decodeURI(text);
         }
+
+        if (triggerAnimation) {
+            showAnimation('processBtn', op === 'encode' ? "Encoded!" : "Decoded!");
+        }
+    } catch (e) {
+        resultElement.innerHTML = "<span style='color: #ff6b6b;'>Error: Invalid URI sequence.</span>";
+    }
+}
         
     </script>
     {% raw %}
