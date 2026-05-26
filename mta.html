@@ -1,0 +1,2652 @@
+---
+layout: default
+title: MTA Live Tracker
+permalink: /mta/
+---
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTA Live Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.2.4/dist/protobuf.min.js"></script>
+    <script src="https://cdn.maptiler.com/maplibre-gl-js/v2.4.0/maplibre-gl.js"></script>
+    <link href="https://cdn.maptiler.com/maplibre-gl-js/v2.4.0/maplibre-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <style>
+        /* If you want to use the icon via CSS like the MTA site does: */
+        .my-custom-bus::before {
+            font-family: "FontAwesome";
+            content: "\f207"; /* This is the Font Awesome Unicode for a bus */
+            color: #000000; /* MTA Blue */
+        }
+    </style>
+
+    
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #121212; color: #e0e0e0; padding: 0; margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+overflow-y: auto; /* Enable vertical scrolling */
+ }
+        
+        #map-container { flex: 1; position: relative; border-bottom: 1px solid #333; }
+        #map { width: 100%; height: 100%; }
+        
+        #panel { height: 45vh; background: #1e1e1e; display: flex; flex-direction: column; box-shadow: 0 -4px 10px rgba(0,0,0,0.5); z-index: 20; 
+overflow-y: auto; /* Enable vertical scrolling */
+}
+        
+        .header { padding: 10px 15px; background: #252525; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #333; }
+        h1 { margin: 0; font-size: 1.1rem; color: #fccc0a; }
+        #status { font-size: 0.8rem; color: #888; }
+
+/*
+        .line-picker { padding: 10px; display: flex; gap: 8px; justify-content: center; background: #1e1e1e; flex-wrap: wrap; }
+*/
+
+/* Base Button Styling */
+.line-btn { 
+    width: 32px; 
+    height: 32px; 
+    border-radius: 50%; 
+    border: none; 
+    font-family: -apple-system, sans-serif; /* Distinct from official Helvetica */
+    font-size: 15px; 
+    font-weight: 800; 
+    cursor: pointer; 
+    background: #333; /* Default inactive state */
+    color: #fff; 
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+z-index: 67;
+}
+
+/* Ensure the button can contain the absolute badge */
+.line-btn, .line-btn-diamond {
+    position: relative; 
+}
+
+/* Style the badge so it floats in the top-right corner */
+.alert-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff0000; /* Bright red */
+    color: white;
+    font-size: 10px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10; /* Always on top */
+    pointer-events: none; /* Let clicks pass through to the button */
+}
+
+/* Unified Active State */
+.line-btn.active { 
+    color: white !important; 
+    transform: scale(1.15); /* Slightly larger for "pop" */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 70 !important;
+}
+
+/* Group Colors */
+.line-btn[data-group="red"].active         { background: #ee352e; } /* 1, 2, 3 */
+.line-btn[data-group="green"].active       { background: #00933c; } /* 4, 5, 6 */
+.line-btn[data-group="purple"].active      { background: #b933ad; } /* 7 */
+.line-btn[data-group="blue"].active        { background: #0039a6; } /* A, C, E */
+.line-btn[data-group="orange"].active      { background: #ff6319; } /* B, D, F, M */
+.line-btn[data-group="light-green"].active { background: #6cbe45; } /* G */
+.line-btn[data-group="gray"].active        { background: #a7a9ac; } /* L */
+.line-btn[data-group="brown"].active       { background: #996633; } /* J, Z */
+
+/* Special case for Yellow (N, Q, R, W) for better contrast */
+.line-btn[data-group="yellow"].active { 
+    background: #fccc0a; 
+    color: #000 !important; 
+}
+
+/* Shuttle Bus Icon - Usually a black square or dark gray */
+.line-btn[data-group="bus"].active { 
+    background: #333; 
+    border-radius: 4px; /* Slightly rounded square instead of circle */
+}
+
+/* Accessibility Icon - Official ISA Blue */
+.line-btn[data-group="ada"].active { 
+    background: #0078C6; 
+    border-radius: 4px;
+    font-size: 18px; /* The ♿ symbol usually needs to be a bit larger */
+}
+
+
+.line-btn-diamond { 
+    width: 22px; 
+    height: 22px; 
+    border: none; 
+    font-family: -apple-system, sans-serif;
+    font-size: 12px; 
+    font-weight: 800; 
+    background: #333; 
+    color: #fff; 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(45deg); /* Rotates the box */
+    margin: 0 4px; /* Give it space because corners stick out */
+    vertical-align: middle;
+}
+
+.line-btn-diamond span {
+    transform: rotate(-45deg); /* Un-rotates the text so it's upright */
+    display: block;
+}
+
+/* Unified Active State */
+.line-btn-diamond.active { 
+    color: white !important; 
+    transform: rotate(45deg) scale(1.15); 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 70 !important;
+}
+
+
+/* Group Colors */
+.line-btn-diamond[data-group="red"].active         { background: #ee352e; } /* 1, 2, 3 */
+.line-btn-diamond[data-group="green"].active       { background: #00933c; } /* 4, 5, 6 */
+.line-btn-diamond[data-group="purple"].active      { background: #b933ad; } /* 7 */
+.line-btn-diamond[data-group="blue"].active        { background: #0039a6; } /* A, C, E */
+.line-btn-diamond[data-group="orange"].active      { background: #ff6319; } /* B, D, F, M */
+.line-btn-diamond[data-group="light-green"].active { background: #6cbe45; } /* G */
+.line-btn-diamond[data-group="gray"].active        { background: #a7a9ac; } /* L */
+.line-btn-diamond[data-group="brown"].active       { background: #996633; } /* J, Z */
+
+/* Special case for Yellow (N, Q, R, W) for better contrast */
+.line-btn-diamond[data-group="yellow"].active { 
+    background: #fccc0a; 
+    color: #000 !important; 
+}
+
+/* Shuttle Bus Icon - Usually a black square or dark gray */
+.line-btn-diamond[data-group="bus"].active { 
+    background: #333; 
+    border-radius: 4px; /* Slightly rounded square instead of circle */
+}
+
+/* Accessibility Icon - Official ISA Blue */
+.line-btn-diamond[data-group="ada"].active { 
+    background: #0078C6; 
+    border-radius: 4px;
+    font-size: 18px; /* The ♿ symbol usually needs to be a bit larger */
+}
+
+        .action-btn { 
+            width: 10%;
+            padding: 8px;
+            margin-top: 5px;
+            background: #333;
+            color: #ccc;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+display: block;
+        }
+
+        #alerts-feed {
+
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+
+            background: rgba(18, 18, 18, 0.98); z-index: 100;
+
+            display: none; flex-direction: column;
+
+        }
+
+        /* Add/Update these styles in your <style> block */
+.alert-section-header { 
+    font-size: 0.75rem; 
+    color: #888; 
+    text-transform: uppercase; 
+    letter-spacing: 1px; 
+    margin: 20px 0 10px 0; 
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+}
+.alert-type-badge {
+    font-size: 10px;
+    background: #444;
+    color: #fccc0a;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+        .alerts-header { padding: 20px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+
+        .alerts-list { flex: 1; overflow-y: auto; padding: 20px; }
+
+        .alert-item { 
+
+            background: #252525; border-left: 4px solid #ee352e; padding: 15px; 
+
+            border-radius: 6px; margin-bottom: 15px;
+
+        }
+
+        .alert-item-title { font-weight: bold; color: #fccc0a; margin-bottom: 5px; font-size: 15px; }
+
+/* Red for Urgent (High Alert) */
+.alert-item.urgent { border-left-color: #ee352e; } 
+
+/* Level 1: Deep Orange (Imminent) */
+.alert-item.planned1 { border-left-color: #ff8c00; } 
+
+/* Level 2: Amber-Yellow (Slight Orange tint) */
+.alert-item.planned2 { border-left-color: #ffcc00; } 
+
+/* Level 3: Lime/Citrus (Merge between Yellow & Green) */
+.alert-item.planned3 { border-left-color: #9acd32; } 
+
+/* Level 4: Dark Green (Distantly Planned) */
+.alert-item.planned4 { border-left-color: #2e8b57; }
+
+
+
+.alert-item-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #ccc;
+    margin-top: 8px;
+    white-space: pre-line; /* Respects line breaks if the API provides them */
+}
+
+.alert-item-meta {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #333;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.meta-block {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.meta-block strong {
+    color: #888;
+    text-transform: uppercase;
+    font-size: 9px;
+    margin-right: 4px;
+}
+
+
+
+        .search-area { padding: 0 15px 10px 15px; }
+        #search-input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #444; background: #121212; color: white; font-size: 16px; box-sizing: border-box; }
+        
+        .content-area { flex: 1; overflow-y: auto; padding: 0 15px 15px 15px; display: flex; flex-direction: column; gap: 10px; }
+        
+        .section-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #666; margin: 10px 0 5px 0; }
+
+        .station-item { 
+            padding: 12px; background: #2a2a2a; border-radius: 6px; font-size: 14px; cursor: pointer; 
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; border-left: 3px solid transparent;
+        }
+        .station-item:hover { background: #333; }
+        .station-item.selected { background: #333; border-left: 3px solid #fccc0a; }
+        .station-id { font-size: 11px; color: #666; font-family: monospace; background: #1a1a1a; padding: 2px 4px; border-radius: 4px; }
+
+        .train-card { 
+            background: #252525; border-left: 5px solid #fccc0a; padding: 12px; border-radius: 6px; 
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+        }
+        .route-badge { 
+            width: 28px; height: 28px; background: #fccc0a; color: black; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 10px; font-size: 14px;
+        }
+        .train-info { display: flex; align-items: center; }
+        .train-dest { font-size: 14px; color: #ddd; }
+        .train-status { font-size: 11px; color: #888; }
+        .train-mins { font-size: 16px; font-weight: bold; color: #4caf50; }
+        .train-time { font-size: 11px; font-weight: bold; color: #636363; }
+
+        /* Map Markers */
+        .marker {
+            width: 22px; height: 22px;
+            color: black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 10px;
+            border: 2px solid #000;
+            box-shadow: 0 0 8px rgba(252, 204, 10, 0.7);
+            z-index: 10;
+            transition: width 0.3s, height 0.3s;
+        }
+        
+        .marker.stopped {
+            width: 18px; height: 18px;
+            box-shadow: 0 0 0 rgba(252, 204, 10, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(252, 204, 10, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(252, 204, 10, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(252, 204, 10, 0); }
+        }
+        
+        .marker-arrow {
+            position: absolute; top: -6px; width: 0; height: 0; 
+            border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 6px solid #000;
+            transform-origin: bottom center;
+            left: 50%;
+            margin-left: -5px;
+        }
+
+#now-alerts {
+    max-height: 150px; /* Limits how far it can grow */
+    overflow-y: auto;  /* Adds a scrollbar if too many types appear */
+    padding: 10px 20px;
+    background: #1a1a1a; /* Distinct background to separate from list */
+    border-bottom: 2px solid #333;
+}
+
+/* Hide the summary if it's empty */
+#now-alerts:empty {
+    display: none;
+    padding: 0px 0px;
+    border-bottom: 0px;
+}
+
+/* This turns the picker into a flexible grid */
+.alerts-line-picker {
+    display: flex;
+    flex-wrap: wrap;      /* Allows buttons to move to the next line */
+    gap: 4px;             /* Adds spacing between buttons */
+    justify-content: center; /* Centers the buttons */
+    max-width: 350px;     /* Limits the width so it doesn't span the whole screen */
+    margin: 10px 0;       /* Adds some breathing room */
+}
+
+/* Ensure the buttons themselves behave */
+.alerts-line-picker .line-btn {
+    flex: 0 0 auto;       /* Prevents buttons from stretching */
+    width: 28px;          /* Fixed size for a consistent circle/grid look */
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;           /* Clear any default padding */
+}
+
+/* Mobile specific: Stack the header sections */
+@media (max-width: 768px) {
+    .alerts-header {
+        flex-direction: column; /* Stacks Title/Summary, Picker, and Buttons vertically */
+        align-items: center;
+        text-align: center;
+    }
+
+    .alerts-line-picker {
+        max-width: 100%;       /* Let it use the full width on phone */
+        justify-content: center;
+        padding: 5px;
+    }
+}
+
+/* Mobile Optimization & Compact Overrides */
+@media (max-width: 768px) {
+    /* Shorten the map and give the panel more height */
+    #map-container { height: 40vh; flex: none !important; }
+    #panel { height: 60vh; }
+    
+    /* Make the Alerts Header more vertical */
+    .alerts-header { flex-direction: column; align-items: flex-start !important; padding: 15px !important; }
+    .alerts-header > div:first-child { margin-bottom: 10px; }
+}
+
+/* Hide scrollbars for the horizontal alerts picker to keep it clean */
+#picker-container-alerts::-webkit-scrollbar { display: none; }
+#picker-container-alerts { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Styling for the new Compact Active Line Display */
+#active-line-display {
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: #1a1a1a;
+    gap: 12px;
+    border-bottom: 1px solid #333;
+}
+
+.clear-line-btn {
+    background: #444;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+.clear-line-btn:hover { background: #666; }
+
+/* This turns the picker into a flexible, wrapping grid */
+.alerts-line-picker {
+    display: flex;
+    flex-wrap: wrap; /* Allows buttons to form a neat grid instead of a single scrolling line */
+    gap: 8px; /* Increased from 4px to give buttons more breathing room on mobile */
+    justify-content: center; /* Centers the buttons */
+    width: 100%; /* Takes full width available */
+    max-width: 800px; /* Sensible limit so it doesn't look ridiculous on massive desktop monitors */
+    margin: 15px auto 5px auto; /* Adds breathing room and centers the container */
+    padding: 0 10px; /* Keeps buttons from touching the extreme edges of phone screens */
+}
+
+    </style>
+</head>
+<body>
+
+    <div id="alerts-feed">
+<div class="alerts-header" style="display: flex; flex-direction: column; padding: 15px; border-bottom: 1px solid #333;">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <h2 id="alerts-title" style="margin:0; color:#fccc0a;">System Alerts</h2>
+        <div style="display: flex; gap: 8px;">
+            <button class="action-btn" style="width: auto; margin: 0; padding: 6px 12px;" onclick="setLineFilter('', true)">Clear</button>
+            <button class="action-btn" style="width: auto; margin: 0; padding: 6px 12px;" onclick="toggleAlertsFeed(false)">Close</button>
+        </div>
+    </div>
+    
+   <div class="alerts-line-picker" id="picker-container-alerts">
+        <button class="line-btn" data-group="red" onclick="setLineFilter('1')">1</button>
+        <button class="line-btn" data-group="red" onclick="setLineFilter('2')">2</button>
+        <button class="line-btn" data-group="red" onclick="setLineFilter('3')">3</button>
+        <button class="line-btn" data-group="green" onclick="setLineFilter('4')">4</button>
+        <button class="line-btn" data-group="green" onclick="setLineFilter('5')">5</button>
+        <button class="line-btn" data-group="green" onclick="setLineFilter('6')">6</button>
+        <button class="line-btn" data-group="purple" onclick="setLineFilter('7')">7</button>
+        <button class="line-btn" data-group="blue" onclick="setLineFilter('A')">A</button>
+        <button class="line-btn" data-group="blue" onclick="setLineFilter('C')">C</button>
+        <button class="line-btn" data-group="blue" onclick="setLineFilter('E')">E</button>
+        <button class="line-btn" data-group="orange" onclick="setLineFilter('B')">B</button>
+        <button class="line-btn" data-group="orange" onclick="setLineFilter('D')">D</button>
+        <button class="line-btn" data-group="orange" onclick="setLineFilter('F')">F</button>
+        <button class="line-btn" data-group="orange" onclick="setLineFilter('M')">M</button>
+        <button class="line-btn" data-group="light-green" onclick="setLineFilter('G')">G</button>
+        <button class="line-btn" data-group="gray" onclick="setLineFilter('L')">L</button>
+        <button class="line-btn" data-group="yellow" onclick="setLineFilter('N')">N</button>
+        <button class="line-btn" data-group="yellow" onclick="setLineFilter('Q')">Q</button>
+        <button class="line-btn" data-group="yellow" onclick="setLineFilter('R')">R</button>
+        <button class="line-btn" data-group="yellow" onclick="setLineFilter('W')">W</button>
+        <button class="line-btn" data-group="brown" onclick="setLineFilter('J')">J</button>
+        <button class="line-btn" data-group="brown" onclick="setLineFilter('Z')">Z</button>
+        <button class="line-btn" data-group="gray" data-line="FS" onclick="setLineFilter('FS')">SF</button>
+        <button class="line-btn" data-group="gray" data-line="GS" onclick="setLineFilter('GS')">SG</button>
+        <button class="line-btn" data-group="gray" data-line="H" onclick="setLineFilter('H')">SR</button>
+    </div>
+
+    <div id="now-alerts" style="width: 100%;"></div>
+</div>
+
+        
+
+        <div class="alerts-list" id="alerts-container">
+            </div>
+    </div>
+
+    
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+
+    <div id="panel">
+        <div class="header">
+            <h1>MTA Live Tracker</h1>
+            <button class="action-btn" id="toggleLiveTrains" onclick="toggleLiveTrains()">Show Live Trains</button>
+            <button class="action-btn" id="toggleStations" onclick="toggleLayer('station-dots')">Hide Stations</button>
+                        <button class="action-btn" id="toggleAlertsBtn" onclick="toggleAlertsFeed(true)">Show Alerts</button>
+                        <button class="action-btn" id="toggleDisclaimerBtn" onclick="toggleDisclaimer()">Show Disclaimer</button>
+
+            <div id="status">Initializing...</div>
+        </div>
+
+<div id="active-line-display">
+    <span style="color:#888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Selected Line</span>
+    <div id="active-line-badge"></div>
+    <button class="clear-line-btn" onclick="setLineFilter('', true)">X</button>
+</div>
+
+
+        <div class="line-picker" id="picker-container">
+
+            <button class="line-btn" data-group="red" onclick="setLineFilter('1')">1</button>
+
+            <button class="line-btn" data-group="red" onclick="setLineFilter('2')">2</button>
+
+            <button class="line-btn" data-group="red" onclick="setLineFilter('3')">3</button>
+
+            <button class="line-btn" data-group="green" onclick="setLineFilter('4')">4</button>
+
+            <button class="line-btn" data-group="green" onclick="setLineFilter('5')">5</button>
+
+            <button class="line-btn" data-group="green" onclick="setLineFilter('6')">6</button>
+
+            <button class="line-btn" data-group="green" onclick="setLineFilter('6X')">6X</button>
+
+            <button class="line-btn" data-group="purple" onclick="setLineFilter('7')">7</button>
+
+<button class="line-btn" data-group="purple" onclick="setLineFilter('7X')">7X</button>
+
+            <button class="line-btn" data-group="blue" onclick="setLineFilter('A')">A</button>
+
+            <button class="line-btn" data-group="blue" onclick="setLineFilter('C')">C</button>
+
+            <button class="line-btn" data-group="blue" onclick="setLineFilter('E')">E</button>
+
+            <button class="line-btn" data-group="orange" onclick="setLineFilter('B')">B</button>
+
+            <button class="line-btn" data-group="orange" onclick="setLineFilter('D')">D</button>
+
+            <button class="line-btn" data-group="orange" onclick="setLineFilter('F')">F</button>
+
+	<button class="line-btn" data-group="orange" onclick="setLineFilter('FX')">FX</button>
+
+            <button class="line-btn" data-group="orange" onclick="setLineFilter('M')">M</button>
+
+            <button class="line-btn" data-group="light-green" onclick="setLineFilter('G')">G</button>
+
+            <button class="line-btn" data-group="gray" onclick="setLineFilter('L')">L</button>
+
+            <button class="line-btn" data-group="yellow" onclick="setLineFilter('N')">N</button>
+
+            <button class="line-btn" data-group="yellow" onclick="setLineFilter('Q')">Q</button>
+
+            <button class="line-btn" data-group="yellow" onclick="setLineFilter('R')">R</button>
+
+            <button class="line-btn" data-group="yellow" onclick="setLineFilter('W')">W</button>
+
+            <button class="line-btn" data-group="brown" onclick="setLineFilter('J')">J</button>
+
+            <button class="line-btn" data-group="brown" onclick="setLineFilter('Z')">Z</button>
+
+            <button class="line-btn" data-group="gray" data-line = "FS" onclick="setLineFilter('FS')">SF</button>
+
+            <button class="line-btn" data-group="gray" data-line = "GS" onclick="setLineFilter('GS')">SG</button>
+
+            <button class="line-btn" data-group="gray" data-line = "H" onclick="setLineFilter('H')">SR</button>
+
+        </div>
+
+
+
+        <div class="search-area">
+
+            <input type="text" id="search-input" placeholder="Search station..." oninput="updateStationList()">
+
+        </div>
+
+
+
+        <div class="content-area" style="min-height: 10dvh; height: 20dvh;">
+
+            <div id="arrivals-section" style="display:none;">
+
+                <div class="section-title">Arrivals: <span id="selected-station-name"></span></div>
+
+                <div id="arrivals-list"></div>
+
+                <button onclick="clearSelection()" style="width:100%; padding:8px; margin-top:5px; background:#333; color:#ccc; border:none; border-radius:4px; cursor:pointer;">Close</button>
+
+            </div>
+
+            <div id="stations-section">
+
+                <div id="station-list"></div>
+
+            </div>
+
+        </div>
+
+        <div id="disclaimer" style="padding: 10px; font-size: 10px; color: #777; border-top: 1px solid #333; background: #1a1a1a; line-height: 1.4; display:none;">
+    <strong>About our data: </strong>We do our best to offer the most accurate real-time information by using data directly from the MTA and storing it on our private high-speed cache. 
+    Although we aim for accuracy, we must point out that this app is not officially licensed or endorsed by the MTA. 
+    The data is offered "as is," and because of the nature of transit data, it may occasionally differ in accuracy or timeliness.
+</div>
+
+    </div>
+
+
+    <script>
+        // --- 1. GLOBAL STATE & CONFIG ---
+        let map;
+        let STATIONS = {}; // Master glossary: id -> { name, lat, lon, parent }
+        let PARENT_STATIONS = []; // Array for list display
+        let FEED_ENTITIES = [];
+        let ALERTS_DATA = [];
+        let MARKER_DATA = {};
+        let TRAIN_MARKERS = {};
+        let TRAIN_DATA = {};
+        //let ALERTS_DATA = {};
+        window.RAW_SHAPES = {}; // Will hold route_id -> flat array of coordinates
+
+        let shouldHide = true;
+        let hideUpcoming = true;
+        let hideDisclaimer = true;
+        let CURRENT_LINE = null;
+        let SELECTED_STATION_ID = null;
+        let FeedMessage; // Protobuf Type
+
+        // Color Palette
+/*
+        const ROUTE_COLORS = {
+            'B': '#ff6319', 'D': '#ff6319', 'F': '#ff6319', 'FX': ROUTE_COLORS['F'], 'M': '#ff6319',
+            'N': '#fccc0a', 'Q': '#fccc0a', 'R': '#fccc0a', 'W': '#fccc0a',
+            'S': '#808183', 'FS': '#808183', 'GS': '#808183', 'H': '#808183',
+            '1': '#ee352e', '2': '#ee352e', '3': '#ee352e',
+            '4': '#00933c', '5': '#00933c', '6': '#00933c',
+            '7': '#b933ad', 'L': '#a7a9ac', 'G': '#6cbe45', 'J': '#996633', 'Z': '#996633',
+            'A': '#0039a6', 'C': '#0039a6', 'E': '#0039a6', 'SI': '#0039a6'
+        };
+*/
+const RAW_COLORS = {
+    // Red (1, 2, 3)
+    '1': '#ee352e', '2': '#ee352e', '3': '#ee352e',
+    
+    // Green (4, 5, 6, 6X)
+    '4': '#00933c', '5': '#00933c', '6': '#00933c', '6X': '#00933c',
+    
+    // Purple (7, 7X)
+    '7': '#b933ad', '7X': '#b933ad',
+    
+    // Blue (A, C, E, SI, SIR)
+    'A': '#0039a6', 'C': '#0039a6', 'E': '#0039a6', 'SI': '#0039a6', 'SIR': '#0039a6',
+    
+    // Orange (B, D, F, FX, M)
+    'B': '#ff6319', 'D': '#ff6319', 'F': '#ff6319', 'FX': '#ff6319', 'M': '#ff6319',
+    
+    // Yellow (N, Q, R, W)
+    'N': '#fccc0a', 'Q': '#fccc0a', 'R': '#fccc0a', 'W': '#fccc0a',
+    
+    // Light Green (G)
+    'G': '#6cbe45',
+    
+    // Gray (L, S, Shuttles)
+    'L': '#a7a9ac', 'S': '#808183', 'FS': '#808183', 'GS': '#808183', 'H': '#808183',
+    'SR': '#808183', 'SG': '#808183', 'SF': '#808183',
+    
+    // Brown (J, Z)
+    'J': '#996633', 'Z': '#996633',
+
+    // Bus & ADA
+    'SB': '#003366', 'BUS': '#003366',
+    'AD': '#00aeeef', 'ADA': '#00aeeef'
+};
+
+// The Proxy that makes ROUTE_COLORS[lineId] "smart"
+const ROUTE_COLORS = new Proxy(RAW_COLORS, {
+    get: function(target, prop) {
+        // If the property is a symbol (like iterator) or doesn't exist as a string, handle normally
+        if (typeof prop !== 'string') return target[prop];
+
+        const key = prop.toUpperCase();
+
+        // 1. Check for exact match (e.g., '6X' or 'SIR')
+        if (target[key]) return target[key];
+
+        // 2. Check for first character match (e.g., 'A' for 'A-Express')
+        const firstChar = key.substring(0, 1);
+        if (target[firstChar]) return target[firstChar];
+
+        // 3. Fallback to gray
+        return '#808183';
+    }
+});
+
+// USAGE EXAMPLES:
+// console.log(ROUTE_COLORS['6X']);  // Returns '#00933c' (Exact match)
+// console.log(ROUTE_COLORS['a1']);  // Returns '#0039a6' (Fallback to 'A')
+// console.log(ROUTE_COLORS['Z']);   // Returns '#996633' (Direct match)
+// console.log(ROUTE_COLORS['XYZ']); // Returns '#808183' (Total fallback)
+
+        const PROXY_URL = "https://proxy.cqmbo.workers.dev/?url=";
+        const FEEDS = [
+            "nyct%2Fgtfs-nqrw",
+            "nyct%2Fgtfs-bdfm",
+            'nyct%2Fgtfs',
+            'nyct%2Fgtfs-si',
+            'nyct%2Fgtfs-l',
+            'nyct%2Fgtfs-g',
+            'nyct%2Fgtfs-jz',
+            'nyct%2Fgtfs-ace'
+        ];
+        const ALERTS_URL = "camsys%2Fsubway-alerts.json";
+        const STATIONS_CSV_URL = "https://raw.githubusercontent.com/Cqmbo1/Cqmbo1.github.io/refs/heads/main/assets/gtfs_subway/stops.txt";
+
+        // Protobuf Definition
+        const protoDefinition = `
+            syntax = "proto2";
+            package transit_realtime;
+            message FeedMessage { required FeedHeader header = 1; repeated FeedEntity entity = 2; }
+            message FeedHeader { required string gtfs_realtime_version = 1; optional uint64 timestamp = 3; }
+            message FeedEntity { required string id = 1; optional TripUpdate trip_update = 3; optional VehiclePosition vehicle = 4; }
+            message TripUpdate { required TripDescriptor trip = 1; repeated StopTimeUpdate stop_time_update = 2; }
+            message VehiclePosition { optional TripDescriptor trip = 1; optional string stop_id = 7; optional Position position = 2; optional VehicleStopStatus current_status = 4; optional int64 timestamp = 5; }
+            message Position { required float latitude = 1; required float longitude = 2; }
+            message TripDescriptor { optional string route_id = 5; optional string trip_id = 1; }
+            message StopTimeUpdate { optional string stop_id = 4; optional StopTimeEvent arrival = 2; optional StopTimeEvent departure = 3; }
+            message StopTimeEvent { optional int64 time = 2; }
+            enum VehicleStopStatus { INCOMING_AT = 0; STOPPED_AT = 1; IN_TRANSIT_TO = 2; }
+        `;
+
+        // --- 2. INITIALIZATION ---
+
+async function fetchWithRetry(url, options = {}, retries = 3, backoff = 1000) {
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response;
+    } catch (err) {
+        if (retries <= 0) {
+            console.error(`Final fetch failure for ${url}:`, err);
+            throw err;
+        }
+        console.warn(`Fetch failed for ${url}. Retrying in ${backoff}ms... (${retries} left)`);
+        await new Promise(resolve => setTimeout(resolve, backoff));
+        return fetchWithRetry(url, options, retries - 1, backoff * 2);
+    }
+}
+
+
+function doalert(...args){
+    function isMobile() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  return /Mobi|Android|iPhone|iPad|iPod|Mobile|Opera Mini|IEMobile|WPDesktop/i.test(ua) || (isTouchDevice && /Macintosh/.test(ua));
+}
+    let isOnDesktop = !isMobile();
+
+    if (isOnDesktop) {
+        console.log(...args)
+    } else {
+        alert(...args)
+    }
+}
+
+const hookConsoleToAlert = () => {
+  // Simple check for mobile devices based on User Agent
+    function isMobile() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  return /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop|Mobile/i.test(ua) || (isTouchDevice && /Macintosh/.test(ua));
+}
+
+
+  if (isMobile()) {
+    ['error', 'warn'].forEach((method) => {
+      // Store the original reference
+      const originalMethod = console[method];
+
+      // Overwrite the method
+      console[method] = (...args) => {
+        // Trigger the alert with the first argument of the console call
+        alert(`Console ${method.toUpperCase()}: ${args[0]}`);
+
+        // Call the original method to ensure it still appears in the dev tools
+        originalMethod.apply(console, args);
+      };
+    });
+  }
+};
+
+hookConsoleToAlert();
+
+        
+
+        async function init() {
+doalert('initializing');
+            // Setup Map
+            map = new maplibregl.Map({
+                container: 'map',
+                style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=GxXlHNpmofzFgWaabkw2',
+                center: [-73.975, 40.75],
+                zoom: 12,
+                pitch: 0,
+                attributionControl: false
+            });
+            map.addControl(new maplibregl.NavigationControl({showCompass:false}), 'top-right');
+
+            // Setup Protobuf
+            const root = protobuf.parse(protoDefinition).root;
+            FeedMessage = root.lookupType("transit_realtime.FeedMessage");
+
+            // Load Data
+            document.getElementById('status').innerText = "Loading Station DB...";
+doalert('map initialized, loading stations');
+            //await loadStations();
+
+/*
+const success = await loadStations(); 
+if (success) { 
+// Start Data Loops 
+setInterval(fetchData, 5000);
+setInterval(fetchAlerts, 30000); 
+// Immediate first fetch 
+fetchData(); 
+fetchAlerts(); 
+}
+
+            await loadRouteDescriptions();
+            
+            // Map Layers
+            map.on('load', () => {
+                setupMapLayers();
+                fetchData();
+                fetchAlerts();
+                setInterval(fetchData, 5000); // Polling every 5s
+                setInterval(fetchAlerts, 30000);
+                animate();
+            });
+*/
+
+// --- 2. Refined initializeApp logic ---
+// --- 2. Refined initializeApp logic ---
+async function initializeApp() {
+    let success = false;
+    let attempts = 0;
+    const maxRetries = 5;
+
+    while (!success && attempts < maxRetries) {
+        success = await loadStations();
+        if (!success) {
+            attempts++;
+            const delay = 2000 * attempts; // Increasing backoff (2s, 4s, 6s...)
+            doalert(`Station load failed. Retry attempt ${attempts}/${maxRetries} in ${delay}ms...`);
+            if (attempts < maxRetries) {
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+        }
+    }
+
+    if (!success) {
+        document.getElementById('status').innerText = "Initialization Failed. Please refresh.";
+        doalert("Failed to load stations after 5 attempts. Stopping init.");
+        return;
+    }
+
+    // Continue only if stations loaded successfully
+    await loadRouteDescriptions();
+
+    // Group the core startup logic into a single function
+    const startCore = () => {
+        setupMapLayers();
+        fetchData();
+        fetchAlerts();
+loadShapes();
+
+        setInterval(fetchData, 5000);
+        setInterval(fetchAlerts, 30000);
+
+        animate();
+        doalert('map successfully loaded, starting core.');
+    };
+
+    // Check if the map is ALREADY loaded. If yes, fire immediately. If no, wait for the event.
+    if (map.loaded()) {
+        startCore();
+    } else {
+        map.on('load', startCore);
+    }
+}
+
+
+
+// Start the app
+initializeApp();
+
+
+        }
+
+async function loadShapes() {
+    try {
+        // Use the path to your shapes.txt file
+        const SHAPES_CSV_URL = "https://raw.githubusercontent.com/Cqmbo1/Cqmbo1.github.io/refs/heads/main/assets/gtfs_subway/shapes.txt"; 
+        const res = await fetchWithRetry(SHAPES_CSV_URL);
+        const text = await res.text();
+        
+        const lines = text.split(/\r?\n/);
+        const shapes = {};
+        
+        // Parse CSV
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+            
+            const parts = line.split(',');
+            if (parts.length >= 4) {
+                const shape_id = parts[0];
+                const seq = parseInt(parts[1], 10);     // Sequence is index 1
+                const lat = parseFloat(parts[2]);       // Latitude is index 2
+                const lon = parseFloat(parts[3]);       // Longitude is index 3
+                
+                if (!shapes[shape_id]) shapes[shape_id] = [];
+                shapes[shape_id].push({ lat, lon, seq });
+            }
+        }
+        
+        const features = [];
+        for (const [shape_id, points] of Object.entries(shapes)) {
+            points.sort((a, b) => a.seq - b.seq);
+            const coordinates = points.map(p => [p.lon, p.lat]);
+            const route_id = shape_id.split('.')[0]; 
+            
+            // SAVE TO GLOBAL FOR ANIMATION
+            if (!window.RAW_SHAPES[route_id]) window.RAW_SHAPES[route_id] = [];
+            // Merge all branches into a searchable coordinate cloud for this line
+            window.RAW_SHAPES[route_id].push(...coordinates); 
+            features.push({
+                'type': 'Feature',
+                'properties': { 'route_id': route_id },
+                'geometry': { 'type': 'LineString', 'coordinates': coordinates }
+            });
+        }
+
+                    //doalert(JSON.stringify(features))
+        
+        map.addSource('subway-shapes', { 
+            'type': 'geojson', 
+            'data': { 'type': 'FeatureCollection', 'features': features } 
+        });
+        
+        map.addLayer({
+            'id': 'subway-shapes-layer',
+            'type': 'line',
+            'source': 'subway-shapes',
+            'paint': {
+                'line-color': [
+                    'match',
+                    ['get', 'route_id'],
+                    '1', '#ee352e', '2', '#ee352e', '3', '#ee352e',
+                    '4', '#00933c', '5', '#00933c', '6', '#00933c', '6X', '#00933c',
+                    '7', '#b933ad', '7X', '#b933ad',
+                    'A', '#0039a6', 'C', '#0039a6', 'E', '#0039a6',
+                    'B', '#ff6319', 'D', '#ff6319', 'F', '#ff6319', 'M', '#ff6319',
+                    'G', '#6cbe45',
+                    'J', '#996633', 'Z', '#996633',
+                    'L', '#a7a9ac',
+                    'N', '#fccc0a', 'Q', '#fccc0a', 'R', '#fccc0a', 'W', '#fccc0a',
+                    '#555' // Fallback color
+                ],
+                'line-width': 2,
+                'line-opacity': 0.4
+            }
+        }, 'station-dots'); // The 2nd argument tells MapLibre to draw lines under your station dots
+
+    } catch (e) {
+        console.error("Error loading shapes.txt:", e);
+    }
+}
+
+
+// --- NEW: FETCH AND PARSE ROUTES ---
+async function loadRouteDescriptions() {
+    const ROUTES_CSV_URL = "https://raw.githubusercontent.com/Cqmbo1/Cqmbo1.github.io/refs/heads/main/assets/gtfs_subway/routes.txt";
+    try {
+        const res = await fetchWithRetry(ROUTES_CSV_URL);
+        const text = await res.text();
+        const lines = text.split(/\r?\n/);
+        const routeMap = {};
+
+        lines.forEach(line => {
+            if (!line.trim() || line.startsWith('route_id')) return;
+
+            // 1. Split by double quotes to isolate the description
+            // Example: G,MTA NYCT,G,B-Q Crosstown,"Trains operate... Brooklyn.",1...
+            const quoteParts = line.split('"');
+            
+            if (quoteParts.length >= 2) {
+                // The text between the first set of quotes is index 1
+                const routeDesc = quoteParts[1];
+                
+                // The route_id is at the very start of the line (before the first comma)
+                const routeId = quoteParts[0].split(',')[0];
+
+                if (routeId && routeDesc) {
+                    routeMap[routeId] = routeDesc;
+                }
+            }
+        });
+
+        applyTooltips(routeMap);
+        renderAlertsList();
+    } catch (e) {
+        console.warn("Could not load route descriptions:", e);
+    }
+}
+
+function applyTooltips(routeMap) {
+    const buttons = document.querySelectorAll('.line-btn');
+    buttons.forEach(btn => {
+        // Use the dataset line if it exists (for SF, SG, SR), otherwise innerText
+        const lineId = btn.dataset.line || btn.textContent.replace('!', '').trim();
+        
+        // Map the description to the 'title' attribute
+        if (routeMap[lineId]) {
+            btn.title = routeMap[lineId];
+        }
+    });
+}
+
+        // --- 3. STATION DATABASE (CSV) —
+/*
+
+        async function loadStations() {
+            try {
+                const res = await fetch(STATIONS_CSV_URL);
+                const text = await res.text();
+                parseCSV(text);
+                updateStationList(); // Initial render of list
+                document.getElementById('status').innerText = "Stations Loaded.";
+            } catch (e) {
+                console.error("Error loading stations", e);
+                document.getElementById('status').innerText = "Error loading stations.";
+            }
+        }
+*/
+
+async function loadStations() {
+    try {
+        const res = await fetchWithRetry(STATIONS_CSV_URL);
+        
+        // Check if the network request actually succeeded (e.g., not a 404)
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        
+        const text = await res.text();
+        parseCSV(text);
+        updateStationList(); 
+        
+        document.getElementById('status').innerText = "Stations Loaded.";
+        return true; // <--- CRITICAL: Tell the caller we succeeded
+    } catch (e) {
+        console.error("Error loading stations:", e);
+        document.getElementById('status').innerText = "Error loading stations.";
+        return false; // <--- CRITICAL: Tell the caller we failed
+    }
+}
+
+
+        function parseCSV(csvText) {
+            const lines = csvText.split(/\r?\n/);
+            // Headers: stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station
+            // We assume row 0 is header.
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                // Simple CSV split (assuming no commas in names for simplicity, or we'd need regex)
+                // The provided file seems to be standard GTFS.
+                const parts = line.split(',');
+                
+                if (parts.length >= 4) {
+                    const id = parts[0];
+                    const name = parts[1];
+                    const lat = parseFloat(parts[2]);
+                    const lon = parseFloat(parts[3]);
+                    const type = parts[4]; // 1 = parent station, 0 or empty = stop
+                    const parent = parts[5];
+
+                    const stationObj = { id, name, lat, lon, type, parent };
+                    STATIONS[id] = stationObj;
+
+                    // Collect "Parent" stations for the list (Location Type 1)
+                    if (type === '1') {
+                        PARENT_STATIONS.push(stationObj);
+                    }
+                }
+            }
+            // Sort alphabetical, now y axis
+            PARENT_STATIONS.sort((a, b) => b.lat - a.lat);
+        }
+
+        function getStation(id) {
+            // Try direct match
+            if (STATIONS[id]) return STATIONS[id];
+            // Try removing N/S suffix if not found (e.g., A15N -> A15)
+            const parentId = id.substring(0, id.length - 1);
+            if (STATIONS[parentId]) return STATIONS[parentId];
+            return null;
+        }
+
+                // --- NEW: FETCH SUBWAY ALERTS ---
+window.alerts = {}
+        async function fetchAlerts() {
+
+            try {
+
+                const response = await fetchWithRetry(PROXY_URL + ALERTS_URL);
+
+                const data = await response.json();
+
+                ALERTS_DATA = data.entity || [];
+                window.alerts = data.entity
+
+                updateLineBadges();
+
+                renderAlertsList(); // Refresh view if open
+
+            } catch (e) { console.warn("Alert fetch error", e); }
+
+        }
+
+        function toggleAlertsFeed(show) {
+
+            document.getElementById('alerts-feed').style.display = show ? 'flex' : 'none';
+
+            if (show) renderAlertsList();
+
+        }
+
+
+function toggleDisclaimer() {
+let button = document.getElementById('toggleDisclaimerBtn');
+let element = document.getElementById('disclaimer');
+
+hideDisclaimer = !hideDisclaimer;
+if (hideDisclaimer) {
+button.textContent = 'Show Disclaimer';
+element.style.display = 'none';
+} else {
+button.textContent = 'Hide Disclaimer';
+element.style.display = 'block';
+}
+}
+
+
+function updateLineBadges() {
+    const container = document.getElementById('picker-container-alerts');
+    if (!container) return;
+
+    container.querySelectorAll('.line-btn, .line-btn-diamond').forEach(btn => {
+        const lineId = btn.dataset.line || btn.textContent.replace('!', '').replace("X", "").trim();
+        const now = Math.round(Date.now() / 1000);
+
+        // Filter alerts for this specific button
+        const happeningNow = ALERTS_DATA.filter(ent => {
+            if (!ent.alert) return false;
+            const isTargetLine = ent.alert.informed_entity.some(ie => ie.route_id === lineId);
+            if (!isTargetLine) return false;
+
+            const id = ent.id || "";
+            const start = ent.alert.active_period?.[0]?.start || 0;
+
+            // Logic for what counts as "Current"
+            if (id.startsWith("lmm:alert")) return true;
+            if (id.startsWith("lmm:planned_work") && now < start) return false; // Upcoming
+            return true;
+        });
+
+        let badge = btn.querySelector('.alert-badge');
+
+        if (happeningNow.length > 0) {
+            if (!badge) {
+                badge = document.createElement('div');
+                badge.className = 'alert-badge';
+                badge.innerText = '!';
+                btn.appendChild(badge);
+            }
+        } else if (badge) {
+            badge.remove(); // Properly removes if no alerts
+        }
+    });
+}
+
+
+
+// REMOVE: setInterval(()=>{updateLineBadges()}, 1000); 
+// The function is already called inside fetchAlerts() every 30 seconds.
+
+
+
+
+
+function renderAlertsList() {
+    const container = document.getElementById('alerts-container');
+    const titleEl = document.getElementById('alerts-title');
+const nowAlertsContainer = document.getElementById('now-alerts'); 
+// 1. Clear previous content immediately
+container.innerHTML = ""; 
+if (nowAlertsContainer) nowAlertsContainer.innerHTML = ""; 
+
+    let filterLines = [];
+    let filterContext = "Systemwide";
+
+    if (SELECTED_STATION_ID) {
+        filterLines = getLinesAtStation(SELECTED_STATION_ID);
+        filterContext = `Station: ${STATIONS[SELECTED_STATION_ID]?.name || SELECTED_STATION_ID}`;
+    } else if (CURRENT_LINE) {
+        filterLines = [CURRENT_LINE];
+        filterContext = `Line: ${CURRENT_LINE.replace(/H/g, "SR").replace(/GS/g, "SG").replace(/FS/g, "SF")}`;
+    } else {
+        //doalert('empty', CURRENT_LINE === '' ? 'yes' : 'No');
+   }
+
+    titleEl.innerText = `${filterContext} Alerts`;
+
+    const filtered = ALERTS_DATA.filter(ent => {
+        if (!ent.alert) return false;
+        if (filterLines.length === 0) return true;
+        return ent.alert.informed_entity.some(ie => filterLines.includes(ie.route_id));
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align:center; color:#666; padding-top:40px;">No active alerts for this selection.</div>`;
+        return;
+    }
+
+    // --- Categorization & Sorting Logic ---
+    const happeningNow = [];
+    const upcoming = [];
+
+    // Sorting function: Chronological by start time
+    const sortByDate = (a, b) => {
+        const startA = a.alert.active_period?.[0]?.start || 0;
+        const startB = b.alert.active_period?.[0]?.start || 0;
+        return startA - startB;
+    };
+
+filtered.forEach(ent => {
+    const id = ent.id || "";
+    const activePeriod = ent.alert.active_period?.[0];
+    const start = activePeriod?.start;
+    const end = activePeriod?.end;
+    const now = Math.round(Date.now() / 1000);
+
+    // 1. Check if the event is already over
+    if (end && now > end) {
+        // Optional: past.push(ent); 
+	upcoming.push(ent)
+        return; 
+    }
+
+    // 2. Determine if it's Happening Now or Upcoming
+    const isStarted = start && (now >= start);
+    const isAlert = id.startsWith("lmm:alert");
+
+    if (isAlert || isStarted) {
+        // If it's a general alert or the start time has passed
+        happeningNow.push(ent);
+    } else if (now < start) {
+        // If the start time is in the future
+        upcoming.push(ent);
+    } else {
+        // Fallback
+        happeningNow.push(ent);
+    }
+});
+
+
+    // Apply sorting
+    happeningNow.sort(sortByDate);
+    upcoming.sort(sortByDate);
+
+    // --- Generate Now Alerts Summary ---
+// --- Inside renderAlertsList ---
+// --- Generate Now Alerts Summary ---
+if (nowAlertsContainer && happeningNow.length > 0) {
+    // 1. Force container to be a block that spans full width
+    nowAlertsContainer.style.display = "block"; 
+    nowAlertsContainer.style.width = "100%";
+    nowAlertsContainer.style.marginTop = "10px"; // Gap between title and summary
+    nowAlertsContainer.style.maxHeight = "150px";
+    nowAlertsContainer.style.overflowY = "auto";
+    
+    const groupedAlerts = {};
+    
+    happeningNow.forEach(ent => {
+        const type = ent.alert["transit_realtime.mercury_alert"]?.alert_type || "Service Alert";
+        if (!groupedAlerts[type]) groupedAlerts[type] = new Set();
+        
+        if (ent.alert.informed_entity) {
+            ent.alert.informed_entity.forEach(ie => {
+                if (ie.route_id && (filterLines.length === 0 || filterLines.includes(ie.route_id))) {
+                    groupedAlerts[type].add(ie.route_id);
+                }
+            });
+        }
+    });
+
+    let summaryHTML = "";
+    for (const [type, linesSet] of Object.entries(groupedAlerts)) {
+        if (linesSet.size === 0) continue;
+        
+        const sortedLines = Array.from(linesSet).sort();
+        const badgesHTML = sortedLines.map(line => {
+            const groups = {
+                '1': 'red', '2': 'red', '3': 'red', '4': 'green', '5': 'green', '6': 'green', '6X': 'green',
+                '7': 'purple', 'A': 'blue', 'C': 'blue', 'E': 'blue',
+                'B': 'orange', 'D': 'orange', 'F': 'orange', 'FX': 'orange', 'M': 'orange',
+                'G': 'light-green', 'L': 'gray', 'J': 'brown', 'Z': 'brown',
+                'N': 'yellow', 'Q': 'yellow', 'R': 'yellow', 'W': 'yellow',
+                'SR': 'gray', 'SG': 'gray', 'SF': 'gray', 'SIR': 'blue'
+            };
+            const key = line.toUpperCase();
+            const group = groups[key] || groups[key.substring(0, 1)] || 'gray';
+
+            if (line.includes('X')) {
+line = line.replace("X", "");
+                return `<button class="line-btn-diamond active" data-group="${group}" style="margin: 0 2px; transform: rotate(45deg) scale(0.7); flex-shrink: 0;" onclick="setLineFilter('${line}')"><span>${line}</span></button>`;
+            }
+
+/*
+if (line.includes('X')) {
+    // line.replace("X", "") removes the X for the filter function, 
+    // but we keep 'line' for the display text inside the span.
+    return `
+        <button class="line-btn-diamond active" 
+                data-group="${group}" 
+                style="pointer-events:none; margin: 0 4px;" 
+                onclick="setLineFilter('${line.replace("X", "")}')">
+            <span>${line}</span>
+        </button>`;
+}
+*/
+
+            return `<span class="line-btn active" data-group="${group}" style="display:inline-flex; align-items:center; justify-content:center; flex-shrink: 0; vertical-align:middle; margin: 0 2px; width:18px; height:18px; font-size:10px; border-radius:50%;" onclick="setLineFilter('${line}')">${line}</span>`;
+        }).join('');
+
+        // 2. Wrap in a flex-nowrap container for horizontal scrolling
+        summaryHTML += `
+            <div style="margin-bottom: 6px; padding: 4px 8px; background: rgba(255,255,255,0.03); border-radius: 4px;">
+                <div style="font-size: 9px; color: #aaa; text-transform: uppercase; margin-bottom: 2px; font-weight: bold; letter-spacing: 0.5px;">${type}</div>
+                <div class="no-scrollbar" style="display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 4px; align-items: center; -webkit-overflow-scrolling: touch;">
+                    ${badgesHTML}
+                </div>
+            </div>
+        `;
+    }
+    nowAlertsContainer.innerHTML = summaryHTML;
+}
+
+
+
+    const createAlertEl = (ent, isNow = false) => {
+        const getGroup = (line) => {
+            const groups = {
+                '1': 'red', '2': 'red', '3': 'red',
+                '4': 'green', '5': 'green', '6': 'green', '6X': 'green',
+                '7': 'purple', 
+                'A': 'blue', 'C': 'blue', 'E': 'blue',
+                'B': 'orange', 'D': 'orange', 'F': 'orange', 'FX': 'orange', 'M': 'orange',
+                'G': 'light-green',
+                'L': 'gray',
+                'J': 'brown', 'Z': 'brown',
+                'N': 'yellow', 'Q': 'yellow', 'R': 'yellow', 'W': 'yellow',
+                'SR': 'gray', 'SG': 'gray', 'SF': 'gray', 'SIR': 'blue',
+                'SB': 'bus', 'BUS': 'bus', 'AD': 'ada', 'ADA': 'ada'
+            };
+            const key = line.toUpperCase();
+            if (groups[key]) return groups[key];
+            return groups[key.substring(0, 1)] || 'gray';
+        };
+
+        const formatWithBullets = (text) => {
+            if (!text) return "";
+            let processed = text.replace(/\[H\]/g, "[SR]").replace(/\[shuttle bus icon\]/g, "[SB]").replace(/\[accessibility icon\]/g, "[ADA]");
+            return processed.replace(/\[([A-Z0-9]+)\]/g, (match, p1) => {
+                const group = getGroup(p1);
+                if (group === 'ada') return `<img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Wheelchair_symbol.svg" 
+     style="vertical-align: middle; 
+            background: white; 
+            border-radius: 50%; 
+            width: 20px; 
+            height: 20px; 
+            padding: 3px;   /* This creates the 'ring' effect */
+            box-sizing: border-box;">`;
+                if (group === 'bus') return `<span class="line-btn active my-custom-bus" data-group="yellow" style="display:inline-flex; align-items:center; justify-content:center; vertical-align:middle; margin: 0 2px; width:22px; height:22px; font-size:10px; border-radius:50%;"></span>`;
+if (p1.substring(1,2) === 'X') {
+return `<button class="line-btn-diamond active" data-group="${group}">
+    <span>${p1}</span>
+</button>`
+
+}
+
+                return `<span class="line-btn active" data-group="${group}" style="display:inline-flex; align-items:center; justify-content:center; vertical-align:middle; margin: 0 2px; width:22px; height:22px; font-size:12px; border-radius:50%;">${p1}</span>`;
+            });
+        };
+
+        const header = formatWithBullets(ent.alert.header_text.translation[0].text);
+        const desc = formatWithBullets(ent.alert.description_text?.translation[0]?.text || "");
+        const alertType = ent.alert["transit_realtime.mercury_alert"]?.alert_type || "Service Alert";
+        
+        // Improved Date Formatting
+const duration = ent.alert["transit_realtime.mercury_alert"]?.human_readable_active_period?.translation[0]?.text;
+        const dateOptions = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+const start = ent.alert.active_period?.[0]?.start;
+let now = Math.round(Date.now() / 1000); 
+
+// Calculate seconds REMAINING until it starts
+let secondsUntilStart = start - now;
+
+const isPlanned = ent.id.startsWith("lmm:planned_work") && (secondsUntilStart > 0);
+let type = '';
+
+// Check how far away the start date is
+if (secondsUntilStart < 172800) {          // < 2 Days (Imminent)
+    type = '1'; 
+} else if (secondsUntilStart < 604800) {   // 2 - 7 Days (This week)
+    type = '2';
+} else if (secondsUntilStart < 1209600) {  // 7 - 14 Days (Next week)
+    type = '3';
+} else {                                   // > 14 Days (Future)
+    type = '4';
+}
+
+
+        const end = ent.alert.active_period?.[0]?.end;
+        const startTimeStr = start ? new Date(start * 1000).toLocaleString([], dateOptions) : "";
+        const endTimeStr = end ? new Date(end * 1000).toLocaleString([], dateOptions) : "";
+
+        const div = document.createElement('div');
+        div.className = `alert-item ${isPlanned ? ('planned'+type) : 'urgent'}`;
+        div.innerHTML = `
+            <div class="alert-type-badge">${alertType}</div>
+            <div class="alert-item-title">${header}</div>
+            <div class="alert-item-text">${desc}</div>
+<div class="alert-item-meta">
+    ${duration ? `
+        <div class="meta-block">
+            <strong>When:</strong> ${duration}
+        </div>
+    ` : ''}
+
+        ${isPlanned ? `
+        <div class="meta-block" style="font-size: 11px">
+            <strong style="font-size: 11px"> ║  Estimated: </strong>
+        </div>
+    ` : ''}
+
+    <div class="meta-block">
+        <strong>${isPlanned ? 'Starts:' : 'Since:'}</strong> ${startTimeStr}
+    </div>
+
+    ${endTimeStr ? `
+        <div class="meta-block">
+            <strong>Ends:</strong> ${endTimeStr}
+        </div>
+    ` : ''}
+</div>
+
+        `;
+ //const secondDiv = '';
+        return div;
+    };
+
+    // Render logic remains similar but uses the sorted arrays
+    if (happeningNow.length > 0) {
+        const h = document.createElement('div');
+        h.className = 'alert-section-header';
+        h.id = 'present-alerts';
+        h.innerText = "Happening Now";
+        container.appendChild(h);
+        happeningNow.forEach(ent => container.appendChild(createAlertEl(ent, true)));
+    }
+
+// Update the button text to reflect the current state
+    const div = document.createElement('div');
+    div.className = ``;
+    div.innerHTML = `
+        <button class="action-btn" id="toggleUpcomingBtn" onclick="toggleUpcomingFeed()" style="width: 20%; justify-content: center;display: flex;">
+            ${hideUpcoming ? 'Show Upcoming Alerts' : 'Hide Upcoming Alerts'}
+        </button>
+    `;
+    container.appendChild(div);
+
+    if (upcoming.length > 0) {
+        const upcomingWrapper = document.createElement('div');
+        upcomingWrapper.id = 'upcoming-wrapper';
+        
+        // Use the global variable to set display, not a hardcoded 'none'
+        upcomingWrapper.style.display = hideUpcoming ? 'none' : 'block'; 
+
+        const h = document.createElement('div');
+        h.className = 'alert-section-header';
+        h.innerText = "Upcoming Alerts";
+        
+        upcomingWrapper.appendChild(h);
+        upcoming.forEach(ent => upcomingWrapper.appendChild(createAlertEl(ent)));
+        
+        container.appendChild(upcomingWrapper);
+    }
+
+}
+
+function toggleUpcomingFeed() {
+    const wrapper = document.getElementById('upcoming-wrapper');
+    const btn = document.getElementById('toggleUpcomingBtn');
+    
+    if (!wrapper || !btn) return;
+
+    hideUpcoming = !hideUpcoming;
+
+    if (hideUpcoming) {
+        wrapper.style.display = 'none';
+        btn.textContent = 'Show Upcoming Alerts';
+    } else {
+        wrapper.style.display = 'block';
+        btn.textContent = 'Hide Upcoming Alerts';
+        // Optional: Scroll to the upcoming section
+        wrapper.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function setBtnActive(line) {
+    // 1. Clean the input 'line' to ensure no hidden whitespace
+    const targetLine = String(line).trim();
+
+    // 2. Select the container (Fixed invisible characters in the ID string)
+    const container = document.getElementById('picker-container-alerts');
+    
+    if (!container) {
+        console.error("Container 'picker-container-alerts' not found.");
+        return;
+    }
+
+    container.querySelectorAll('.line-btn').forEach(btn => {
+        // 3. Remove 'active' class from all buttons first (Standard UI behavior)
+        btn.classList.remove('active');
+
+        // 4. Get the value and clean it thoroughly
+        const btnLine = (btn.dataset.line || btn.textContent).replace('!', '').trim();
+
+        // 5. Comparison
+        if (btnLine === targetLine) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+
+/*
+        function getLinesAtStation(stationId) {
+
+            const lines = new Set();
+
+            FEED_ENTITIES.forEach(e => {
+
+                if (e.tripUpdate?.stopTimeUpdate) {
+
+                    const stopsAt = e.tripUpdate.stopTimeUpdate.some(s => s.stopId.startsWith(stationId));
+
+                    if (stopsAt) {
+ lines.add(e.tripUpdate.trip.routeId);
+setBtnActive(e.tripUpdate.trip.routeId);
+}
+
+                }
+
+            });
+
+            return Array.from(lines);
+
+        }
+*/
+
+function getLinesAtStation(stationId) {
+    const lines = new Set();
+    FEED_ENTITIES.forEach(e => {
+        if (e.tripUpdate?.stopTimeUpdate) {
+            const stopsAt = e.tripUpdate.stopTimeUpdate.some(s => s.stopId.startsWith(stationId));
+            if (stopsAt) {
+                lines.add(e.tripUpdate.trip.routeId);
+            }
+        }
+    });
+    
+    const linesArray = Array.from(lines);
+    
+    // Pass the array directly to our updated setLineFilter
+    setLineFilter(linesArray);
+    
+    return linesArray;
+}
+
+
+
+/*
+// Updated usage in getLinesAtStation
+function getLinesAtStation(stationId) {
+    const lines = new Set();
+
+    FEED_ENTITIES.forEach(e => {
+        if (e.tripUpdate?.stopTimeUpdate) {
+            const stopsAt = e.tripUpdate.stopTimeUpdate.some(s => s.stopId.startsWith(stationId));
+            if (stopsAt) {
+                lines.add(e.tripUpdate.trip.routeId);
+            }
+        }
+    });
+
+    const linesArray = Array.from(lines);
+    // Call the filter once with the full array of lines
+    setLineFilter(linesArray);
+    
+    return linesArray;
+}
+*/
+
+
+
+        // --- 4. DATA FETCHING (REALTIME) ---
+
+async function fetchData() {
+    try {
+        const combinedEntities = [];
+        let maxTimestamp = 0;
+
+        for (const url of FEEDS) {
+//doalert(`fetching data: ${url}`);
+            const finalUrl = PROXY_URL + url;
+            const response = await fetchWithRetry(finalUrl);
+            const buffer = await response.arrayBuffer();
+            const message = FeedMessage.decode(new Uint8Array(buffer));
+            const object = FeedMessage.toObject(message, { longs: String });
+            
+            if (object.header && object.header.timestamp) {
+                maxTimestamp = Math.max(maxTimestamp, parseInt(object.header.timestamp));
+            }
+
+            if (object.entity) combinedEntities.push(...object.entity);
+        }
+        
+        // --- T&C LAG WARNING ---
+        // If data is older than 60 seconds, update status per MTA T&C
+        const now = Math.floor(Date.now() / 1000);
+        const lagStatus = document.getElementById('status');
+        if (now - maxTimestamp > 60) {
+            lagStatus.style.color = "#ff6319";
+            lagStatus.innerText = "Lagging: Data may not be real-time.";
+        } else {
+            lagStatus.style.color = "#888";
+        }
+
+        FEED_ENTITIES = combinedEntities;
+        processTrainData(FEED_ENTITIES);
+        
+        const stationsWithService = new Set();
+        FEED_ENTITIES.forEach(e => {
+            if (e.tripUpdate && e.tripUpdate.stopTimeUpdate) {
+                e.tripUpdate.stopTimeUpdate.forEach(stop => {
+                    const time = stop.arrival ? stop.arrival.time : stop.departure.time;
+                    if (time && (time - now) > -60 && (time - now) < 3600) {
+                        const baseId = stop.stopId.substring(0, stop.stopId.length - 1);
+                        stationsWithService.add(baseId);
+                    }
+                });
+            }
+        });
+
+        updateMapStationData(stationsWithService);
+
+        if (SELECTED_STATION_ID) {
+            renderArrivals(FEED_ENTITIES);
+        } else {
+            updateStationList(); 
+        }
+    } catch (err) {
+        console.warn("Fetch Error:", err);
+        document.getElementById('status').innerText = "Connection Error";
+    }
+}
+// Refreshes the MapLibre source with updated service booleans
+function updateMapStationData(activeServiceSet) {
+    const source = map.getSource('stations-source');
+    if (!source) return;
+
+    const updatedGeoJSON = {
+        'type': 'FeatureCollection',
+        'features': PARENT_STATIONS.map(s => ({
+            'type': 'Feature',
+            'geometry': { 'type': 'Point', 'coordinates': [s.lon, s.lat] },
+            'properties': { 
+                'name': s.name, 
+                'id': s.id,
+                'hasService': activeServiceSet.has(s.id) 
+            }
+        }))
+    };
+    source.setData(updatedGeoJSON);
+}
+
+async function loadShapesFile(url) {
+    try {
+        const response = await fetch(url);
+        const text = await response.text();
+        const lines = text.split('\n');
+        
+        const shapes = {};
+        
+        // Skip header (i=1) and parse CSV
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+            
+            // shapes.txt format: shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,...
+            const parts = line.split(',');
+            if (parts.length < 4) continue;
+            
+            const shape_id = parts[0];
+            const lat = parseFloat(parts[1]);
+            const lon = parseFloat(parts[2]);
+            const seq = parseInt(parts[3], 10);
+            
+            if (!shapes[shape_id]) {
+                shapes[shape_id] = [];
+            }
+            shapes[shape_id].push({ lat, lon, seq });
+        }
+        
+        const features = [];
+        for (const [shape_id, points] of Object.entries(shapes)) {
+            // Sort points so the line draws continuously, not zigzagging
+            points.sort((a, b) => a.seq - b.seq);
+            const coordinates = points.map(p => [p.lon, p.lat]);
+            
+            // The route ID is usually the first part of the shape_id (e.g., "N..N43R" -> "N")
+            const route_id = shape_id.split('.')[0]; 
+            
+            features.push({
+                type: 'Feature',
+                properties: { route_id: route_id },
+                geometry: {
+                    type: 'LineString',
+                    coordinates: coordinates
+                }
+            });
+        }
+        
+        const geojson = { type: 'FeatureCollection', features: features };
+
+        // Add to map
+        map.addSource('subway-shapes', { type: 'geojson', data: geojson });
+        map.addLayer({
+            id: 'subway-shapes-layer',
+            type: 'line',
+            source: 'subway-shapes',
+            paint: {
+                'line-color': [
+                    'match',
+                    ['get', 'route_id'],
+                    '1', '#EE352E', '2', '#EE352E', '3', '#EE352E',
+                    '4', '#00933C', '5', '#00933C', '6', '#00933C',
+                    '7', '#B933AD',
+                    'A', '#2850AD', 'C', '#2850AD', 'E', '#2850AD',
+                    'B', '#FF6319', 'D', '#FF6319', 'F', '#FF6319', 'M', '#FF6319',
+                    'G', '#6CBE45',
+                    'J', '#996633', 'Z', '#996633',
+                    'L', '#A7A9AC',
+                    'N', '#FCCC0A', 'Q', '#FCCC0A', 'R', '#FCCC0A', 'W', '#FCCC0A',
+                    '#555555' // Default track color
+                ],
+                'line-width': 2,
+                'line-opacity': 0.4
+            }
+        }, 'station-layer'); // Keeps tracks under stations
+
+    } catch (err) {
+        console.error("Error loading shapes.txt:", err);
+    }
+}
+
+// Call this inside your map.on('load') function:
+// loadShapesFile('./shapes.txt');
+
+
+        // --- 5. PROCESSING & INTERPOLATION ---
+
+        function processTrainData(entities) {
+            const activeTripIds = new Set();
+            const now = Date.now() / 1000;
+
+            entities.forEach(e => {
+                if (!e.tripUpdate || !e.tripUpdate.trip) return;
+                const tripId = e.tripUpdate.trip.tripId;
+                const routeId = e.tripUpdate.trip.routeId;
+
+                // Filter valid lines
+                if (!ROUTE_COLORS[routeId]) return;
+
+                const updates = e.tripUpdate.stopTimeUpdate || [];
+                if (updates.length === 0) return;
+
+                // Find next stop (future)
+                let nextStopIndex = -1;
+                for (let i = 0; i < updates.length; i++) {
+                    const time = updates[i].arrival ? updates[i].arrival.time : updates[i].departure.time;
+                    if (time > now) {
+                        nextStopIndex = i;
+                        break;
+                    }
+                }
+
+                if (nextStopIndex === -1) return; // Trip completed or invalid times
+
+                const nextStop = updates[nextStopIndex];
+                const prevStop = nextStopIndex > 0 ? updates[nextStopIndex - 1] : null;
+
+                const nextStation = getStation(nextStop.stopId);
+                const prevStation = prevStop ? getStation(prevStop.stopId) : null;
+
+                if (!nextStation) return;
+
+                // Determine coordinates
+                const arrivalTime = nextStop.arrival ? nextStop.arrival.time : nextStop.departure.time;
+                const destStopId = updates[updates.length - 1].stopId;
+                const destStation = getStation(destStopId);
+                const destName = destStation ? destStation.name : destStopId;
+                
+// Infer direction from stop ID char (N or S)
+                const directionChar = nextStop.stopId.slice(-1);
+                const direction = (directionChar === 'N' || directionChar === 'S') ? directionChar : 'N';
+
+                activeTripIds.add(tripId);
+
+                // --- LAG BACK FIX ---
+                const existingTrain = TRAIN_DATA[tripId];
+                
+                // Only update the animation timer and targets IF the train actually moved
+                const actuallyMoved = !existingTrain || 
+                                      existingTrain.nextCoord[0] !== nextStation.lon || 
+                                      existingTrain.nextCoord[1] !== nextStation.lat;
+
+                if (actuallyMoved) {
+                    TRAIN_DATA[tripId] = {
+                        tripId,
+                        routeId,
+                        direction,
+                        destName,
+                        nextCoord: [nextStation.lon, nextStation.lat],
+                        prevCoord: prevStation ? [prevStation.lon, prevStation.lat] : null,
+                        arrivalTime,
+                        updates,
+                        prevTime: prevStop ? (prevStop.departure ? prevStop.departure.time : prevStop.arrival.time) : null
+                    };
+                } else {
+                    // Keep the animation going smoothly, but refresh the upcoming schedule for the popup
+                    existingTrain.updates = updates;
+                }
+
+//doalert(JSON.stringify(updates))
+            });
+
+            // Cleanup old markers
+            Object.keys(TRAIN_MARKERS).forEach(id => {
+                if (!activeTripIds.has(id)) {
+                    TRAIN_MARKERS[id].remove();
+                    delete TRAIN_MARKERS[id];
+                }
+            });
+
+            document.getElementById('status').innerText = `Live: Tracking ${Object.keys(TRAIN_DATA).length} trains`;
+        }
+
+// Helper to find interpolation along a track
+function getPositionAlongTrack(routeId, prevCoord, nextCoord, progress) {
+    const coords = window.RAW_SHAPES[routeId];
+    // Fallback to straight line if shapes aren't loaded or route not found
+    if (!coords || coords.length === 0) {
+        return [
+            prevCoord[0] + (nextCoord[0] - prevCoord[0]) * progress,
+            prevCoord[1] + (nextCoord[1] - prevCoord[1]) * progress
+        ];
+    }
+
+    // Very basic snapping: Find nearest shape points to our stations
+    let closestPrevIdx = 0;
+    let closestNextIdx = 0;
+    let minPrevDist = Infinity;
+    let minNextDist = Infinity;
+
+    // Euclidean distance helper
+    const dist = (c1, c2) => Math.pow(c1[0]-c2[0], 2) + Math.pow(c1[1]-c2[1], 2);
+
+    coords.forEach((coord, i) => {
+        const dPrev = dist(coord, prevCoord);
+        const dNext = dist(coord, nextCoord);
+        if (dPrev < minPrevDist) { minPrevDist = dPrev; closestPrevIdx = i; }
+        if (dNext < minNextDist) { minNextDist = dNext; closestNextIdx = i; }
+    });
+
+    // Extract the path segment between the two stations
+    const startIdx = Math.min(closestPrevIdx, closestNextIdx);
+    const endIdx = Math.max(closestPrevIdx, closestNextIdx);
+    const segment = coords.slice(startIdx, endIdx + 1);
+
+    if (segment.length < 2) {
+        return [
+            prevCoord[0] + (nextCoord[0] - prevCoord[0]) * progress,
+            prevCoord[1] + (nextCoord[1] - prevCoord[1]) * progress
+        ];
+    }
+
+    // Reverse if the train is travelling "backwards" through the array
+    if (closestPrevIdx > closestNextIdx) segment.reverse();
+
+    // Interpolate across the multi-point segment based on total progress
+    const segmentIndex = progress * (segment.length - 1);
+    const lowerIdx = Math.floor(segmentIndex);
+    const upperIdx = Math.min(lowerIdx + 1, segment.length - 1);
+    const localProgress = segmentIndex - lowerIdx;
+
+    return [
+        segment[lowerIdx][0] + (segment[upperIdx][0] - segment[lowerIdx][0]) * localProgress,
+        segment[lowerIdx][1] + (segment[upperIdx][1] - segment[lowerIdx][1]) * localProgress
+    ];
+}
+
+
+        function animate() {
+            const now = Date.now() / 1000;
+
+            Object.values(TRAIN_DATA).forEach(train => {
+                // Line filtering logic for map
+                if ((CURRENT_LINE && train.routeId !== CURRENT_LINE) || shouldHide) {
+                    if (TRAIN_MARKERS[train.tripId]) TRAIN_MARKERS[train.tripId].getElement().style.display = 'none';
+                    return;
+                }
+
+                let lng, lat;
+
+                // Interpolate
+// INSIDE animate(): Replace your old Lerp logic with this:
+if (train.prevCoord && train.prevTime && train.nextCoord) {
+    const totalDuration = train.arrivalTime - train.prevTime;
+    const elapsed = now - train.prevTime;
+    let progress = elapsed / totalDuration;
+    if (progress < 0) progress = 0;
+    if (progress > 1) progress = 1;
+
+    // USE THE NEW TRACK FOLLOWER
+    const trackPos = getPositionAlongTrack(train.routeId, train.prevCoord, train.nextCoord, progress);
+    lng = trackPos[0];
+    lat = trackPos[1];
+} else {
+    lng = train.nextCoord[0];
+    lat = train.nextCoord[1];
+}
+
+
+                // Update or Create Marker
+                if (!TRAIN_MARKERS[train.tripId]) {
+                    const el = document.createElement('div');
+                    const color = ROUTE_COLORS[train.routeId] || '#555';
+                    
+                    el.className = 'marker';
+                    el.style.backgroundColor = color;
+                    el.innerHTML = `
+                        ${train.routeId}
+                        <div class="marker-arrow" style="
+                            border-bottom-color: black;
+                            transform: rotate(${train.direction === 'N' ? 0 : 180}deg); 
+                            ${train.direction === 'N' ? 'bottom: 100%;' : 'top: 75%;'} 
+                        "></div>
+                    `;
+/*
+	            el.onclick = () => {
+        doalert(`Train ${train.tripId} on route ${train.routeId} Updates: ${parseAndReturn(train.updates)}`);
+*/
+
+
+	            el.onclick = () => {
+/*
+        doalert(`Train ${train.tripId} on route ${train.routeId} Updates: ${parseAndReturn(train.updates)} ${JSON.stringify(train.updates)}`);
+*/
+
+    if (!train.updates || train.updates.length === 0) {
+        doalert(`No stop updates available for the ${train.routeId} train.`);
+        return;
+    }
+    let scheduleText = `Upcoming stops for ${train.routeId} (To ${train.destName}):\n\n`;
+    train.updates.forEach(update => {
+        const station = getStation(update.stopId);
+        const stationName = station ? station.name : `Stop ${update.stopId}`;
+        
+        // Use arrival time if available, otherwise departure
+        const stopTime = update.arrival.time || update.departure.time;
+        let timeStr = "Passed";
+        if (stopTime) {
+            const date = new Date(stopTime * 1000);
+            timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+        scheduleText += `• ${timeStr} - ${stationName}\n`;
+    });
+    doalert(scheduleText);
+clearStationSelection()
+
+    };
+
+                    
+                    TRAIN_MARKERS[train.tripId] = new maplibregl.Marker({ element: el })
+                        .setLngLat([lng, lat])
+                        .addTo(map);
+                } else {
+                    const marker = TRAIN_MARKERS[train.tripId];
+                    marker.setLngLat([lng, lat]);
+                    marker.getElement().style.display = 'flex'; // Ensure visible if unhidden
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+function parseAndReturn(object) {
+let string = '';
+object.forEach((obj) => {
+string += JSON.stringify(obj.arrival);
+});
+return string;
+}
+
+        // --- 6. MAP LAYERS (STATIONS) ---
+
+        function setupMapLayers() {
+            // Convert Parent Stations to GeoJSON
+            const geojson = {
+                'type': 'FeatureCollection',
+                'features': PARENT_STATIONS.map(s => ({
+                    'type': 'Feature',
+                    'geometry': { 'type': 'Point', 'coordinates': [s.lon, s.lat] },
+                    'properties': { 'name': s.name, 'id': s.id }
+                }))
+            };
+
+            map.addSource('stations-source', { 'type': 'geojson', 'data': geojson });
+
+    map.addLayer({
+        'id': 'station-dots',
+        'type': 'circle',
+        'source': 'stations-source',
+        'minzoom': 11,
+        'paint': {
+            'circle-radius': 4,
+            // Conditional coloring: Red if no service, Dark Gray if active
+            'circle-color': [
+                'case',
+                ['boolean', ['get', 'hasService'], true], 
+                '#444', // Active Color
+                '#ff0000' // Out of Service Color (Red)
+            ],
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#000'
+        }
+    });
+
+            map.addLayer({
+                'id': 'station-labels',
+                'type': 'symbol',
+                'source': 'stations-source',
+                'minzoom': 13,
+                'layout': {
+                    'text-field': ['get', 'name'],
+                    'text-font': ['Open Sans Regular'],
+                    'text-size': 11,
+                    'text-offset': [0, 1.5],
+                    'text-anchor': 'top'
+                },
+                'paint': {
+                    'text-color': '#ccc',
+                    'text-halo-color': '#000',
+                    'text-halo-width': 2
+                }
+            });
+
+            map.on('click', 'station-dots', (e) => {
+                const id = e.features[0].properties.id;
+                selectStation(id);
+            });
+
+            map.on('mouseenter', 'station-dots', () => map.getCanvas().style.cursor = 'pointer');
+            map.on('mouseleave', 'station-dots', () => map.getCanvas().style.cursor = '');
+        }
+
+        function toggleLiveTrains(){
+            shouldHide = !shouldHide;
+            let btn = document.getElementById('toggleLiveTrains')
+            if (shouldHide) {
+                btn.textContent = 'Show Live Trains';
+            } else {
+                btn.textContent = 'Hide Live Trains';
+            }
+        }
+
+        function toggleLayer(layerId) {
+    const visibility = map.getLayoutProperty(layerId, 'visibility');
+    let btn = document.getElementById('toggleStations')
+            
+    if (visibility === 'visible' || visibility === undefined) {
+        map.setLayoutProperty(layerId, 'visibility', 'none');
+        btn.textContent = "Show Stations";
+    } else {
+        map.setLayoutProperty(layerId, 'visibility', 'visible');
+        btn.textContent = "Hide Stations";
+    }
+}
+
+
+
+        // --- 7. UI INTERACTIONS ---
+/*
+function setLineFilter(line) {
+    // 1. Toggle the global filter state
+    CURRENT_LINE = (CURRENT_LINE === line) ? null : line;
+
+    // 2. Update all buttons in one pass
+    document.querySelectorAll('.line-btn').forEach(btn => {
+        // Use dataset.line if available, otherwise fallback to innerText
+        const btnLine = btn.dataset.line || btn.textContent.replace('!', '').trim();
+        
+        // Check if this specific button is the one currently selected
+        const isSelected = (CURRENT_LINE !== null && btnLine === CURRENT_LINE);
+
+        // Apply/Remove the active class (triggers your color)
+        //btn.classList.toggle('active', isSelected);
+        btn.classList.remove('active');
+
+        if (isSelected && (CURRENT_LINE !== null && btnLine === CURRENT_LINE)) {
+            btn.classList.add('active')
+            console.log(isSelected)
+        } else {
+            btn.classList.remove('active')
+            console.log('no',isSelected)
+        }
+
+        // Handle Opacity: 
+        // - If nothing is selected: all are 1.0
+        // - If something is selected: selected is 1.0, others are 0.3
+        if (!CURRENT_LINE) {
+            btn.style.opacity = '1';
+        } else {
+            btn.style.opacity = isSelected ? '1' : '0.3';
+        }
+    });
+
+    // 3. UI Cleanup and Refresh
+    if (typeof clearSelection === 'function' && !Array.isArray (line) && line !== '') clearSelection();
+    updateStationList();
+    renderAlertsList(); 
+}
+*/
+function setLineFilter(line, forceSet = false) {
+    let activeFilters = [];
+    const isStationMode = Array.isArray(line);
+
+    // 1. Manage State
+    if (isStationMode) {
+        activeFilters = line;
+    } else {
+        if (forceSet) {
+            CURRENT_LINE = line === '' ? null : line;
+            if (line === '') renderAlertsList();
+        } else {
+            CURRENT_LINE = (CURRENT_LINE === line) ? null : line;
+        }
+        activeFilters = CURRENT_LINE ? [CURRENT_LINE] : [];
+    }
+
+    // 2. Update UI Buttons
+    const targetContainers = isStationMode 
+        ? [document.getElementById('picker-container-alerts')] 
+        : document.querySelectorAll('.line-picker, .alerts-line-picker');
+
+    if (isStationMode) {
+        const mainPicker = document.getElementById('picker-container');
+        if (mainPicker) {
+            mainPicker.querySelectorAll('.line-btn, .line-btn-diamond').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.opacity = '1';
+            });
+        }
+    }
+
+    targetContainers.forEach(container => {
+        if (!container) return;
+        container.querySelectorAll('.line-btn, .line-btn-diamond').forEach(btn => {
+            const btnLine = btn.dataset.line || btn.textContent.replace('!', '').replace("X", "").trim();
+            const isSelected = activeFilters.includes(btnLine);
+            if (isSelected) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+            if (activeFilters.length === 0) {
+                btn.style.opacity = '1';
+            } else {
+                btn.style.opacity = isSelected ? '1' : '0.3';
+            }
+        });
+    });
+
+    // --- NEW COMPACT UI LOGIC ---
+    if (!isStationMode) {
+        const mainPicker = document.getElementById('picker-container');
+        const activeDisplay = document.getElementById('active-line-display');
+        const activeBadge = document.getElementById('active-line-badge');
+
+        if (CURRENT_LINE && mainPicker && activeDisplay) {
+            // Hide main picker and show the compact display
+            mainPicker.style.display = 'none';
+            activeDisplay.style.display = 'flex';
+            
+            // Clone the active button for display
+            let activeBtnHtml = '';
+            mainPicker.querySelectorAll('.line-btn, .line-btn-diamond').forEach(btn => {
+                if ((btn.dataset.line || btn.textContent.replace('!', '').replace("X", "").trim()) === CURRENT_LINE) {
+                    const clone = btn.cloneNode(true);
+                    clone.onclick = null; // Remove the click event from the clone
+                    clone.style.margin = '0';
+                    activeBtnHtml = clone.outerHTML;
+                }
+            });
+            activeBadge.innerHTML = activeBtnHtml;
+        } else if (mainPicker && activeDisplay) {
+            // Restore main picker
+            mainPicker.style.display = ''; 
+            activeDisplay.style.display = 'none';
+        }
+    }
+
+    // 3. UI Cleanup & Refresh Data
+    if (!isStationMode && !forceSet) {
+        if (line !== '' && SELECTED_STATION_ID) {
+            clearStationSelection();
+        } else {
+            updateStationList();
+            renderAlertsList();
+        }
+    }
+}
+
+
+/*
+function setLineFilter(line) {
+    // 1. Determine the new state
+    // If 'line' is an array (from a station), we set it as the active filter.
+    // If 'line' is a string, we perform the traditional toggle.
+    if (Array.isArray(line)) {
+        CURRENT_LINE = line; 
+    } else {
+        // Toggle logic: if clicking the same line, clear it; otherwise set it.
+        CURRENT_LINE = (CURRENT_LINE === line) ? null : line;
+    }
+
+    // Convert CURRENT_LINE to an array for easy checking, even if it's a single string or null
+    const activeFilters = Array.isArray(CURRENT_LINE) 
+        ? CURRENT_LINE 
+        : (CURRENT_LINE ? [CURRENT_LINE] : []);
+
+// 1. Check if line is an array
+// 2. If true, try to get the element
+// 3. If that element is null (missing), fallback to document
+let selector = Array.isArray(line) 
+    ? (document.getElementById('picker-container-alerts') || document) 
+    : document;
+
+
+    // 2. Update all buttons in one pass
+    selector.querySelectorAll('.line-btn').forEach(btn => {
+        const btnLine = btn.dataset.line || btn.textContent.replace('!', '').trim();
+        
+        // Check if this specific button is included in our active filters
+        const isSelected = (CURRENT_LINE !== null && activeFilters.includes(btnLine));
+        btn.classList.remove('active');
+
+        // Apply/Remove the active class
+        if (isSelected) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+
+        // Handle Opacity: 
+        // - If no filters are active: all are 1.0
+        // - If filters are active: selected buttons are 1.0, others are 0.3
+        if (activeFilters.length === 0) {
+            btn.style.opacity = '1';
+        } else {
+            btn.style.opacity = isSelected ? '1' : '0.3';
+        }
+    });
+
+    // 3. UI Cleanup and Refresh
+    // Avoid clearing selection if we are currently selecting a station's lines
+    if (typeof clearSelection === 'function' && !Array.isArray(line) && line !== '') {
+        clearSelection();
+    }
+    
+    updateStationList();
+    renderAlertsList(); 
+}
+*/
+
+function updateStationStatus(entities) {
+    const stationsWithService = new Set();
+    const now = Math.floor(Date.now() / 1000);
+
+    entities.forEach(e => {
+        if (!e.tripUpdate || !e.tripUpdate.stopTimeUpdate) return;
+        e.tripUpdate.stopTimeUpdate.forEach(stop => {
+            const time = stop.arrival ? stop.arrival.time : stop.departure.time;
+            // If a train is arriving within the next 30 minutes
+            if (time && (time - now) > -60 && (time - now) < 1800) {
+                const baseId = stop.stopId.substring(0, stop.stopId.length - 1);
+                stationsWithService.add(baseId);
+            }
+        });
+    });
+
+    // Update the Map Source
+    const source = map.getSource('stations-source');
+    if (source) {
+        const newData = {
+            'type': 'FeatureCollection',
+            'features': PARENT_STATIONS.map(s => ({
+                'type': 'Feature',
+                'geometry': { 'type': 'Point', 'coordinates': [s.lon, s.lat] },
+                'properties': { 
+                    'name': s.name, 
+                    'id': s.id,
+                    'hasService': stationsWithService.has(s.id) // The magic boolean
+                }
+            }))
+        };
+        source.setData(newData);
+    }
+}
+
+function updateStationList() {
+    const query = document.getElementById('search-input').value.toLowerCase();
+    const container = document.getElementById('station-list');
+    container.innerHTML = "";
+
+    // 1. Get IDs of stations currently served by the CURRENT_LINE
+    let activeStationIds = new Set();
+// Inside updateStationList()
+if (CURRENT_LINE) {
+    FEED_ENTITIES.forEach(e => {
+        // 1. Ensure tripUpdate exists
+        // 2. Ensure routeId matches
+        // 3. Use '|| []' to prevent the forEach error if stopTimeUpdate is missing
+        if (e.tripUpdate && e.tripUpdate.trip.routeId === CURRENT_LINE) {
+            const updates = e.tripUpdate.stopTimeUpdate || []; 
+            
+            updates.forEach(stop => {
+                // Strip N/S suffix to get the parent ID
+                const baseId = stop.stopId.substring(0, stop.stopId.length - 1);
+                activeStationIds.add(baseId);
+                
+                if (STATIONS[stop.stopId] && STATIONS[stop.stopId].type === '1') {
+                    activeStationIds.add(stop.stopId);
+                }
+            });
+        }
+    });
+}
+
+    // 2. Filter the master PARENT_STATIONS list
+    const filtered = PARENT_STATIONS.filter(s => {
+        const matchesQuery = s.name.toLowerCase().includes(query) || s.id.toLowerCase().includes(query);
+        const matchesLine = CURRENT_LINE ? activeStationIds.has(s.id) : true;
+        return matchesQuery && matchesLine;
+    });
+
+    // 3. Render
+    if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; color:#666;">
+            ${CURRENT_LINE ? 'No active stations for this line right now. Try(ing) again.' : 'No stations found.'}
+        </div>`;
+        return;
+    }
+
+filtered.forEach(s => {
+    const hasService = activeStationIds.has(s.id); // Or use your service set
+    const div = document.createElement('div');
+    div.className = 'station-item';
+    if (!hasService && CURRENT_LINE) {
+        div.style.borderLeft = "3px solid red";
+        div.innerHTML = `<span>${s.name} <small style="color:red;">(No Service)</small></span> 
+                         <span class="station-id">${s.id}</span>`;
+    } else {
+        div.innerHTML = `<span>${s.name}</span> <span class="station-id">${s.id}</span>`;
+    }
+    div.onclick = () => selectStation(s.id);
+    container.appendChild(div);
+});
+}
+
+        function selectStation(id) {
+
+            SELECTED_STATION_ID = id;
+
+            const station = STATIONS[id];
+
+            if (station) {
+
+                document.getElementById('selected-station-name').innerText = station.name;
+
+                map.flyTo({ center: [station.lon, station.lat], zoom: 14 });
+
+            }
+
+            document.getElementById('stations-section').style.display = 'none';
+
+            document.getElementById('arrivals-section').style.display = 'block';
+
+            renderArrivals(FEED_ENTITIES);
+
+            renderAlertsList(); // Update alerts to station-specific ones
+
+        }
+
+/*
+        function clearSelection() {
+
+            SELECTED_STATION_ID = null;
+
+            document.getElementById('stations-section').style.display = 'block';
+
+	document.getElementById('picker-container').style.display = 'block';
+
+            document.getElementById('arrivals-section').style.display = 'none';
+
+            renderAlertsList();
+
+
+        }
+
+        function clearStationSelection() {
+
+            SELECTED_STATION_ID = null;
+
+            renderAlertsList();
+
+        }
+*/
+
+function clearSelection() {
+    SELECTED_STATION_ID = null;
+    document.getElementById('stations-section').style.display = 'block';
+	document.getElementById('picker-container').style.display = 'block';
+
+    document.getElementById('arrivals-section').style.display = 'none';
+    
+    // Restore UI to reflect the global CURRENT_LINE when closing station view
+    setLineFilter(CURRENT_LINE || '', true);
+    renderAlertsList();
+}
+
+function clearStationSelection() {
+    SELECTED_STATION_ID = null;
+    // Restore UI to reflect the global CURRENT_LINE when closing station view
+    setLineFilter(CURRENT_LINE || '', true);
+    renderAlertsList();
+}
+
+
+
+        function renderArrivals(entities) {
+            const container = document.getElementById('arrivals-list');
+                        container.innerHTML = "";
+            const now = Math.floor(Date.now() / 1000);
+            const arrivals = [];
+
+            if (!SELECTED_STATION_ID) return;
+
+            entities.forEach(e => {
+                if (!e.tripUpdate || !e.tripUpdate.stopTimeUpdate) return;
+                const routeId = e.tripUpdate.trip.routeId;
+                const updates = e.tripUpdate.stopTimeUpdate;
+                
+                // Only showing requested lines
+                if (!ROUTE_COLORS[routeId]) return;
+
+                // Find stops at the selected station (including children like N/S)
+                updates.forEach(stop => {
+                    // Check if stopId matches selected ID or is a child (e.g., D43 matches D43N)
+                    if (stop.stopId.startsWith(SELECTED_STATION_ID)) {
+                        const time = stop.arrival ? stop.arrival.time : stop.departure.time;
+                        if (!time) return;
+
+                        const waitMins = Math.round((time - now) / 60);
+                        //console.log(Math.round(time-now))
+                        if (waitMins >= -2 && waitMins < 60) {
+                            
+                            // Get Destination Name
+                            const lastStopId = updates[updates.length - 1].stopId;
+                            const destStation = getStation(lastStopId);
+                            const destName = destStation ? destStation.name : lastStopId;
+
+                            arrivals.push({
+                                routeId,
+                                waitMins,
+                                destName,
+                                direction: stop.stopId.slice(-1) // N or S
+                            });
+                        }
+document.getElementById('picker-container').style.display = 'none';
+const activeDisplay = document.getElementById('active-line-display');
+if (activeDisplay) activeDisplay.style.display = 'none';
+
+                    }
+                });
+            });
+
+            // Sort by time
+            arrivals.sort((a, b) => a.waitMins - b.waitMins);
+
+            if (arrivals.length === 0) {
+                container.innerHTML = "<div style='color:#666; text-align:center; padding:20px;'>No upcoming trains found. Try(ing) again. Check if there's service at this station. If so, then try refreshing the page.</div>";
+                return;
+            }
+
+            // Deduplicate
+            const seen = new Set();
+            arrivals.forEach(train => {
+        const dateOptions = { hour: '2-digit', minute: '2-digit' };
+let now = Math.round(Date.now() / 1000); 
+const waitTime = (train?.waitMins ? train.waitMins * 60 : 100) + now
+
+        const waitTimeStr = waitTime ? new Date(waitTime * 1000).toLocaleString([], dateOptions) : "";
+                const key = `${train.routeId}_${train.waitMins}_${train.destName}`;
+                if (seen.has(key)) return;
+                seen.add(key);
+
+                const color = ROUTE_COLORS[train.routeId] || '#555';
+                const div = document.createElement('div');
+                div.className = 'train-card';
+                div.style.borderLeftColor = color;
+
+                        const getGroup = (line) => {
+            const groups = {
+                '1': 'red', '2': 'red', '3': 'red',
+                '4': 'green', '5': 'green', '6': 'green', '6X': 'green',
+                '7': 'purple', 
+                'A': 'blue', 'C': 'blue', 'E': 'blue',
+                'B': 'orange', 'D': 'orange', 'F': 'orange', 'FX': 'orange', 'M': 'orange',
+                'G': 'light-green',
+                'L': 'gray',
+                'J': 'brown', 'Z': 'brown',
+                'N': 'yellow', 'Q': 'yellow', 'R': 'yellow', 'W': 'yellow',
+                'SR': 'gray', 'SG': 'gray', 'SF': 'gray', 'SIR': 'blue',
+                'SB': 'bus', 'BUS': 'bus', 'AD': 'ada', 'ADA': 'ada'
+            };
+            const key = line.toUpperCase();
+            if (groups[key]) return groups[key];
+            return groups[key.substring(0, 1)] || 'gray';
+        };
+
+        const group = getGroup(train.routeId);
+
+        console.log(group, color)
+
+        // Build the icon badge dynamically
+        let badgeHTML = '';
+        if (train.routeId.includes('X')) {
+            // Apply the diamond class for Express routes
+            badgeHTML = `<button class="line-btn-diamond active" data-group="${group}" style="pointer-events:none; margin-right: 12px; transform: rotate(45deg) scale(1.15);">
+                            <span>${train.routeId}</span>
+                         </button>`;
+        } else {
+            // Standard circle for local routes
+            badgeHTML = `<span class="line-btn active" data-group="${group}" style="pointer-events:none; margin-right: 12px; display:inline-flex; align-items:center; justify-content:center;">${train.routeId}</span>`;
+        }
+//<div class="route-badge" style="background-color: ${color}">${train.routeId}</div>
+
+                
+                div.innerHTML = `
+                    <div class="train-info">
+${badgeHTML}
+                        <div>
+                            <div class="train-dest">To ${train.destName}</div>
+                            <div class="train-status">${train.direction === 'N' ? 'Northbound' : (train.direction === 'S' ? 'Southbound' : 'Terminating')}</div>
+                        </div>
+                    </div>
+	        <div class="train-time">${waitTimeStr}</div>
+                    <div class="train-mins">${train.waitMins <= 0 ? 'Now' : train.waitMins + ' min'}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Start
+        init();
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
