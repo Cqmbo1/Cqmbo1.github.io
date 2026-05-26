@@ -29,15 +29,37 @@ permalink: /mta/
 
     
     <style>
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #121212; color: #e0e0e0; padding: 0; margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
-overflow-y: auto; /* Enable vertical scrolling */
- }
+body { 
+    font-family: 'Segoe UI', system-ui, sans-serif; 
+    background: #121212; 
+    color: #e0e0e0; 
+    padding: 0; 
+    margin: 0; 
+    height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden; /* Prevent the main browser window itself from rolling text down */
+}
         
-        #map-container { flex: 1; position: relative; border-bottom: 1px solid #333; }
-        #map { width: 100%; height: 100%; }
+#map-container { 
+    flex: 1; /* Automatically takes up whatever space the panel leaves behind */
+    position: relative; 
+    border-bottom: 1px solid #333; 
+}
+
+#map { 
+    width: 100%; 
+    height: 100%; 
+}
         
-        #panel { height: 45vh; background: #1e1e1e; display: flex; flex-direction: column; box-shadow: 0 -4px 10px rgba(0,0,0,0.5); z-index: 20; 
-overflow-y: auto; /* Enable vertical scrolling */
+#panel { 
+    height: 45vh; /* Strictly bound to bottom portion */
+    background: #1e1e1e; 
+    display: flex; 
+    flex-direction: column; 
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.5); 
+    z-index: 20; 
+    overflow-y: auto; /* Correct place to keep scroll bars localized to arrivals */
 }
         
         .header { padding: 10px 15px; background: #252525; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #333; }
