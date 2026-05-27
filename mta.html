@@ -2653,8 +2653,10 @@ ${badgeHTML}
                             <div class="train-status">${train.direction === 'N' ? 'Northbound' : (train.direction === 'S' ? 'Southbound' : 'Terminating')}</div>
                         </div>
                     </div>
+                    <div>
 	        <div class="train-time">${waitTimeStr}</div>
                     <div class="train-mins">${train.waitMins <= 0 ? 'Now' : train.waitMins + ' min'}</div>
+                    </div>
                 `;
                 container.appendChild(div);
             });
