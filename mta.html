@@ -42,10 +42,17 @@ body {
 }
         
 #map-container { 
-    flex: 1; /* Automatically takes up whatever space the panel leaves behind */
+    flex: 1; 
     position: relative; 
     border-bottom: 1px solid #333; 
 }
+
+/* This utility class will force hide the map on both Desktop and Mobile */
+.hidden-map {
+    display: none !important;
+}
+
+
 
 #map { 
     width: 100%; 
@@ -53,16 +60,34 @@ body {
 }
         
 #panel { 
-    height: 45vh; /* Strictly bound to bottom portion */
+    flex: 1; /* Automatically grow to fill all remaining vertical space */
     background: #1e1e1e; 
     display: flex; 
     flex-direction: column; 
     box-shadow: 0 -4px 10px rgba(0,0,0,0.5); 
     z-index: 20; 
-    overflow-y: auto; /* Correct place to keep scroll bars localized to arrivals */
+    overflow-y: auto;
 }
+
+/* When the map is visible, limit the panel's maximum size so they share the screen */
+#map-container:not(.hidden-map) ~ #panel {
+    height: 45vh;
+    flex: none; /* Turn off full screen grow when map shares space */
+}
+
         
-        .header { padding: 10px 15px; background: #252525; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #333; }
+.header { 
+    padding: 10px 15px; 
+    background: #252525; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    border-bottom: 1px solid #333; 
+    /* Fix: Allow buttons to wrap down to a new line on thin viewports */
+    flex-wrap: wrap; 
+    gap: 6px; 
+}
+
         h1 { margin: 0; font-size: 1.1rem; color: #fccc0a; }
         #status { font-size: 0.8rem; color: #888; }
 
@@ -212,17 +237,22 @@ z-index: 67;
     font-size: 18px; /* The ♿ symbol usually needs to be a bit larger */
 }
 
-        .action-btn { 
-            width: 10%;
-            padding: 8px;
-            margin-top: 5px;
-            background: #333;
-            color: #ccc;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-display: block;
-        }
+.action-btn { 
+    /* Fix: Remove width: 10% which crushes text on thin viewports */
+    padding: 6px 10px;
+    background: #333;
+    color: #ccc;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    /*gap: 4px;*/
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 
         #alerts-feed {
 
@@ -544,15 +574,16 @@ display: block;
     </div>
 
     <div id="panel">
-        <div class="header">
-            <h1>MTA Live Tracker</h1>
-            <button class="action-btn" id="toggleLiveTrains" onclick="toggleLiveTrains()">Show Live Trains</button>
-            <button class="action-btn" id="toggleStations" onclick="toggleLayer('station-dots')">Hide Stations</button>
-                        <button class="action-btn" id="toggleAlertsBtn" onclick="toggleAlertsFeed(true)">Show Alerts</button>
-                        <button class="action-btn" id="toggleDisclaimerBtn" onclick="toggleDisclaimer()">Show Disclaimer</button>
+<div class="header">
+    <h1>MTA Live Tracker</h1>
+    <button class="action-btn" id="toggleLiveTrains" onclick="toggleLiveTrains()"><i class="fa fa-train"></i> Live</button>
+    <button class="action-btn" id="toggleStations" onclick="toggleLayer('station-dots')"><i class="fa fa-eye-slash"></i> Hide Stations</button>
+    <button class="action-btn" id="toggleAlertsBtn" onclick="toggleAlertsFeed(true)"><i class="fa fa-warning"></i> Alerts</button>
+    <button class="action-btn" id="toggleMapBtn" onclick="toggleMap()"><i class="fa fa-map"></i> Map</button>
+    <button class="action-btn" id="toggleDisclaimerBtn" onclick="toggleDisclaimer()"><i class="fa fa-info-circle"></i> Info</button>
+    <div id="status">Initializing...</div>
+</div>
 
-            <div id="status">Initializing...</div>
-        </div>
 
 <div id="active-line-display">
     <span style="color:#888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Selected Line</span>
@@ -651,7 +682,7 @@ display: block;
 
         </div>
 
-        <div id="disclaimer" style="padding: 10px; font-size: 10px; color: #777; border-top: 1px solid #333; background: #1a1a1a; line-height: 1.4; display:none;">
+        <div id="disclaimer" style="padding: 10px; font-size: 10px; color: #777; border-top: 1px solid #333; background: #1a1a1a; line-height: 1.4; display:none; z-index: 100">
     <strong>About our data: </strong>We do our best to offer the most accurate real-time information by using data directly from the MTA and storing it on our private high-speed cache. 
     Although we aim for accuracy, we must point out that this app is not officially licensed or endorsed by the MTA. 
     The data is offered "as is," and because of the nature of transit data, it may occasionally differ in accuracy or timeliness.
@@ -931,6 +962,7 @@ loadShapes();
         setInterval(fetchAlerts, 30000);
 
         animate();
+        toggleMap();
         doalert('map successfully loaded, starting core.');
     };
 
@@ -1191,19 +1223,41 @@ window.alerts = {}
         }
 
 
-function toggleDisclaimer() {
-let button = document.getElementById('toggleDisclaimerBtn');
-let element = document.getElementById('disclaimer');
 
-hideDisclaimer = !hideDisclaimer;
-if (hideDisclaimer) {
-button.textContent = 'Show Disclaimer';
-element.style.display = 'none';
-} else {
-button.textContent = 'Hide Disclaimer';
-element.style.display = 'block';
+function toggleMap() {
+    const mapContainer = document.getElementById('map-container');
+    const mapBtn = document.getElementById('toggleMapBtn');
+    
+    mapContainer.classList.toggle('hidden-map');
+
+    let e = mapContainer.classList.contains('hidden-map');
+    if (e) {
+        mapBtn.innerHTML = '<i class="fa fa-map"></i> Map';
+    } else {
+        mapBtn.innerHTML = '<i class="fa fa-eye-slash"></i> Hide Map';
+    }
+    
+    if (map && !mapContainer.classList.contains('hidden-map')) {
+        requestAnimationFrame(() => {
+            map.resize();
+        });
+    }
 }
+
+function toggleDisclaimer() {
+    let button = document.getElementById('toggleDisclaimerBtn');
+    let element = document.getElementById('disclaimer');
+
+    hideDisclaimer = !hideDisclaimer;
+    if (hideDisclaimer) {
+        button.innerHTML = '<i class="fa fa-info-circle"></i> Info';
+        element.style.display = 'none';
+    } else {
+        button.innerHTML = '<i class="fa fa-eye-slash"></i> Hide Info';
+        element.style.display = 'block';
+    }
 }
+
 
 
 function updateLineBadges() {
@@ -2152,28 +2206,29 @@ return string;
             map.on('mouseleave', 'station-dots', () => map.getCanvas().style.cursor = '');
         }
 
-        function toggleLiveTrains(){
-            shouldHide = !shouldHide;
-            let btn = document.getElementById('toggleLiveTrains')
-            if (shouldHide) {
-                btn.textContent = 'Show Live Trains';
-            } else {
-                btn.textContent = 'Hide Live Trains';
-            }
-        }
+function toggleLiveTrains(){
+    shouldHide = !shouldHide;
+    let btn = document.getElementById('toggleLiveTrains');
+    if (shouldHide) {
+        btn.innerHTML = '<i class="fa fa-train"></i> Live';
+    } else {
+        btn.innerHTML = '<i class="fa fa-eye-slash"></i> Hide Live';
+    }
+}
 
-        function toggleLayer(layerId) {
+function toggleLayer(layerId) {
     const visibility = map.getLayoutProperty(layerId, 'visibility');
-    let btn = document.getElementById('toggleStations')
+    let btn = document.getElementById('toggleStations');
             
     if (visibility === 'visible' || visibility === undefined) {
         map.setLayoutProperty(layerId, 'visibility', 'none');
-        btn.textContent = "Show Stations";
+        btn.innerHTML = '<i class="fa fa-map-marker"></i> Stations';
     } else {
         map.setLayoutProperty(layerId, 'visibility', 'visible');
-        btn.textContent = "Hide Stations";
+        btn.innerHTML = '<i class="fa fa-eye-slash"></i> Hide Stations';
     }
 }
+
 
 
 
@@ -2534,7 +2589,10 @@ function clearStationSelection() {
     renderAlertsList();
 }
 
-
+function processRoutes(routes) {
+//routes = routes.replace(/H/g, "SR").replace(/GS/g, "SG").replace(/FS/g, "SF")
+return routes;
+}
 
         function renderArrivals(entities) {
             const container = document.getElementById('arrivals-list');
@@ -2546,7 +2604,8 @@ function clearStationSelection() {
 
             entities.forEach(e => {
                 if (!e.tripUpdate || !e.tripUpdate.stopTimeUpdate) return;
-                const routeId = e.tripUpdate.trip.routeId;
+                let routeId = e.tripUpdate.trip.routeId;
+	    routeId = processRoutes(routeId);
                 const updates = e.tripUpdate.stopTimeUpdate;
                 
                 // Only showing requested lines
@@ -2668,6 +2727,8 @@ ${badgeHTML}
     </script>
 </body>
 </html>
+
+
 
 
 
