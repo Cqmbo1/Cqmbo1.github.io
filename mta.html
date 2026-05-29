@@ -4,7 +4,6 @@ title: MTA Live Tracker
 permalink: /mta/
 ---
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -516,6 +515,49 @@ z-index: 67;
     margin: 15px auto 5px auto; /* Adds breathing room and centers the container */
     padding: 0 10px; /* Keeps buttons from touching the extreme edges of phone screens */
 }
+/* Force-hide the map container when the user is viewing the info disclaimer */
+body.disclaimer-active #map-container {
+    display: none !important;
+}
+
+/* 1. Base Panel style (Fills screen dynamically by default) */
+#panel { 
+    flex: 1; 
+    background: #1e1e1e; 
+    display: flex; 
+    flex-direction: column;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.5); 
+    z-index: 20; 
+    overflow-y: auto;
+}
+
+/* 2. Desktop Mode: When Map is open (Shares the screen) */
+#map-container:not(.hidden-map) ~ #panel {
+    height: 45vh;
+    flex: none; 
+}
+
+/* 3. Mobile Mode: Fixes the 16% black gap bug */
+@media (max-width: 768px) {
+    #map-container:not(.hidden-map) { 
+        height: 40vh !important; 
+        flex: none !important; 
+    }
+    #map-container:not(.hidden-map) ~ #panel { 
+        height: 100vh !important; 
+        flex: none !important; 
+    }
+}
+
+/* 4. Disclaimer Mode: Overrides EVERYTHING. Hides map, makes panel full screen */
+body.disclaimer-active #map-container {
+    display: none !important;
+}
+body.disclaimer-active #panel {
+    height: auto !important;
+    flex: 1 !important;
+}
+
 
     </style>
 </head>
@@ -1252,9 +1294,25 @@ function toggleDisclaimer() {
     if (hideDisclaimer) {
         button.innerHTML = '<i class="fa fa-info-circle"></i> Info';
         element.style.display = 'none';
+        
+        // Remove the state class to bring the map back
+        document.body.classList.remove('disclaimer-active');
+
+ let e = mapContainer.classList.contains('hidden-map');
+if (!e) toggleMap();
+        
+        // CRITICAL: Recalculate map canvas boundaries now that it's visible again
+        if (map && !document.getElementById('map-container').classList.contains('hidden-map')) {
+            requestAnimationFrame(() => {
+                map.resize();
+            });
+        }
     } else {
         button.innerHTML = '<i class="fa fa-eye-slash"></i> Hide Info';
         element.style.display = 'block';
+        
+        // Add the state class to clear out the map container space
+        document.body.classList.add('disclaimer-active');
     }
 }
 
@@ -2727,6 +2785,8 @@ ${badgeHTML}
     </script>
 </body>
 </html>
+
+
 
 
 
