@@ -1381,7 +1381,7 @@ if (nowAlertsContainer) nowAlertsContainer.innerHTML = "";
         filterContext = `Station: ${STATIONS[SELECTED_STATION_ID]?.name || SELECTED_STATION_ID}`;
     } else if (CURRENT_LINE) {
         filterLines = [CURRENT_LINE];
-        filterContext = `Line: ${CURRENT_LINE.replace(/H/g, "SR").replace(/GS/g, "SG").replace(/FS/g, "SF")}`;
+        filterContext = `Line: ${CURRENT_LINE.replace(/H/g, "SR").replace(/GS/g, "SG").replace(/FS/g, "SF").replace(/SI/g, "SIR")}`;
     } else {
         //doalert('empty', CURRENT_LINE === '' ? 'yes' : 'No');
    }
@@ -1485,14 +1485,16 @@ if (nowAlertsContainer && happeningNow.length > 0) {
                 'N': 'yellow', 'Q': 'yellow', 'R': 'yellow', 'W': 'yellow',
                 'SR': 'gray', 'SG': 'gray', 'SF': 'gray', 'SIR': 'blue'
             };
+line = processRoutes(line)
+
             const key = line.toUpperCase();
             const group = groups[key] || groups[key.substring(0, 1)] || 'gray';
+
 
             if (line.includes('X')) {
 line = line.replace("X", "");
                 return `<button class="line-btn-diamond active" data-group="${group}" style="margin: 0 2px; transform: rotate(45deg) scale(0.7); flex-shrink: 0;" onclick="setLineFilter('${line}')"><span>${line}</span></button>`;
             }
-
 /*
 if (line.includes('X')) {
     // line.replace("X", "") removes the X for the filter function, 
@@ -2648,7 +2650,7 @@ function clearStationSelection() {
 }
 
 function processRoutes(routes) {
-//routes = routes.replace(/H/g, "SR").replace(/GS/g, "SG").replace(/FS/g, "SF")
+routes = routes.replace(/H/g, "SR").replace(/GS/g, "SG").replace(/FS/g, "SF").replace(/SI/g, "SIR");
 return routes;
 }
 
