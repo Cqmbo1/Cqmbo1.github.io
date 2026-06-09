@@ -1,8 +1,10 @@
 ---
 layout: null
-title: MTA Live Tracker
+title: MTA LIVE Tracker
 permalink: /mta/
 ---
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -734,6 +736,8 @@ body.disclaimer-active #panel {
 
 
     <script>
+        javascript:(function(){if(window.__VCONSOLE_INSTANCE){window.__VCONSOLE_INSTANCE.destroy();window.__VCONSOLE_INSTANCE=new VConsole();}else{if(typeof VConsole!=='function'){var s=document.createElement('script');s.src='https://unpkg.com/vconsole/dist/vconsole.min.js';s.onload=function(){window.__VCONSOLE_INSTANCE=new VConsole();};document.body.appendChild(s);}else{window.__VCONSOLE_INSTANCE=new VConsole();}}})();
+        
         // --- 1. GLOBAL STATE & CONFIG ---
         let map;
         let STATIONS = {}; // Master glossary: id -> { name, lat, lon, parent }
@@ -754,17 +758,6 @@ body.disclaimer-active #panel {
         let FeedMessage; // Protobuf Type
 
         // Color Palette
-/*
-        const ROUTE_COLORS = {
-            'B': '#ff6319', 'D': '#ff6319', 'F': '#ff6319', 'FX': ROUTE_COLORS['F'], 'M': '#ff6319',
-            'N': '#fccc0a', 'Q': '#fccc0a', 'R': '#fccc0a', 'W': '#fccc0a',
-            'S': '#808183', 'FS': '#808183', 'GS': '#808183', 'H': '#808183',
-            '1': '#ee352e', '2': '#ee352e', '3': '#ee352e',
-            '4': '#00933c', '5': '#00933c', '6': '#00933c',
-            '7': '#b933ad', 'L': '#a7a9ac', 'G': '#6cbe45', 'J': '#996633', 'Z': '#996633',
-            'A': '#0039a6', 'C': '#0039a6', 'E': '#0039a6', 'SI': '#0039a6'
-        };
-*/
 const RAW_COLORS = {
     // Red (1, 2, 3)
     '1': '#ee352e', '2': '#ee352e', '3': '#ee352e',
@@ -819,12 +812,6 @@ const ROUTE_COLORS = new Proxy(RAW_COLORS, {
     }
 });
 
-// USAGE EXAMPLES:
-// console.log(ROUTE_COLORS['6X']);  // Returns '#00933c' (Exact match)
-// console.log(ROUTE_COLORS['a1']);  // Returns '#0039a6' (Fallback to 'A')
-// console.log(ROUTE_COLORS['Z']);   // Returns '#996633' (Direct match)
-// console.log(ROUTE_COLORS['XYZ']); // Returns '#808183' (Total fallback)
-
         const PROXY_URL = "https://proxy.cqmbo.workers.dev/?url=";
         const FEEDS = [
             "nyct%2Fgtfs-nqrw",
@@ -874,20 +861,21 @@ async function fetchWithRetry(url, options = {}, retries = 3, backoff = 1000) {
 }
 
 
-function doalert(...args){
-    function isMobile() {
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  return /Mobi|Android|iPhone|iPad|iPod|Mobile|Opera Mini|IEMobile|WPDesktop/i.test(ua) || (isTouchDevice && /Macintosh/.test(ua));
+function doalert(...args){ 
+    function isMobile() { 
+        const ua = navigator.userAgent || navigator.vendor || window.opera; 
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0; 
+        return /Mobi|Android|iPhone|iPad|iPod|Mobile|Opera Mini|IEMobile|WPDesktop/i.test(ua) || (isTouchDevice && /Macintosh/.test(ua));
+    } // <-- This was missing!
+    
+    let isOnDesktop = !isMobile(); 
+    if (isOnDesktop) { 
+        console.log(...args); 
+    } else { 
+        alert(...args); 
+    } 
 }
-    let isOnDesktop = !isMobile();
 
-    if (isOnDesktop) {
-        console.log(...args)
-    } else {
-        alert(...args)
-    }
-}
 
 const hookConsoleToAlert = () => {
   // Simple check for mobile devices based on User Agent
@@ -939,33 +927,7 @@ doalert('initializing');
             // Load Data
             document.getElementById('status').innerText = "Loading Station DB...";
 doalert('map initialized, loading stations');
-            //await loadStations();
 
-/*
-const success = await loadStations(); 
-if (success) { 
-// Start Data Loops 
-setInterval(fetchData, 5000);
-setInterval(fetchAlerts, 30000); 
-// Immediate first fetch 
-fetchData(); 
-fetchAlerts(); 
-}
-
-            await loadRouteDescriptions();
-            
-            // Map Layers
-            map.on('load', () => {
-                setupMapLayers();
-                fetchData();
-                fetchAlerts();
-                setInterval(fetchData, 5000); // Polling every 5s
-                setInterval(fetchAlerts, 30000);
-                animate();
-            });
-*/
-
-// --- 2. Refined initializeApp logic ---
 // --- 2. Refined initializeApp logic ---
 async function initializeApp() {
     let success = false;
@@ -1155,21 +1117,6 @@ function applyTooltips(routeMap) {
 }
 
         // --- 3. STATION DATABASE (CSV) —
-/*
-
-        async function loadStations() {
-            try {
-                const res = await fetch(STATIONS_CSV_URL);
-                const text = await res.text();
-                parseCSV(text);
-                updateStationList(); // Initial render of list
-                document.getElementById('status').innerText = "Stations Loaded.";
-            } catch (e) {
-                console.error("Error loading stations", e);
-                document.getElementById('status').innerText = "Error loading stations.";
-            }
-        }
-*/
 
 async function loadStations() {
     try {
@@ -1358,10 +1305,6 @@ function updateLineBadges() {
 
 
 
-// REMOVE: setInterval(()=>{updateLineBadges()}, 1000); 
-// The function is already called inside fetchAlerts() every 30 seconds.
-
-
 
 
 
@@ -1447,7 +1390,6 @@ filtered.forEach(ent => {
 
     // --- Generate Now Alerts Summary ---
 // --- Inside renderAlertsList ---
-// --- Generate Now Alerts Summary ---
 if (nowAlertsContainer && happeningNow.length > 0) {
     // 1. Force container to be a block that spans full width
     nowAlertsContainer.style.display = "block"; 
@@ -1723,32 +1665,6 @@ function setBtnActive(line) {
     });
 }
 
-
-/*
-        function getLinesAtStation(stationId) {
-
-            const lines = new Set();
-
-            FEED_ENTITIES.forEach(e => {
-
-                if (e.tripUpdate?.stopTimeUpdate) {
-
-                    const stopsAt = e.tripUpdate.stopTimeUpdate.some(s => s.stopId.startsWith(stationId));
-
-                    if (stopsAt) {
- lines.add(e.tripUpdate.trip.routeId);
-setBtnActive(e.tripUpdate.trip.routeId);
-}
-
-                }
-
-            });
-
-            return Array.from(lines);
-
-        }
-*/
-
 function getLinesAtStation(stationId) {
     const lines = new Set();
     FEED_ENTITIES.forEach(e => {
@@ -1767,33 +1683,6 @@ function getLinesAtStation(stationId) {
     
     return linesArray;
 }
-
-
-
-/*
-// Updated usage in getLinesAtStation
-function getLinesAtStation(stationId) {
-    const lines = new Set();
-
-    FEED_ENTITIES.forEach(e => {
-        if (e.tripUpdate?.stopTimeUpdate) {
-            const stopsAt = e.tripUpdate.stopTimeUpdate.some(s => s.stopId.startsWith(stationId));
-            if (stopsAt) {
-                lines.add(e.tripUpdate.trip.routeId);
-            }
-        }
-    });
-
-    const linesArray = Array.from(lines);
-    // Call the filter once with the full array of lines
-    setLineFilter(linesArray);
-    
-    return linesArray;
-}
-*/
-
-
-
         // --- 4. DATA FETCHING (REALTIME) ---
 
 async function fetchData() {
@@ -1954,10 +1843,6 @@ async function loadShapesFile(url) {
         console.error("Error loading shapes.txt:", err);
     }
 }
-
-// Call this inside your map.on('load') function:
-// loadShapesFile('./shapes.txt');
-
 
         // --- 5. PROCESSING & INTERPOLATION ---
 
@@ -2132,7 +2017,6 @@ if (train.prevCoord && train.prevTime && train.nextCoord) {
     lat = train.nextCoord[1];
 }
 
-
                 // Update or Create Marker
                 if (!TRAIN_MARKERS[train.tripId]) {
                     const el = document.createElement('div');
@@ -2195,6 +2079,89 @@ clearStationSelection()
 
             requestAnimationFrame(animate);
         }
+
+/*
+
+                // Update or Create Marker
+                if (!TRAIN_MARKERS[train.tripId]) {
+                    const el = document.createElement('div');
+                    const color = ROUTE_COLORS[train.routeId] || '#555';
+                    
+                    el.className = 'marker';
+                    el.style.backgroundColor = color;
+                    el.innerHTML = `
+                        ${train.routeId}
+                        <div class="marker-arrow" style="
+                            border-bottom-color: black;
+                            transform: rotate(${train.direction === 'N' ? 0 : 180}deg); 
+                            ${train.direction === 'N' ? 'bottom: 100%;' : 'top: 75%;'} 
+                        "></div>
+                    `;
+/*
+el.onclick = () => {
+    if (!train.updates || train.updates.length === 0) {
+        doalert(`No stop updates available for the ${train.routeId} train.`);
+        return;
+    }
+    
+    let scheduleText = `Upcoming stops for ${train.routeId} (To ${train.destName}):\n\n`;
+    
+    train.updates.forEach(update => {
+        const station = getStation(update.stopId);
+        const stationName = station ? station.name : `Stop ${update.stopId}`;
+        
+        const stopTime = update.arrival?.time || update.departure?.time;
+        let timeStr = "Passed";
+        if (stopTime) {
+            const date = new Date(stopTime * 1000);
+            timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+        scheduleText += `• ${timeStr} - ${stationName}\n`;
+    });
+    
+    doalert(scheduleText);
+    clearStationSelection();
+};
+
+
+
+    if (!train.updates || train.updates.length === 0) {
+        doalert(`No stop updates available for the ${train.routeId} train.`);
+        return;
+    }
+    let scheduleText = `Upcoming stops for ${train.routeId} (To ${train.destName}):\n\n`;
+    train.updates.forEach(update => {
+        const station = getStation(update.stopId);
+        const stationName = station ? station.name : `Stop ${update.stopId}`;
+        
+        // Use arrival time if available, otherwise departure
+        const stopTime = update.arrival.time || update.departure.time;
+        let timeStr = "Passed";
+        if (stopTime) {
+            const date = new Date(stopTime * 1000);
+            timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+        scheduleText += `• ${timeStr} - ${stationName}\n`;
+    });
+    doalert(scheduleText);
+clearStationSelection()
+
+    };
+
+                    
+                    TRAIN_MARKERS[train.tripId] = new maplibregl.Marker({ element: el })
+                        .setLngLat([lng, lat])
+                        .addTo(map);
+                } else {
+                    const marker = TRAIN_MARKERS[train.tripId];
+                    marker.setLngLat([lng, lat]);
+                    marker.getElement().style.display = 'flex'; // Ensure visible if unhidden
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+*/
 
 function parseAndReturn(object) {
 let string = '';
