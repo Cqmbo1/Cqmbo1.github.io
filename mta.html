@@ -1,9 +1,3 @@
----
-layout: null
-title: MTA LIVE Tracker
-permalink: /mta/
----
-
 
 
 <!DOCTYPE html>
@@ -60,11 +54,12 @@ body {
     height: 100%; 
 }
         
+/* 1. Base Panel style (Fills screen dynamically by default) */
 #panel { 
-    flex: 1; /* Automatically grow to fill all remaining vertical space */
+    flex: 1; 
     background: #1e1e1e; 
     display: flex; 
-    flex-direction: column; 
+    flex-direction: column;
     box-shadow: 0 -4px 10px rgba(0,0,0,0.5); 
     z-index: 20; 
     overflow-y: auto;
@@ -92,9 +87,9 @@ body {
         h1 { margin: 0; font-size: 1.1rem; color: #fccc0a; }
         #status { font-size: 0.8rem; color: #888; }
 
-/*
+
         .line-picker { padding: 10px; display: flex; gap: 8px; justify-content: center; background: #1e1e1e; flex-wrap: wrap; }
-*/
+
 
 /* Base Button Styling */
 .line-btn { 
@@ -427,14 +422,15 @@ z-index: 67;
     border-bottom: 0px;
 }
 
-/* This turns the picker into a flexible grid */
 .alerts-line-picker {
     display: flex;
-    flex-wrap: wrap;      /* Allows buttons to move to the next line */
-    gap: 4px;             /* Adds spacing between buttons */
+    flex-wrap: wrap; /* Allows buttons to form a neat grid instead of a single scrolling line */
+    gap: 8px; /* Increased from 4px to give buttons more breathing room on mobile */
     justify-content: center; /* Centers the buttons */
-    max-width: 350px;     /* Limits the width so it doesn't span the whole screen */
-    margin: 10px 0;       /* Adds some breathing room */
+    width: 100%; /* Takes full width available */
+    max-width: 800px; /* Sensible limit so it doesn't look ridiculous on massive desktop monitors */
+    margin: 15px auto 5px auto; /* Adds breathing room and centers the container */
+    padding: 0 10px; /* Keeps buttons from touching the extreme edges of phone screens */
 }
 
 /* Ensure the buttons themselves behave */
@@ -448,30 +444,26 @@ z-index: 67;
     padding: 0;           /* Clear any default padding */
 }
 
-/* Mobile specific: Stack the header sections */
 @media (max-width: 768px) {
-    .alerts-header {
-        flex-direction: column; /* Stacks Title/Summary, Picker, and Buttons vertically */
-        align-items: center;
-        text-align: center;
-    }
-
-    .alerts-line-picker {
-        max-width: 100%;       /* Let it use the full width on phone */
-        justify-content: center;
-        padding: 5px;
-    }
-}
-
-/* Mobile Optimization & Compact Overrides */
-@media (max-width: 768px) {
-    /* Shorten the map and give the panel more height */
+    /* Map and Panel Layout */
     #map-container { height: 40vh; flex: none !important; }
     #panel { height: 60vh; }
     
-    /* Make the Alerts Header more vertical */
-    .alerts-header { flex-direction: column; align-items: flex-start !important; padding: 15px !important; }
+    /* Alerts Header */
+    .alerts-header { 
+        flex-direction: column; 
+        align-items: flex-start !important; 
+        padding: 15px !important;
+        text-align: center; 
+    }
     .alerts-header > div:first-child { margin-bottom: 10px; }
+
+    /* Picker */
+    .alerts-line-picker {
+        max-width: 100%;
+        justify-content: center;
+        padding: 5px;
+    }
 }
 
 /* Hide scrollbars for the horizontal alerts picker to keep it clean */
@@ -506,37 +498,9 @@ z-index: 67;
 }
 .clear-line-btn:hover { background: #666; }
 
-/* This turns the picker into a flexible, wrapping grid */
-.alerts-line-picker {
-    display: flex;
-    flex-wrap: wrap; /* Allows buttons to form a neat grid instead of a single scrolling line */
-    gap: 8px; /* Increased from 4px to give buttons more breathing room on mobile */
-    justify-content: center; /* Centers the buttons */
-    width: 100%; /* Takes full width available */
-    max-width: 800px; /* Sensible limit so it doesn't look ridiculous on massive desktop monitors */
-    margin: 15px auto 5px auto; /* Adds breathing room and centers the container */
-    padding: 0 10px; /* Keeps buttons from touching the extreme edges of phone screens */
-}
 /* Force-hide the map container when the user is viewing the info disclaimer */
 body.disclaimer-active #map-container {
     display: none !important;
-}
-
-/* 1. Base Panel style (Fills screen dynamically by default) */
-#panel { 
-    flex: 1; 
-    background: #1e1e1e; 
-    display: flex; 
-    flex-direction: column;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.5); 
-    z-index: 20; 
-    overflow-y: auto;
-}
-
-/* 2. Desktop Mode: When Map is open (Shares the screen) */
-#map-container:not(.hidden-map) ~ #panel {
-    height: 45vh;
-    flex: none; 
 }
 
 /* 3. Mobile Mode: Fixes the 16% black gap bug */
@@ -756,6 +720,31 @@ body.disclaimer-active #panel {
         let CURRENT_LINE = null;
         let SELECTED_STATION_ID = null;
         let FeedMessage; // Protobuf Type
+
+const C = {'1':{g:'red',c:'#ee352e'},'2':{g:'red',c:'#ee352e'},'3':{g:'red',c:'#ee352e'},'4':{g:'green',c:'#00933c'},'5':{g:'green',c:'#00933c'},'6':{g:'green',c:'#00933c'},'7':{g:'purple',c:'#b933ad'},'A':{g:'blue',c:'#0039a6'},'C':{g:'blue',c:'#0039a6'},'E':{g:'blue',c:'#0039a6'},'B':{g:'orange',c:'#ff6319'},'D':{g:'orange',c:'#ff6319'},'F':{g:'orange',c:'#ff6319'},'M':{g:'orange',c:'#ff6319'},'N':{g:'yellow',c:'#fccc0a'},'Q':{g:'yellow',c:'#fccc0a'},'R':{g:'yellow',c:'#fccc0a'},'W':{g:'yellow',c:'#fccc0a'},'G':{g:'light-green',c:'#6cbe45'},'L':{g:'gray',c:'#a7a9ac'},'J':{g:'brown',c:'#996633'},'Z':{g:'brown',c:'#996633'},'SB':{g:'bus',c:'#003366'},'BUS':{g:'bus',c:'#003366'},'AD':{g:'ada',c:'#00aeeef'},'ADA':{g:'ada',c:'#00aeeef'}}; //to Cqmbo1: Color groups.
+const M = {'H':'SR','FS':'SF','GS':'SG','SS':'SR','SI':'SIR'}; //things to replace
+
+function P(r) { // r is da routeId
+    let x = false; //Xpress
+    let d = r;
+    if(d.includes('X')) { x = true; d = d.replace('X',''); }
+    if(M[d]) d = M[d]; //replace
+    let k = C[d] ? d : d.substring(0,1); //process routeIds for colors
+    let b = C[k] || {g:'gray',c:'#808183'}; //get route colors, else default to gray.
+    let u = !C[k]; 
+    return { r, d, g: b.g, c: b.c, x, u }; 
+//og routeId, processed RouteId, color type, color hex, express?, route nonexistent?
+}
+
+function B(o, s='', a='') {
+    let p = a ? '' : 'pointer-events:none;';
+    let e = a ? `onclick="${a}"` : '';
+    if(o.g === 'ada') return `<img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Wheelchair_symbol.svg" style="vertical-align:middle;background:white;border-radius:50%;width:20px;height:20px;padding:3px;box-sizing:border-box;${s}">`;
+    if(o.g === 'bus') return `<span class="line-btn active my-custom-bus" data-group="yellow" style="display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin:0 2px;width:22px;height:22px;font-size:10px;border-radius:50%;${s}"></span>`;
+    if(o.x) return `<button class="line-btn-diamond active" data-group="${o.g}" ${e} style="${p}transform:rotate(45deg);margin:0 4px;${s}"><span style="transform:rotate(-45deg);display:block;">${o.d}</span></button>`;
+    return `<span class="line-btn active" data-group="${o.g}" ${e} style="${p}display:inline-flex;align-items:center;justify-content:center;margin:0 2px;${s}">${o.d}</span>`;
+}
+
 
         // Color Palette
 const RAW_COLORS = {
@@ -1412,174 +1401,73 @@ if (nowAlertsContainer && happeningNow.length > 0) {
             });
         }
     });
+let summaryHTML = "";
+for (let [t, l] of Object.entries(groupedAlerts)) {
+    if (l.size === 0) continue;
+    let s = Array.from(l).sort();
+    let b = s.map(r => B(P(r), 'width:18px;height:18px;font-size:10px;transform:scale(0.8);', `setLineFilter('${r}')`)).join('');
 
-    let summaryHTML = "";
-    for (const [type, linesSet] of Object.entries(groupedAlerts)) {
-        if (linesSet.size === 0) continue;
-        
-        const sortedLines = Array.from(linesSet).sort();
-        const badgesHTML = sortedLines.map(line => {
-            const groups = {
-                '1': 'red', '2': 'red', '3': 'red', '4': 'green', '5': 'green', '6': 'green', '6X': 'green',
-                '7': 'purple', 'A': 'blue', 'C': 'blue', 'E': 'blue',
-                'B': 'orange', 'D': 'orange', 'F': 'orange', 'FX': 'orange', 'M': 'orange',
-                'G': 'light-green', 'L': 'gray', 'J': 'brown', 'Z': 'brown',
-                'N': 'yellow', 'Q': 'yellow', 'R': 'yellow', 'W': 'yellow',
-                'SR': 'gray', 'SG': 'gray', 'SF': 'gray', 'SIR': 'blue'
-            };
-line = processRoutes(line)
-
-            const key = line.toUpperCase();
-            const group = groups[key] || groups[key.substring(0, 1)] || 'gray';
-
-
-            if (line.includes('X')) {
-line = line.replace("X", "");
-                return `<button class="line-btn-diamond active" data-group="${group}" style="margin: 0 2px; transform: rotate(45deg) scale(0.7); flex-shrink: 0;" onclick="setLineFilter('${line}')"><span>${line}</span></button>`;
-            }
-/*
-if (line.includes('X')) {
-    // line.replace("X", "") removes the X for the filter function, 
-    // but we keep 'line' for the display text inside the span.
-    return `
-        <button class="line-btn-diamond active" 
-                data-group="${group}" 
-                style="pointer-events:none; margin: 0 4px;" 
-                onclick="setLineFilter('${line.replace("X", "")}')">
-            <span>${line}</span>
-        </button>`;
-}
-*/
-
-            return `<span class="line-btn active" data-group="${group}" style="display:inline-flex; align-items:center; justify-content:center; flex-shrink: 0; vertical-align:middle; margin: 0 2px; width:18px; height:18px; font-size:10px; border-radius:50%;" onclick="setLineFilter('${line}')">${line}</span>`;
-        }).join('');
-
-        // 2. Wrap in a flex-nowrap container for horizontal scrolling
-        summaryHTML += `
-            <div style="margin-bottom: 6px; padding: 4px 8px; background: rgba(255,255,255,0.03); border-radius: 4px;">
-                <div style="font-size: 9px; color: #aaa; text-transform: uppercase; margin-bottom: 2px; font-weight: bold; letter-spacing: 0.5px;">${type}</div>
-                <div class="no-scrollbar" style="display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 4px; align-items: center; -webkit-overflow-scrolling: touch;">
-                    ${badgesHTML}
-                </div>
+    summaryHTML += `
+        <div style="margin-bottom: 6px; padding: 4px 8px; background: rgba(255,255,255,0.03); border-radius: 4px;">
+            <div style="font-size: 9px; color: #aaa; text-transform: uppercase; margin-bottom: 2px; font-weight: bold; letter-spacing: 0.5px;">${t}</div>
+            <div class="no-scrollbar" style="display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 4px; align-items: center; -webkit-overflow-scrolling: touch;">
+                ${b}
             </div>
-        `;
-    }
+        </div>
+    `;
+}
+
     nowAlertsContainer.innerHTML = summaryHTML;
 }
 
 
+filterContext = CURRENT_LINE ? `Line: ${P(CURRENT_LINE).d}` : filterContext;
 
-    const createAlertEl = (ent, isNow = false) => {
-        const getGroup = (line) => {
-            const groups = {
-                '1': 'red', '2': 'red', '3': 'red',
-                '4': 'green', '5': 'green', '6': 'green', '6X': 'green',
-                '7': 'purple', 
-                'A': 'blue', 'C': 'blue', 'E': 'blue',
-                'B': 'orange', 'D': 'orange', 'F': 'orange', 'FX': 'orange', 'M': 'orange',
-                'G': 'light-green',
-                'L': 'gray',
-                'J': 'brown', 'Z': 'brown',
-                'N': 'yellow', 'Q': 'yellow', 'R': 'yellow', 'W': 'yellow',
-                'SR': 'gray', 'SG': 'gray', 'SF': 'gray', 'SIR': 'blue',
-                'SB': 'bus', 'BUS': 'bus', 'AD': 'ada', 'ADA': 'ada'
-            };
-            const key = line.toUpperCase();
-            if (groups[key]) return groups[key];
-            return groups[key.substring(0, 1)] || 'gray';
-        };
-
-        const formatWithBullets = (text) => {
-            if (!text) return "";
-            let processed = text.replace(/\[H\]/g, "[SR]").replace(/\[shuttle bus icon\]/g, "[SB]").replace(/\[accessibility icon\]/g, "[ADA]");
-            return processed.replace(/\[([A-Z0-9]+)\]/g, (match, p1) => {
-                const group = getGroup(p1);
-                if (group === 'ada') return `<img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Wheelchair_symbol.svg" 
-     style="vertical-align: middle; 
-            background: white; 
-            border-radius: 50%; 
-            width: 20px; 
-            height: 20px; 
-            padding: 3px;   /* This creates the 'ring' effect */
-            box-sizing: border-box;">`;
-                if (group === 'bus') return `<span class="line-btn active my-custom-bus" data-group="yellow" style="display:inline-flex; align-items:center; justify-content:center; vertical-align:middle; margin: 0 2px; width:22px; height:22px; font-size:10px; border-radius:50%;"></span>`;
-if (p1.substring(1,2) === 'X') {
-return `<button class="line-btn-diamond active" data-group="${group}">
-    <span>${p1}</span>
-</button>`
-
-}
-
-                return `<span class="line-btn active" data-group="${group}" style="display:inline-flex; align-items:center; justify-content:center; vertical-align:middle; margin: 0 2px; width:22px; height:22px; font-size:12px; border-radius:50%;">${p1}</span>`;
-            });
-        };
-
-        const header = formatWithBullets(ent.alert.header_text.translation[0].text);
-        const desc = formatWithBullets(ent.alert.description_text?.translation[0]?.text || "");
-        const alertType = ent.alert["transit_realtime.mercury_alert"]?.alert_type || "Service Alert";
-        
-        // Improved Date Formatting
-const duration = ent.alert["transit_realtime.mercury_alert"]?.human_readable_active_period?.translation[0]?.text;
-        const dateOptions = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-const start = ent.alert.active_period?.[0]?.start;
-let now = Math.round(Date.now() / 1000); 
-
-// Calculate seconds REMAINING until it starts
-let secondsUntilStart = start - now;
-
-const isPlanned = ent.id.startsWith("lmm:planned_work") && (secondsUntilStart > 0);
-let type = '';
-
-// Check how far away the start date is
-if (secondsUntilStart < 172800) {          // < 2 Days (Imminent)
-    type = '1'; 
-} else if (secondsUntilStart < 604800) {   // 2 - 7 Days (This week)
-    type = '2';
-} else if (secondsUntilStart < 1209600) {  // 7 - 14 Days (Next week)
-    type = '3';
-} else {                                   // > 14 Days (Future)
-    type = '4';
-}
-
-
-        const end = ent.alert.active_period?.[0]?.end;
-        const startTimeStr = start ? new Date(start * 1000).toLocaleString([], dateOptions) : "";
-        const endTimeStr = end ? new Date(end * 1000).toLocaleString([], dateOptions) : "";
-
-        const div = document.createElement('div');
-        div.className = `alert-item ${isPlanned ? ('planned'+type) : 'urgent'}`;
-        div.innerHTML = `
-            <div class="alert-type-badge">${alertType}</div>
-            <div class="alert-item-title">${header}</div>
-            <div class="alert-item-text">${desc}</div>
-<div class="alert-item-meta">
-    ${duration ? `
-        <div class="meta-block">
-            <strong>When:</strong> ${duration}
-        </div>
-    ` : ''}
-
-        ${isPlanned ? `
-        <div class="meta-block" style="font-size: 11px">
-            <strong style="font-size: 11px"> ║  Estimated: </strong>
-        </div>
-    ` : ''}
-
-    <div class="meta-block">
-        <strong>${isPlanned ? 'Starts:' : 'Since:'}</strong> ${startTimeStr}
-    </div>
-
-    ${endTimeStr ? `
-        <div class="meta-block">
-            <strong>Ends:</strong> ${endTimeStr}
-        </div>
-    ` : ''}
-</div>
-
-        `;
- //const secondDiv = '';
-        return div;
+const createAlertEl = (ent, isNow = false) => {
+    const F = (t) => {
+        if (!t) return "";
+        let p = t.replace(/\[H\]/g, "[SR]").replace(/\[shuttle bus icon\]/g, "[SB]").replace(/\[accessibility icon\]/g, "[ADA]");
+        return p.replace(/\[([A-Z0-9]+)\]/g, (m, r) => B(P(r), 'width:22px;height:22px;font-size:12px;margin:0 2px;'));
     };
+
+    const header = F(ent.alert.header_text.translation[0].text);
+    const desc = F(ent.alert.description_text?.translation[0]?.text || "");
+    const alertType = ent.alert["transit_realtime.mercury_alert"]?.alert_type || "Service Alert";
+    
+    const duration = ent.alert["transit_realtime.mercury_alert"]?.human_readable_active_period?.translation[0]?.text;
+    const dateOptions = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+    const start = ent.alert.active_period?.[0]?.start;
+    let now = Math.round(Date.now() / 1000); 
+
+    let secondsUntilStart = start - now;
+    const isPlanned = ent.id.startsWith("lmm:planned_work") && (secondsUntilStart > 0);
+    let type = '';
+
+    if (secondsUntilStart < 172800) type = '1';
+    else if (secondsUntilStart < 604800) type = '2';
+    else if (secondsUntilStart < 1209600) type = '3';
+    else type = '4';
+
+    const end = ent.alert.active_period?.[0]?.end;
+    const startTimeStr = start ? new Date(start * 1000).toLocaleString([], dateOptions) : "";
+    const endTimeStr = end ? new Date(end * 1000).toLocaleString([], dateOptions) : "";
+    
+    const div = document.createElement('div');
+    div.className = `alert-item ${isPlanned ? ('planned'+type) : 'urgent'}`;
+    div.innerHTML = `
+        <div class="alert-type-badge">${alertType}</div>
+        <div class="alert-item-title">${header}</div>
+        <div class="alert-item-text">${desc}</div>
+        <div class="alert-item-meta">
+            ${duration ? `<div class="meta-block"><strong>When:</strong> ${duration}</div>` : ''}
+            ${isPlanned ? `<div class="meta-block" style="font-size: 11px"><strong style="font-size: 11px"> ║ Estimated: </strong></div>` : ''}
+            <div class="meta-block"><strong>${isPlanned ? 'Starts:' : 'Since:'}</strong> ${startTimeStr}</div>
+            ${endTimeStr ? `<div class="meta-block"><strong>Ends:</strong> ${endTimeStr}</div>` : ''}
+        </div>
+    `;
+    return div;
+};
+
 
     // Render logic remains similar but uses the sorted arrays
     if (happeningNow.length > 0) {
@@ -1856,7 +1744,9 @@ async function loadShapesFile(url) {
                 const routeId = e.tripUpdate.trip.routeId;
 
                 // Filter valid lines
-                if (!ROUTE_COLORS[routeId]) return;
+                let o = P(routeId);
+                if (o.u) return;
+
 
                 const updates = e.tripUpdate.stopTimeUpdate || [];
                 if (updates.length === 0) return;
@@ -2018,59 +1908,41 @@ if (train.prevCoord && train.prevTime && train.nextCoord) {
 }
 
                 // Update or Create Marker
-                if (!TRAIN_MARKERS[train.tripId]) {
-                    const el = document.createElement('div');
-                    const color = ROUTE_COLORS[train.routeId] || '#555';
-                    
-                    el.className = 'marker';
-                    el.style.backgroundColor = color;
-                    el.innerHTML = `
-                        ${train.routeId}
-                        <div class="marker-arrow" style="
-                            border-bottom-color: black;
-                            transform: rotate(${train.direction === 'N' ? 0 : 180}deg); 
-                            ${train.direction === 'N' ? 'bottom: 100%;' : 'top: 75%;'} 
-                        "></div>
-                    `;
-/*
-	            el.onclick = () => {
-        doalert(`Train ${train.tripId} on route ${train.routeId} Updates: ${parseAndReturn(train.updates)}`);
-*/
-
-
-	            el.onclick = () => {
-/*
-        doalert(`Train ${train.tripId} on route ${train.routeId} Updates: ${parseAndReturn(train.updates)} ${JSON.stringify(train.updates)}`);
-*/
-
-    if (!train.updates || train.updates.length === 0) {
-        doalert(`No stop updates available for the ${train.routeId} train.`);
-        return;
-    }
-    let scheduleText = `Upcoming stops for ${train.routeId} (To ${train.destName}):\n\n`;
-    train.updates.forEach(update => {
-        const station = getStation(update.stopId);
-        const stationName = station ? station.name : `Stop ${update.stopId}`;
-        
-        // Use arrival time if available, otherwise departure
-        const stopTime = update.arrival.time || update.departure.time;
-        let timeStr = "Passed";
-        if (stopTime) {
-            const date = new Date(stopTime * 1000);
-            timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+if (!TRAIN_MARKERS[train.tripId]) {
+    let o = P(train.routeId);
+    const el = document.createElement('div');
+    el.className = 'marker';
+    el.style.backgroundColor = o.c;
+    el.innerHTML = `
+        ${o.x ? o.d+'X' : o.d}
+        <div class="marker-arrow" style="border-bottom-color: black; transform: rotate(${train.direction === 'N' ? 0 : 180}deg); ${train.direction === 'N' ? 'bottom: 100%;' : 'top: 75%;'}"></div>
+    `;
+    
+    el.onclick = () => {
+        if (!train.updates || train.updates.length === 0) {
+            doalert(`No stop updates available for the ${train.routeId} train.`);
+            return;
         }
-        scheduleText += `• ${timeStr} - ${stationName}\n`;
-    });
-    doalert(scheduleText);
-clearStationSelection()
-
+        let scheduleText = `Upcoming stops for ${train.routeId} (To ${train.destName}):\n\n`;
+        train.updates.forEach(update => {
+            const station = getStation(update.stopId);
+            const stationName = station ? station.name : `Stop ${update.stopId}`;
+            const stopTime = update.arrival?.time || update.departure?.time;
+            let timeStr = "Passed";
+            if (stopTime) {
+                const date = new Date(stopTime * 1000);
+                timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+            scheduleText += `• ${timeStr} - ${stationName}\n`;
+        });
+        doalert(scheduleText);
+        clearStationSelection();
     };
 
-                    
-                    TRAIN_MARKERS[train.tripId] = new maplibregl.Marker({ element: el })
-                        .setLngLat([lng, lat])
-                        .addTo(map);
-                } else {
+    TRAIN_MARKERS[train.tripId] = new maplibregl.Marker({ element: el })
+        .setLngLat([lng, lat])
+        .addTo(map);
+} else {
                     const marker = TRAIN_MARKERS[train.tripId];
                     marker.setLngLat([lng, lat]);
                     marker.getElement().style.display = 'flex'; // Ensure visible if unhidden
@@ -2080,88 +1952,7 @@ clearStationSelection()
             requestAnimationFrame(animate);
         }
 
-/*
 
-                // Update or Create Marker
-                if (!TRAIN_MARKERS[train.tripId]) {
-                    const el = document.createElement('div');
-                    const color = ROUTE_COLORS[train.routeId] || '#555';
-                    
-                    el.className = 'marker';
-                    el.style.backgroundColor = color;
-                    el.innerHTML = `
-                        ${train.routeId}
-                        <div class="marker-arrow" style="
-                            border-bottom-color: black;
-                            transform: rotate(${train.direction === 'N' ? 0 : 180}deg); 
-                            ${train.direction === 'N' ? 'bottom: 100%;' : 'top: 75%;'} 
-                        "></div>
-                    `;
-/*
-el.onclick = () => {
-    if (!train.updates || train.updates.length === 0) {
-        doalert(`No stop updates available for the ${train.routeId} train.`);
-        return;
-    }
-    
-    let scheduleText = `Upcoming stops for ${train.routeId} (To ${train.destName}):\n\n`;
-    
-    train.updates.forEach(update => {
-        const station = getStation(update.stopId);
-        const stationName = station ? station.name : `Stop ${update.stopId}`;
-        
-        const stopTime = update.arrival?.time || update.departure?.time;
-        let timeStr = "Passed";
-        if (stopTime) {
-            const date = new Date(stopTime * 1000);
-            timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        }
-        scheduleText += `• ${timeStr} - ${stationName}\n`;
-    });
-    
-    doalert(scheduleText);
-    clearStationSelection();
-};
-
-
-
-    if (!train.updates || train.updates.length === 0) {
-        doalert(`No stop updates available for the ${train.routeId} train.`);
-        return;
-    }
-    let scheduleText = `Upcoming stops for ${train.routeId} (To ${train.destName}):\n\n`;
-    train.updates.forEach(update => {
-        const station = getStation(update.stopId);
-        const stationName = station ? station.name : `Stop ${update.stopId}`;
-        
-        // Use arrival time if available, otherwise departure
-        const stopTime = update.arrival.time || update.departure.time;
-        let timeStr = "Passed";
-        if (stopTime) {
-            const date = new Date(stopTime * 1000);
-            timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        }
-        scheduleText += `• ${timeStr} - ${stationName}\n`;
-    });
-    doalert(scheduleText);
-clearStationSelection()
-
-    };
-
-                    
-                    TRAIN_MARKERS[train.tripId] = new maplibregl.Marker({ element: el })
-                        .setLngLat([lng, lat])
-                        .addTo(map);
-                } else {
-                    const marker = TRAIN_MARKERS[train.tripId];
-                    marker.setLngLat([lng, lat]);
-                    marker.getElement().style.display = 'flex'; // Ensure visible if unhidden
-                }
-            });
-
-            requestAnimationFrame(animate);
-        }
-*/
 
 function parseAndReturn(object) {
 let string = '';
@@ -2260,47 +2051,6 @@ function toggleLayer(layerId) {
 
 
         // --- 7. UI INTERACTIONS ---
-/*
-function setLineFilter(line) {
-    // 1. Toggle the global filter state
-    CURRENT_LINE = (CURRENT_LINE === line) ? null : line;
-
-    // 2. Update all buttons in one pass
-    document.querySelectorAll('.line-btn').forEach(btn => {
-        // Use dataset.line if available, otherwise fallback to innerText
-        const btnLine = btn.dataset.line || btn.textContent.replace('!', '').trim();
-        
-        // Check if this specific button is the one currently selected
-        const isSelected = (CURRENT_LINE !== null && btnLine === CURRENT_LINE);
-
-        // Apply/Remove the active class (triggers your color)
-        //btn.classList.toggle('active', isSelected);
-        btn.classList.remove('active');
-
-        if (isSelected && (CURRENT_LINE !== null && btnLine === CURRENT_LINE)) {
-            btn.classList.add('active')
-            console.log(isSelected)
-        } else {
-            btn.classList.remove('active')
-            console.log('no',isSelected)
-        }
-
-        // Handle Opacity: 
-        // - If nothing is selected: all are 1.0
-        // - If something is selected: selected is 1.0, others are 0.3
-        if (!CURRENT_LINE) {
-            btn.style.opacity = '1';
-        } else {
-            btn.style.opacity = isSelected ? '1' : '0.3';
-        }
-    });
-
-    // 3. UI Cleanup and Refresh
-    if (typeof clearSelection === 'function' && !Array.isArray (line) && line !== '') clearSelection();
-    updateStationList();
-    renderAlertsList(); 
-}
-*/
 function setLineFilter(line, forceSet = false) {
     let activeFilters = [];
     const isStationMode = Array.isArray(line);
@@ -2338,8 +2088,10 @@ function setLineFilter(line, forceSet = false) {
         container.querySelectorAll('.line-btn, .line-btn-diamond').forEach(btn => {
             const btnLine = btn.dataset.line || btn.textContent.replace('!', '').replace("X", "").trim();
             const isSelected = activeFilters.includes(btnLine);
+                        console.log(line,activeFilters, btnLine, isSelected)
             if (isSelected) {
                 btn.classList.add('active');
+                                        console.log('e', line,activeFilters, btnLine, isSelected)
             } else {
                 btn.classList.remove('active');
             }
@@ -2365,7 +2117,9 @@ function setLineFilter(line, forceSet = false) {
             // Clone the active button for display
             let activeBtnHtml = '';
             mainPicker.querySelectorAll('.line-btn, .line-btn-diamond').forEach(btn => {
-                if ((btn.dataset.line || btn.textContent.replace('!', '').replace("X", "").trim()) === CURRENT_LINE) {
+                //if ((btn.dataset.line || btn.textContent.replace('!', '').replace("X", "").trim()) === CURRENT_LINE) {
+                                if ((btn.dataset.line || btn.textContent.replace('!', '').trim()) === CURRENT_LINE) {
+                                        console.log('z', CURRENT_LINE,btn.dataset.line || btn.textContent.replace('!', '').replace("X", "").trim(),btn.dataset.line || btn.textContent )
                     const clone = btn.cloneNode(true);
                     clone.onclick = null; // Remove the click event from the clone
                     clone.style.margin = '0';
@@ -2390,68 +2144,6 @@ function setLineFilter(line, forceSet = false) {
         }
     }
 }
-
-
-/*
-function setLineFilter(line) {
-    // 1. Determine the new state
-    // If 'line' is an array (from a station), we set it as the active filter.
-    // If 'line' is a string, we perform the traditional toggle.
-    if (Array.isArray(line)) {
-        CURRENT_LINE = line; 
-    } else {
-        // Toggle logic: if clicking the same line, clear it; otherwise set it.
-        CURRENT_LINE = (CURRENT_LINE === line) ? null : line;
-    }
-
-    // Convert CURRENT_LINE to an array for easy checking, even if it's a single string or null
-    const activeFilters = Array.isArray(CURRENT_LINE) 
-        ? CURRENT_LINE 
-        : (CURRENT_LINE ? [CURRENT_LINE] : []);
-
-// 1. Check if line is an array
-// 2. If true, try to get the element
-// 3. If that element is null (missing), fallback to document
-let selector = Array.isArray(line) 
-    ? (document.getElementById('picker-container-alerts') || document) 
-    : document;
-
-
-    // 2. Update all buttons in one pass
-    selector.querySelectorAll('.line-btn').forEach(btn => {
-        const btnLine = btn.dataset.line || btn.textContent.replace('!', '').trim();
-        
-        // Check if this specific button is included in our active filters
-        const isSelected = (CURRENT_LINE !== null && activeFilters.includes(btnLine));
-        btn.classList.remove('active');
-
-        // Apply/Remove the active class
-        if (isSelected) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-
-        // Handle Opacity: 
-        // - If no filters are active: all are 1.0
-        // - If filters are active: selected buttons are 1.0, others are 0.3
-        if (activeFilters.length === 0) {
-            btn.style.opacity = '1';
-        } else {
-            btn.style.opacity = isSelected ? '1' : '0.3';
-        }
-    });
-
-    // 3. UI Cleanup and Refresh
-    // Avoid clearing selection if we are currently selecting a station's lines
-    if (typeof clearSelection === 'function' && !Array.isArray(line) && line !== '') {
-        clearSelection();
-    }
-    
-    updateStationList();
-    renderAlertsList(); 
-}
-*/
 
 function updateStationStatus(entities) {
     const stationsWithService = new Set();
@@ -2572,31 +2264,6 @@ filtered.forEach(s => {
 
         }
 
-/*
-        function clearSelection() {
-
-            SELECTED_STATION_ID = null;
-
-            document.getElementById('stations-section').style.display = 'block';
-
-	document.getElementById('picker-container').style.display = 'block';
-
-            document.getElementById('arrivals-section').style.display = 'none';
-
-            renderAlertsList();
-
-
-        }
-
-        function clearStationSelection() {
-
-            SELECTED_STATION_ID = null;
-
-            renderAlertsList();
-
-        }
-*/
-
 function clearSelection() {
     SELECTED_STATION_ID = null;
     document.getElementById('stations-section').style.display = 'block';
@@ -2616,10 +2283,6 @@ function clearStationSelection() {
     renderAlertsList();
 }
 
-function processRoutes(routes) {
-routes = routes.replace(/H/g, "SR").replace(/GS/g, "SG").replace(/FS/g, "SF").replace(/SI/g, "SIR");
-return routes;
-}
 
         function renderArrivals(entities) {
             const container = document.getElementById('arrivals-list');
@@ -2632,11 +2295,13 @@ return routes;
             entities.forEach(e => {
                 if (!e.tripUpdate || !e.tripUpdate.stopTimeUpdate) return;
                 let routeId = e.tripUpdate.trip.routeId;
-	    routeId = processRoutes(routeId);
+	    //routeId = processRoutes(routeId);
                 const updates = e.tripUpdate.stopTimeUpdate;
                 
-                // Only showing requested lines
-                if (!ROUTE_COLORS[routeId]) return;
+               
+let o = P(routeId); 
+if (o.u) return; // Replacement for rendering the UI inside deduplication loop: 
+
 
                 // Find stops at the selected station (including children like N/S)
                 updates.forEach(stop => {
@@ -2729,21 +2394,23 @@ const waitTime = (train?.waitMins ? train.waitMins * 60 : 100) + now
             badgeHTML = `<span class="line-btn active" data-group="${group}" style="pointer-events:none; margin-right: 12px; display:inline-flex; align-items:center; justify-content:center;">${train.routeId}</span>`;
         }
 //<div class="route-badge" style="background-color: ${color}">${train.routeId}</div>
-
+let o2 = P(train.routeId);
+let h = B(o2, 'margin-right:12px;');
                 
-                div.innerHTML = `
-                    <div class="train-info">
-${badgeHTML}
-                        <div>
-                            <div class="train-dest">To ${train.destName}</div>
-                            <div class="train-status">${train.direction === 'N' ? 'Northbound' : (train.direction === 'S' ? 'Southbound' : 'Terminating')}</div>
-                        </div>
-                    </div>
-                    <div>
-	        <div class="train-time">${waitTimeStr}</div>
-                    <div class="train-mins">${train.waitMins <= 0 ? 'Now' : train.waitMins + ' min'}</div>
-                    </div>
-                `;
+div.innerHTML = `
+    <div class="train-info">
+        ${h}
+        <div>
+            <div class="train-dest">To ${train.destName}</div>
+            <div class="train-status">${train.direction === 'N' ? 'Northbound' : (train.direction === 'S' ? 'Southbound' : 'Terminating')}</div>
+        </div>
+    </div>
+    <div>
+        <div class="train-time">${waitTimeStr}</div>
+        <div class="train-mins">${train.waitMins <= 0 ? 'Now' : train.waitMins + ' min'}</div>
+    </div>
+`;
+
                 container.appendChild(div);
             });
         }
@@ -2754,6 +2421,8 @@ ${badgeHTML}
     </script>
 </body>
 </html>
+
+
 
 
 
