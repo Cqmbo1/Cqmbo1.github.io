@@ -410,6 +410,28 @@ z-index: 67;
             left: 50%;
             margin-left: -5px;
         }
+/* New inner wrapper to handle sizing and centered text layout */
+.marker-shape {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Default to circle local train */
+}
+
+/* For Express trains, change the inner shape to a diamond */
+.marker.express .marker-shape {
+    border-radius: 3px;
+    transform: rotate(45deg);
+}
+
+/* Counter-rotate the text inside the diamond so it reads normally */
+.marker.express .marker-text {
+    transform: rotate(-45deg);
+    display: inline-block;
+}
+
 
 #now-alerts {
     max-height: 150px; /* Limits how far it can grow */
@@ -1868,8 +1890,8 @@ function getPositionAlongTrack(routeId, prevCoord, nextCoord, progress) {
     // Reverse if the train is travelling "backwards" through the array
     if (closestPrevIdx > closestNextIdx) segment.reverse();
 
-    // Interpolate across the multi-point segment based on total progress
-    const segmentIndex = progress * (segment.length - 1);
+    // Interpolate across the multi-point segment based on total progress 
+   const segmentIndex = progress * (segment.length - 1);
     const lowerIdx = Math.floor(segmentIndex);
     const upperIdx = Math.min(lowerIdx + 1, segment.length - 1);
     const localProgress = segmentIndex - lowerIdx;
@@ -1879,82 +1901,121 @@ function getPositionAlongTrack(routeId, prevCoord, nextCoord, progress) {
         segment[lowerIdx][1] + (segment[upperIdx][1] - segment[lowerIdx][1]) * localProgress
     ];
 }
+function animate() {
+    const now = Date.now() / 1000;
 
-
-        function animate() {
-            const now = Date.now() / 1000;
-
-            Object.values(TRAIN_DATA).forEach(train => {
-                // Line filtering logic for map
-                if ((CURRENT_LINE && train.routeId !== CURRENT_LINE) || shouldHide) {
-                    if (TRAIN_MARKERS[train.tripId]) TRAIN_MARKERS[train.tripId].getElement().style.display = 'none';
-                    return;
-                }
-
-                let lng, lat;
-
-                // Interpolate
-// INSIDE animate(): Replace your old Lerp logic with this:
-if (train.prevCoord && train.prevTime && train.nextCoord) {
-    const totalDuration = train.arrivalTime - train.prevTime;
-    const elapsed = now - train.prevTime;
-    let progress = elapsed / totalDuration;
-    if (progress < 0) progress = 0;
-    if (progress > 1) progress = 1;
-
-    // USE THE NEW TRACK FOLLOWER
-    const trackPos = getPositionAlongTrack(train.routeId, train.prevCoord, train.nextCoord, progress);
-    lng = trackPos[0];
-    lat = trackPos[1];
-} else {
-    lng = train.nextCoord[0];
-    lat = train.nextCoord[1];
-}
-
-                // Update or Create Marker
-if (!TRAIN_MARKERS[train.tripId]) {
-    let o = P(train.routeId);
-    const el = document.createElement('div');
-    el.className = 'marker';
-    el.style.backgroundColor = o.c;
-    el.innerHTML = `
-        ${o.x ? o.d+'X' : o.d}
-        <div class="marker-arrow" style="border-bottom-color: black; transform: rotate(${train.direction === 'N' ? 0 : 180}deg); ${train.direction === 'N' ? 'bottom: 100%;' : 'top: 75%;'}"></div>
-    `;
-    
-    el.onclick = () => {
-        if (!train.updates || train.updates.length === 0) {
-            doalert(`No stop updates available for the ${train.routeId} train.`);
+    Object.values(TRAIN_DATA).forEach(train => {
+        // Line filtering logic for map
+        if ((CURRENT_LINE && train.routeId !== CURRENT_LINE) || shouldHide) {
+            if (TRAIN_MARKERS[train.tripId]) TRAIN_MARKERS[train.tripId].getElement().style.display = 'none';
             return;
         }
-        let scheduleText = `Upcoming stops for ${train.routeId} (To ${train.destName}):\n\n`;
-        train.updates.forEach(update => {
-            const station = getStation(update.stopId);
-            const stationName = station ? station.name : `Stop ${update.stopId}`;
-            const stopTime = update.arrival?.time || update.departure?.time;
-            let timeStr = "Passed";
-            if (stopTime) {
-                const date = new Date(stopTime * 1000);
-                timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            }
-            scheduleText += `• ${timeStr} - ${stationName}\n`;
-        });
-        doalert(scheduleText);
-        clearStationSelection();
-    };
 
-    TRAIN_MARKERS[train.tripId] = new maplibregl.Marker({ element: el })
-        .setLngLat([lng, lat])
-        .addTo(map);
-} else {
-                    const marker = TRAIN_MARKERS[train.tripId];
-                    marker.setLngLat([lng, lat]);
-                    marker.getElement().style.display = 'flex'; // Ensure visible if unhidden
-                }
-            });
+        let lng, lat;
 
-            requestAnimationFrame(animate);
+        // Interpolate Position
+        if (train.prevCoord && train.prevTime && train.nextCoord) {
+            const totalDuration = train.arrivalTime - train.prevTime;
+            const elapsed = now - train.prevTime;
+            let progress = elapsed / totalDuration;
+            if (progress < 0) progress = 0;
+            if (progress > 1) progress = 1;
+
+            const trackPos = getPositionAlongTrack(train.routeId, train.prevCoord, train.nextCoord, progress);
+            lng = trackPos[0];
+            lat = trackPos[1];
+        } else {
+            lng = train.nextCoord[0];
+            lat = train.nextCoord[1];
         }
+
+        // 1. Calculate the movement delta vectors towards the next station coordinate
+        let dx = train.nextCoord[0] - lng;
+        let dy = train.nextCoord[1] - lat;
+
+        // Fallback: If we are right on top of the coordinate, use prevCoord to maintain direction
+        if (Math.abs(dx) < 0.00001 && Math.abs(dy) < 0.00001 && train.prevCoord) {
+            dx = train.nextCoord[0] - train.prevCoord[0];
+            dy = train.nextCoord[1] - train.prevCoord[1];
+        }
+
+        // 2. Convert coordinates to a true map rotation angle (0° = North, 90° = East, 180° = South, 270° = West)
+        let angleDeg = train.direction === 'N' ? 0 : 180;
+        if (dx !== 0 || dy !== 0) {
+            let angleRad = Math.atan2(dy, dx);
+            angleDeg = 90 - (angleRad * 180 / Math.PI);
+            if (angleDeg < 0) angleDeg += 360;
+        }
+
+        let o = P(train.routeId);
+
+        // 3. Mathematical Orbit Calculation
+        // Express routes are rotated by -225deg, so we offset the child rotation angle to cancel out the parent container spin
+        let childAngle = o.x ? (angleDeg + 225) : angleDeg;
+        
+        // Shifts the rotation origin point precisely 17px downward to align with the center of the 22px circle
+        let arrowStyle = `transform-origin: center 17px !important; transform: rotate(${childAngle}deg) !important;`;
+
+        // Update or Create Marker
+        if (!TRAIN_MARKERS[train.tripId]) {
+            
+            // Create an outer container specifically for MapLibre to position
+            const mapContainer = document.createElement('div');
+            mapContainer.style.cursor = 'pointer'; 
+            
+            // Added 'position: relative;' to anchor the arrow directly to the marker's personal bounding box
+            mapContainer.innerHTML = `
+                <div class="marker ${o.x ? 'express' : ''}" style="position: relative; background-color: ${o.c}; border-radius: ${o.x ? '3px': '50px'}; ${o.x ? 'transform: rotate(-225deg) scale(0.9) !important;' : ''}">
+                    <span class="marker-text" style="${o.x ? 'transform: rotate(225deg)':''}">${o.x ? o.d+'X' : o.d}</span>
+                    <div class="marker-arrow" style="${arrowStyle}"></div>
+                </div>
+            `;
+           
+            mapContainer.querySelector('.marker').onclick = () => {
+                if (!train.updates || train.updates.length === 0) {
+                    doalert(`No stop updates available for the ${train.routeId} train.`);
+                    return;
+                }
+                let scheduleText = `Upcoming stops for ${train.routeId} (To ${train.destName}):\n\n`;
+                train.updates.forEach(update => {
+                    const station = getStation(update.stopId);
+                    const stationName = station ? station.name : `Stop ${update.stopId}`;
+                    const stopTime = update.arrival?.time || update.departure?.time;
+                    let timeStr = "Passed";
+                    if (stopTime) {
+                        const date = new Date(stopTime * 1000);
+                        timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    }
+                    scheduleText += `• ${timeStr} - ${stationName}\n`;
+                });
+                doalert(scheduleText);
+                clearStationSelection();
+            };
+
+            // Give MapLibre the outer wrapper
+            TRAIN_MARKERS[train.tripId] = new maplibregl.Marker({ element: mapContainer })
+                .setLngLat([lng, lat])
+                .addTo(map);
+        } else {
+            const marker = TRAIN_MARKERS[train.tripId];
+            marker.setLngLat([lng, lat]);
+            
+            const element = marker.getElement();
+            element.style.display = 'block'; // Ensure visible if unhidden
+            
+            // 4. Update the arrow transform properties dynamically on every frame redraw
+            const arrow = element.querySelector('.marker-arrow');
+            if (arrow) {
+                arrow.style.setProperty('transform-origin', 'center 17px', 'important');
+                arrow.style.setProperty('transform', `rotate(${childAngle}deg)`, 'important');
+            }
+        }
+    });
+
+    requestAnimationFrame(animate);
+}
+
+
 
 
 
@@ -2425,17 +2486,5 @@ div.innerHTML = `
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
