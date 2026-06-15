@@ -747,7 +747,8 @@ body.disclaimer-active #panel {
         let SELECTED_STATION_ID = null;
         let FeedMessage; // Protobuf Type
 
-const C = {'1':{g:'red',c:'#ee352e'},'2':{g:'red',c:'#ee352e'},'3':{g:'red',c:'#ee352e'},'4':{g:'green',c:'#00933c'},'5':{g:'green',c:'#00933c'},'6':{g:'green',c:'#00933c'},'7':{g:'purple',c:'#b933ad'},'A':{g:'blue',c:'#0039a6'},'C':{g:'blue',c:'#0039a6'},'E':{g:'blue',c:'#0039a6'},'B':{g:'orange',c:'#ff6319'},'D':{g:'orange',c:'#ff6319'},'F':{g:'orange',c:'#ff6319'},'M':{g:'orange',c:'#ff6319'},'N':{g:'yellow',c:'#fccc0a'},'Q':{g:'yellow',c:'#fccc0a'},'R':{g:'yellow',c:'#fccc0a'},'W':{g:'yellow',c:'#fccc0a'},'G':{g:'light-green',c:'#6cbe45'},'L':{g:'gray',c:'#a7a9ac'},'J':{g:'brown',c:'#996633'},'Z':{g:'brown',c:'#996633'},'SB':{g:'bus',c:'#003366'},'BUS':{g:'bus',c:'#003366'},'AD':{g:'ada',c:'#00aeeef'},'ADA':{g:'ada',c:'#00aeeef'}}; //to Cqmbo1: Color groups.
+const C = {'1':{g:'red',c:'#ee352e'},'2':{g:'red',c:'#ee352e'},'3':{g:'red',c:'#ee352e'},'4':{g:'green',c:'#00933c'},'5':{g:'green',c:'#00933c'},'6':{g:'green',c:'#00933c'},'7':{g:'purple',c:'#b933ad'},'A':{g:'blue',c:'#0039a6'},'C':{g:'blue',c:'#0039a6'},'E':{g:'blue',c:'#0039a6'},'B':{g:'orange',c:'#ff6319'},'D':{g:'orange',c:'#ff6319'},'F':{g:'orange',c:'#ff6319'},'M':{g:'orange',c:'#ff6319'},'N':{g:'yellow',c:'#fccc0a'},'Q':{g:'yellow',c:'#fccc0a'},'R':{g:'yellow',c:'#fccc0a'},'W':{g:'yellow',c:'#fccc0a'},'G':{g:'light-green',c:'#6cbe45'},'L':{g:'gray',c:'#a7a9ac'},'J':{g:'brown',c:'#996633'},'Z':{g:'brown',c:'#996633'},'SB':{g:'bus',c:'#003366'},'BUS':{g:'bus',c:'#003366'},'AD':{g:'ada',c:'#00aeeef'},'ADA':{g:'ada',c:'#00aeeef'}, 'SIR': {g:'blue',c:'#0039a6'}, 
+                'SR': {g:'gray', c:'#808183'}, 'SG': {g:'gray', c:'#808183'}, 'SF': {g:'gray', c:'#808183'}, 'S': {g:'gray', c:'#808183'},}; //to Cqmbo1: Color groups.
 const M = {'H':'SR','FS':'SF','GS':'SG','SS':'SR','SI':'SIR'}; //things to replace
 
 function P(r) { // r is da routeId
@@ -755,7 +756,7 @@ function P(r) { // r is da routeId
     let d = r;
     if(d.includes('X')) { x = true; d = d.replace('X',''); }
     if(M[d]) d = M[d]; //replace
-    let k = C[d] ? d : d.substring(0,1); //process routeIds for colors
+    let k = C[d] ? d : d.substring(0,1).toUpperCase(); //process routeIds for colors
     let b = C[k] || {g:'gray',c:'#808183'}; //get route colors, else default to gray.
     let u = !C[k]; 
     return { r, d, g: b.g, c: b.c, x, u }; 
@@ -1327,6 +1328,7 @@ function renderAlertsList() {
     const container = document.getElementById('alerts-container');
     const titleEl = document.getElementById('alerts-title');
 const nowAlertsContainer = document.getElementById('now-alerts'); 
+//document.getElementById('panel').style.display = 'none';
 // 1. Clear previous content immediately
 container.innerHTML = ""; 
 if (nowAlertsContainer) nowAlertsContainer.innerHTML = ""; 
@@ -1521,6 +1523,7 @@ const createAlertEl = (ent, isNow = false) => {
         
         // Use the global variable to set display, not a hardcoded 'none'
         upcomingWrapper.style.display = hideUpcoming ? 'none' : 'block'; 
+        upcomingWrapper.style.zIndex = '500';
 
         const h = document.createElement('div');
         h.className = 'alert-section-header';
@@ -1539,7 +1542,6 @@ function toggleUpcomingFeed() {
     const btn = document.getElementById('toggleUpcomingBtn');
     
     if (!wrapper || !btn) return;
-
     hideUpcoming = !hideUpcoming;
 
     if (hideUpcoming) {
@@ -1548,10 +1550,15 @@ function toggleUpcomingFeed() {
     } else {
         wrapper.style.display = 'block';
         btn.textContent = 'Hide Upcoming Alerts';
-        // Optional: Scroll to the upcoming section
-        wrapper.scrollIntoView({ behavior: 'smooth' });
+        
+        // Disable this to prevent the absolute container from glitching the layout
+        setTimeout(() => {
+         //wrapper.scrollIntoView({ behavior: 'smooth' }); 
+         //setTimeout(renderAlertsList(), 1e3);
+         }, 100);
     }
 }
+
 
 function setBtnActive(line) {
     // 1. Clean the input 'line' to ensure no hidden whitespace
@@ -2126,7 +2133,9 @@ function setLineFilter(line, forceSet = false) {
     } else {
         if (forceSet) {
             CURRENT_LINE = line === '' ? null : line;
-            if (line === '') renderAlertsList();
+            if (line === '') { renderAlertsList();
+            setTimeout(renderAlertsList(), 1e3);
+            }
         } else {
             CURRENT_LINE = (CURRENT_LINE === line) ? null : line;
         }
@@ -2343,11 +2352,16 @@ function clearSelection() {
 
 function clearStationSelection() {
     SELECTED_STATION_ID = null;
+    
+    // Add these three lines to properly reset the background UI
+    document.getElementById('stations-section').style.display = 'block';
+    document.getElementById('picker-container').style.display = 'block';
+    document.getElementById('arrivals-section').style.display = 'none';
+
     // Restore UI to reflect the global CURRENT_LINE when closing station view
     setLineFilter(CURRENT_LINE || '', true);
     renderAlertsList();
 }
-
 
         function renderArrivals(entities) {
             const container = document.getElementById('arrivals-list');
@@ -2419,7 +2433,9 @@ const waitTime = (train?.waitMins ? train.waitMins * 60 : 100) + now
                 if (seen.has(key)) return;
                 seen.add(key);
 
-                const color = ROUTE_COLORS[train.routeId] || '#555';
+                //const color = ROUTE_COLORS[train.routeId] || '#555';
+	    const o = P(train.routeId);
+                const color = o.c || '#555';
                 const div = document.createElement('div');
                 div.className = 'train-card';
                 div.style.borderLeftColor = color;
@@ -2443,7 +2459,8 @@ const waitTime = (train?.waitMins ? train.waitMins * 60 : 100) + now
             return groups[key.substring(0, 1)] || 'gray';
         };
 
-        const group = getGroup(train.routeId);
+        //const group = getGroup(train.routeId);
+       const group = o.g;
 
         console.log(group, color)
 
@@ -2486,5 +2503,25 @@ div.innerHTML = `
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
