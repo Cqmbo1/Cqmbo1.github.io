@@ -1,0 +1,30 @@
+---
+layout: null
+title: MTA Live Tracker
+permalink: /mta/
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTA Live Tracker</title>
+</head>
+<body>
+
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+
+    <script>
+        setTimeout(function () {
+            if (!window.__LOADER_ACTIVE__) {
+                document.body.innerHTML = '';
+            }
+        }, 2000);
+    </script>
+
+    <script src="https://mta.cqmbo.workers.dev/mta-core.js"></script>
+</body>
+</html>

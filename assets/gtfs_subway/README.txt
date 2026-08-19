@@ -1,0 +1,1 @@
+The contents within the folder "gtfs_subway" belong to the MTA. The folder can be downloaded at: https://www.mta.info/developers. I claim no ownership of these files. These files were only used for reference purposes and so that I (Cqmbo1) can read these files without having to download them.
