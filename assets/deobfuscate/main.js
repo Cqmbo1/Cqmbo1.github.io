@@ -9,6 +9,10 @@
 /* globals ClipboardJS */
 
 (function () {
+  // Backend gateway that proxies decode requests to the sandboxed decoder
+  // service. See requestDecode() below for how it's called.
+  var DECODE_API_URL = 'https://backend.cqmbo.workers.dev/api/deobfuscate';
+
   // https://davidwalsh.name/javascript-debounce-function
   function debounce(func, wait, immediate) {
     var timeout;
@@ -156,10 +160,47 @@
       download.href = downloadUrl;
     },
     workerFormat,
-    workerDecode,
+    // Replaces the old workerDecode Web Worker: decoding now happens via a
+    // fetch() to the backend gateway, so an AbortController stands in for
+    // the old worker.terminate() — see requestDecode() and resetAll's
+    // cleanup below.
+    decodeAbortController,
     workerError = (err) => {
+      if (err && err.__aborted) return; // superseded by a newer decode() call, not a real error
       stopEffect();
       view.innerHTML = `<span class="hljs-variable">${err.message}</span>`;
+    },
+    // Sends { code, method, options } to the Cloudflare Worker gateway and
+    // returns a Promise<string> of the decoded result. Replaces the old
+    // in-browser workerDecode Web Worker and the direct
+    // window.deobfuscator.deobfuscate() call — the actual decoding now runs
+    // server-side; this function only sends, receives, and returns the
+    // result for display, exactly like every other fetch in this file.
+    requestDecode = function (code, method, opts) {
+      if (decodeAbortController) decodeAbortController.abort();
+      decodeAbortController = new AbortController();
+      return fetch(DECODE_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: code, method: method, options: opts || {} }),
+        signal: decodeAbortController.signal,
+      })
+        .then(function (res) {
+          return res.json().then(function (data) {
+            if (!res.ok) {
+              throw new Error((data && data.error) || ('Request failed (' + res.status + ')'));
+            }
+            return data.result;
+          });
+        })
+        .catch(function (err) {
+          if (err.name === 'AbortError') {
+            // A newer decode() call superseded this one - not a real error,
+            // nothing to show the user.
+            return Promise.reject({ message: '', __aborted: true });
+          }
+          throw err;
+        });
     },
     format = debounce(function () {
       if (temp === '') return;
@@ -268,47 +309,36 @@
           unusedVariableRemoval: { isEnabled: document.getElementById('unusedVariableRemoval').checked },
           propertySimplification: { isEnabled: document.getElementById('propertySimplification').checked }
         };
-        try {
-          startEffect();
-          temp = window.deobfuscator.deobfuscate(temp, config);
-          readable.value = temp;
-          format();
-        } catch (err) {
-          workerError(err);
-        }
+        startEffect();
+        requestDecode(temp, 'obfuscatorio', config)
+          .then(function (result) {
+            temp = result;
+            readable.value = temp;
+            format();
+          })
+          .catch(workerError);
         return;
       }
       if (packer === '') {
         format();
         return;
       }
-      if (!workerDecode) {
-        workerDecode = new Worker('https://Cqmbo1.github.io/assets/deobfuscate/worker/decode.js');
-        workerDecode.postMessage({
-          dependencies: [
-            'https://unpkg.com/acorn',
-            'https://unpkg.com/acorn-walk',
-            'https://unpkg.com/astring',
-          ],
-        });
-        workerDecode.addEventListener('message', function (e) {
-          if (e.data !== temp) {
-            temp = e.data;
-            format();
-          }
-        });
-        workerDecode.addEventListener('error', workerError);
-      }
       startEffect();
       if (!packer) {
         console.error('packer is undefined or empty, cannot decode');
+        stopEffect();
         return;
       }
-      workerDecode.postMessage({
-        source: temp,
-        packer: packer,
-        options: options,
-      });
+      requestDecode(temp, packer, options)
+        .then(function (result) {
+          if (result !== temp) {
+            temp = result;
+            format();
+          } else {
+            stopEffect();
+          }
+        })
+        .catch(workerError);
     }, 250),
     changeEncode = function (e) {
       var _this = e.target;
@@ -393,9 +423,9 @@
     temp = '';
     rawInput = '';
     stopEffect();
-    if (workerDecode) {
-      workerDecode.terminate();
-      workerDecode = undefined;
+    if (decodeAbortController) {
+      decodeAbortController.abort();
+      decodeAbortController = undefined;
     }
     if (workerFormat) {
       workerFormat.terminate();
